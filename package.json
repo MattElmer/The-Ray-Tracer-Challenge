@@ -1,0 +1,21 @@
+{
+  "name": "the-ray-tracer-challenge",
+  "version": "1.0.0",
+  "description": "a NodeJS implementation of a ray tracer as described in _The Ray Tracer Challenge_ by Jamis Buck",
+  "main": "app.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MattElmer/The-Ray-Tracer-Challenge.git"
+  },
+  "author": "Matthias Elmer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MattElmer/The-Ray-Tracer-Challenge/issues"
+  },
+  "homepage": "https://github.com/MattElmer/The-Ray-Tracer-Challenge#readme"
+}
