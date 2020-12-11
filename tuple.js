@@ -36,7 +36,7 @@ exports.sub = (a1, a2) => new exports.tuple(..._.zipWith(a1.arr, a2.arr, _.subtr
 
 exports.neg = a => exports.sub(new exports.tuple(0, 0, 0, 0), a)
 
-exports.mul = (t, s) => new exports.tuple(..._.isNumber(s) ? _.map(t.arr, x => s * x) : _.zipWith(t.arr, s.arr, _.multiply))
+exports.mul = (t, s) => new exports.tuple(..._.isNumber(s) ? t.arr.map(x => s * x) : _.zipWith(t.arr, s.arr, _.multiply))
 
 exports.div = (t, s) => exports.mul(t, 1 / s)
 

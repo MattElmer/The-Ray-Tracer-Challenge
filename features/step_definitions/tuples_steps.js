@@ -1,9 +1,8 @@
 const { Before, Given, When, Then } = require('@cucumber/cucumber')
 const { equal, tuple, POINT_W, point, VECTOR_W, vector, add, sub, neg, mul, div, dot, magnitude, normalize, cross, color, reflect } = require('../../tuple')
 const assert = require('assert')
-const _ = require('lodash')
 
-let a
+//let a
 // Scenario: A tuple with w=1.0 is a point # features/tuples.feature:3
    // Given a ← tuple(4.3, -4.2, 3.1, 1.0)
        // Implement with the following snippet:
