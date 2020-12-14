@@ -1,6 +1,7 @@
 const { Before, Given, When, Then } = require('@cucumber/cucumber')
-const { equal, tuple, POINT_W, point, VECTOR_W, vector, add, sub, neg, mul, div, dot, magnitude, normalize, cross, color, reflect } = require('../../tuple')
+const { tuple, POINT_W, point, VECTOR_W, vector, add, sub, neg, mul, div, dot, magnitude, normalize, cross, color, reflect } = require('../../tuple')
 const assert = require('assert')
+const { equal } = require('../../utility')
 
 //let a
 // Scenario: A tuple with w=1.0 is a point # features/tuples.feature:3
@@ -118,7 +119,7 @@ const assert = require('assert')
            assert(equal(a.w, VECTOR_W))
          });
 
-let p
+// let p
 // Scenario: point() creates tuples with w=1 # features/tuples.feature:21
    // Given p ← point(4, -4, 3)
        // Implement with the following snippet:
@@ -136,7 +137,7 @@ let p
            assert(equal(p, new tuple(x, y, z, w)))
          });
 
-let v
+//let v
 // Scenario: vector() creates tuples with w=0 # features/tuples.feature:25
    // Given v ← vector(4, -4, 3)
        // Implement with the following snippet:

@@ -3,6 +3,7 @@ const assert = require('assert')
 const tup = require('../../tuple')
 const tuple = tup.tuple
 const mat = require('../../matrix')
+const { equal } = require('../../utility')
 /*
 Scenario: Constructing and inspecting a 4x4 matrix # ../features/matrices.feature:3
    ? Given the following 4x4 matrix M:
@@ -27,7 +28,7 @@ let M
          // Then('M[{float},{int}] = {float}', function (float, int, float2) {
          // Then('M[{float},{float}] = {int}', function (float, float2, int) {
          // Then('M[{float},{float}] = {float}', function (float, float2, float3) {
-           assert(tup.equal(M[i][j], m))
+           assert(equal(M[i][j], m))
          });
 /*
    ? And M[0,3] = 4
@@ -247,7 +248,7 @@ let B
 */
 
          Then('A = B', function () {
-           assert(tup.equal(A, B))
+           assert(equal(A, B))
          });
 
 /*
@@ -278,7 +279,7 @@ Scenario: Matrix equality with different matrices # ../features/matrices.feature
 */
 
          Then('A != B', function () {
-           assert(!tup.equal(A, B))
+           assert(!equal(A, B))
          });
 
 /*
@@ -313,7 +314,7 @@ Scenario: Multiplying two matrices # ../features/matrices.feature:61
 */
 
          Then('A * B is the following 4x4 matrix:', function (dataTable) {
-           assert(tup.equal(mat.mul(A, B), mat.matrix(dataTable.raw())))
+           assert(equal(mat.mul(A, B), mat.matrix(dataTable.raw())))
          });
 
 /*
@@ -370,7 +371,7 @@ let b
          // Then('A * b = tuple\\({float}, {float}, {int}, {float})', function (float, float2, int, float3) {
          // Then('A * b = tuple\\({float}, {float}, {float}, {int})', function (float, float2, float3, int) {
          Then('A * b = tuple\\({float}, {float}, {float}, {float})', function (x, y, z, w) {
-           assert(tup.equal(new tup.tuple(...mat.transpose(mat.mul(A, b))[0]), new tup.tuple(x, y, z, w)))
+           assert(equal(mat.mul(A, b), new tuple(x, y, z, w)))
          });
 
 /*
@@ -388,9 +389,9 @@ Scenario: Multiplying a matrix by the identity matrix # ../features/matrices.fea
 /*
    ? Then A * identity_matrix = A
 */
-let I = mat.matrix([ [ 1, 0, 0, 0], [ 0, 1, 0, 0 ], [ 0, 0, 1, 0], [0, 0, 0, 1] ])
+let I = mat.IDENTITY
          Then('A * identity_matrix = A', function () {
-           assert(tup.equal(mat.mul(A, I), A))
+           assert(equal(mat.mul(A, I), A))
          });
 /*
 Scenario: Multiplying the identity matrix by a tuple # ../features/matrices.feature:95
@@ -398,7 +399,7 @@ Scenario: Multiplying the identity matrix by a tuple # ../features/matrices.feat
    ? Then identity_matrix * a = a
 */
          Then('identity_matrix * a = a', function () {
-           assert(tup.equal(new tup.tuple(...mat.transpose(mat.mul(I, a))[0]), a))
+           assert(equal(mat.mul(I, a), a))
          });
 
 /*
@@ -422,7 +423,7 @@ Scenario: Transposing a matrix # ../features/matrices.feature:99
 */
 
          Then('transpose\\(A) is the following matrix:', function (dataTable) {
-           assert(tup.equal(mat.transpose(A), mat.matrix(dataTable.raw())))
+           assert(equal(mat.transpose(A), mat.matrix(dataTable.raw())))
          });
 
 /*
@@ -438,7 +439,7 @@ Scenario: Transposing the identity matrix # ../features/matrices.feature:111
 */
 
          Then('A = identity_matrix', function () {
-           assert(tup.equal(A, I))
+           assert(equal(A, I))
          });
 
 /*
@@ -457,7 +458,7 @@ Scenario: Calculating the determinant of a 2x2 matrix # ../features/matrices.fea
 
           // Then('determinant\\(A) = {int}', function (int) {
          Then('determinant\\(A) = {float}', function (det) {
-           assert(tup.equal(mat.determinant(A), det))
+           assert(equal(mat.determinant(A), det))
          });
 
 /*
@@ -481,7 +482,7 @@ Scenario: A submatrix of a 3x3 matrix is a 2x2 matrix # ../features/matrices.fea
           // Then('submatrix\\(A, {int}, {float}) is the following 2x2 matrix:', function (int, float, dataTable) {
           // Then('submatrix\\(A, {float}, {int}) is the following 2x2 matrix:', function (float, int, dataTable) {
           // Then('submatrix\\(A, {float}, {float}) is the following 2x2 matrix:', function (float, float2, dataTable) {
-           assert(tup.equal(mat.submatrix(A, m, n), mat.matrix(dataTable.raw())))
+           assert(equal(mat.submatrix(A, m, n), mat.matrix(dataTable.raw())))
          });
 
 /*
@@ -507,7 +508,7 @@ Scenario: A submatrix of a 4x4 matrix is a 3x3 matrix # ../features/matrices.fea
           // Then('submatrix\\(A, {int}, {float}) is the following 3x3 matrix:', function (int, float, dataTable) {
           // Then('submatrix\\(A, {float}, {int}) is the following 3x3 matrix:', function (float, int, dataTable) {
           // Then('submatrix\\(A, {float}, {float}) is the following 3x3 matrix:', function (float, float2, dataTable) {
-           assert(tup.equal(mat.submatrix(A, m, n), mat.matrix(dataTable.raw())))
+           assert(equal(mat.submatrix(A, m, n), mat.matrix(dataTable.raw())))
          });
 
 /*
@@ -537,7 +538,7 @@ Scenario: Calculating a minor of a 3x3 matrix # ../features/matrices.feature:141
 
           // Then('determinant\\(B) = {int}', function (int) {
          Then('determinant\\(B) = {float}', function (det) {
-           assert(tup.equal(mat.determinant(B), det))
+           assert(equal(mat.determinant(B), det))
          });
 /*
     ? And minor(A, 1, 0) = 25
@@ -551,7 +552,7 @@ Scenario: Calculating a minor of a 3x3 matrix # ../features/matrices.feature:141
           // Then('minor\\(A, {float}, {int}) = {float}', function (float, int, float2) {
           // Then('minor\\(A, {float}, {float}) = {int}', function (float, float2, int) {
           // Then('minor\\(A, {float}, {float}) = {float}', function (float, float2, float3) {
-            assert(tup.equal(mat.minor(A, m, n), min))
+            assert(equal(mat.minor(A, m, n), min))
          });
 
 /*
@@ -591,7 +592,7 @@ Scenario: Calculating a cofactor of a 3x3 matrix # ../features/matrices.feature:
           // Then('cofactor\\(A, {float}, {int}) = {float}', function (float, int, float2) {
           // Then('cofactor\\(A, {float}, {float}) = {int}', function (float, float2, int) {
           // Then('cofactor\\(A, {float}, {float}) = {float}', function (float, float2, float3) {
-           assert(tup.equal(mat.cofactor(A, m, n), cof))
+           assert(equal(mat.cofactor(A, m, n), cof))
          });
 /*
     ? And minor(A, 1, 0) = 25
@@ -786,7 +787,7 @@ Scenario: Testing an invertible matrix for invertibility # ../features/matrices.
 */
 
          Then('A is invertible', function () {
-           assert(!tup.equal(mat.determinant(A), 0))
+           assert(!equal(mat.determinant(A), 0))
          });
 
 /*
@@ -807,14 +808,14 @@ Scenario: Testing a noninvertible matrix for invertibility # ../features/matrice
 
           // Then('determinant\\(A) = {int}', function (int) {
           // Then('determinant\\(A) = {float}', function (det) {
-          //   assert(tup.equal(mat.determinant(A), det))
+          //   assert(equal(mat.determinant(A), det))
           // });
 /*
     ? And A is not invertible
 */
 
          Then('A is not invertible', function () {
-           assert(tup.equal(mat.determinant(A), 0))
+           assert(equal(mat.determinant(A), 0))
          });
 
 /*
@@ -878,7 +879,7 @@ Scenario: Calculating the inverse of a matrix # ../features/matrices.feature:200
           // Then('B[{float},{float}] = {int}\\/{float}', function (float, float2, int, float3) {
           // Then('B[{float},{float}] = {float}\\/{int}', function (float, float2, float3, int) {
           // Then('B[{float},{float}] = {float}\\/{float}', function (float, float2, float3, float4) {
-           assert(tup.equal(B[i][j], n/d))
+           assert(equal(B[i][j], n/d))
          });
 /*
     ? And cofactor(A, 3, 2) = 105
@@ -925,7 +926,7 @@ Scenario: Calculating the inverse of a matrix # ../features/matrices.feature:200
 */
 
          Then('B is the following 4x4 matrix:', function (dataTable) {
-           assert(tup.equal(B, mat.matrix(dataTable.raw())))
+           assert(equal(B, mat.matrix(dataTable.raw())))
          });
 
 /*
@@ -949,7 +950,7 @@ Scenario: Calculating the inverse of another matrix # ../features/matrices.featu
 */
 
          Then('inverse\\(A) is the following 4x4 matrix:', function (dataTable) {
-           assert(tup.equal(mat.inverse(A), mat.matrix(dataTable.raw())))
+           assert(equal(mat.inverse(A), mat.matrix(dataTable.raw())))
          });
 
 /*
@@ -1011,5 +1012,5 @@ Scenario: Multiplying a product by its inverse # ../features/matrices.feature:24
 */
 
          Then('C * inverse\\(B) = A', function () {
-           assert(tup.equal(mat.mul(C, mat.inverse(B)), A))
+           assert(equal(mat.mul(C, mat.inverse(B)), A))
          });
