@@ -46,7 +46,7 @@ let c
         // Then('every pixel of c is color\({float}, {float}, {int})', function (float, float2, int) {
         Then('every pixel of c is color\\({float}, {float}, {float})', function (float, float2, float3) {
           // Write code here that turns the phrase above into concrete actions
-          assert(!c.arr.flat().some(col => !equal(col.arr, color(float, float2, float3).arr)))
+          assert(c.arr.flat().every(col => equal(col.arr, color(float, float2, float3).arr)))
         });
 //
 //
