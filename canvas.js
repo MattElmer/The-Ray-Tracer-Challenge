@@ -4,8 +4,8 @@ exports.canvas = class {
     constructor(w, h) {
         this.arr = Array.from({length:h}, () => Array(w).fill(BLACK))
     }
-    write_pixel   = (x, y, c) => this.arr[x][y] = c
-    pixel_at      = (x, y)    => this.arr[x][y]
+    write_pixel   = (x, y, c) => this.arr[y][x] = c
+    pixel_at      = (x, y)    => this.arr[y][x]
     canvas_to_ppm = ()        => `P3\n${this.width} ${this.height}\n255\n`
 }
 Object.defineProperties(exports.canvas.prototype, {

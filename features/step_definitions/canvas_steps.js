@@ -148,12 +148,12 @@ let ppm
 //           // Write code here that turns the phrase above into concrete actions
 //           return 'pending';
 //         });
-//
+let c1, c2, c3
 //   - And c1 ← color(1.5, 0, 0) # ../features/step_definitions/tuples_steps.js:611
 //   - And c2 ← color(0, 0.5, 0) # ../features/step_definitions/tuples_steps.js:619
 //   ? And c3 ← color(-0.5, 0, 1)
 //       Undefined. Implement with the following snippet:
-let c3
+//
 //         Given('c3 ← color\({float}, {int}, {int})', function (float, int, int2) {
 //         // Given('c3 ← color\({float}, {int}, {float})', function (float, int, float2) {
 //         // Given('c3 ← color\({float}, {float}, {int})', function (float, float2, int) {
@@ -176,24 +176,24 @@ let c3
 //   ? And write_pixel(c, 2, 1, c2)
 //       Undefined. Implement with the following snippet:
 //
-//         When('write_pixel\(c, {int}, {int}, c2)', function (int, int2) {
-//         // When('write_pixel\(c, {int}, {float}, c2)', function (int, float) {
-//         // When('write_pixel\(c, {float}, {int}, c2)', function (float, int) {
-//         // When('write_pixel\(c, {float}, {float}, c2)', function (float, float2) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+        When('write_pixel\\(c, {int}, {int}, c2)', function (int, int2) {
+        // When('write_pixel\(c, {int}, {float}, c2)', function (int, float) {
+        // When('write_pixel\(c, {float}, {int}, c2)', function (float, int) {
+        // When('write_pixel\(c, {float}, {float}, c2)', function (float, float2) {
+          // Write code here that turns the phrase above into concrete actions
+          c.write_pixel(int, int2, c2)
+        });
 //
 //   ? And write_pixel(c, 4, 2, c3)
 //       Undefined. Implement with the following snippet:
 //
-//         When('write_pixel\(c, {int}, {int}, c3)', function (int, int2) {
-//         // When('write_pixel\(c, {int}, {float}, c3)', function (int, float) {
-//         // When('write_pixel\(c, {float}, {int}, c3)', function (float, int) {
-//         // When('write_pixel\(c, {float}, {float}, c3)', function (float, float2) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+        When('write_pixel\\(c, {int}, {int}, c3)', function (int, int2) {
+        // When('write_pixel\(c, {int}, {float}, c3)', function (int, float) {
+        // When('write_pixel\(c, {float}, {int}, c3)', function (float, int) {
+        // When('write_pixel\(c, {float}, {float}, c3)', function (float, float2) {
+          // Write code here that turns the phrase above into concrete actions
+          c.write_pixel(int, int2, c3)
+        });
 //
 //   ? And ppm ← canvas_to_ppm(c)
 //       Undefined. Implement with the following snippet:
