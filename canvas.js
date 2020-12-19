@@ -1,11 +1,8 @@
+const _ = require('lodash')
+const { stripIndent } = require('common-tags')
 const { color, mul } = require('./tuple')
 const BLACK = Object.freeze(color(0, 0, 0))
 const MAX_RGB = 255
-const HEADER = `\
-P3
-${this.width} ${this.height}
-${MAX_RGB}
-`
 const MAX_LEN = 70
 exports.canvas = class {
     constructor(w, h) {
@@ -13,12 +10,17 @@ exports.canvas = class {
     }
     write_pixel   = (x, y, c) => this.arr[y][x] = c
     pixel_at      = (x, y)    => this.arr[y][x]
-    canvas_to_ppm = ()        => HEADER // + arr.flatmap(row =>
-                                        //      row.flatmap(col =>
-                                        //          mul(col, MAX_RGB).arr))
-                                        //      .join(' ')
-                                        //      .split(`^(?:.\{1,${MAX_LEN}\})\s`)
-                                        //      .join('\n') + '\n'
+    canvas_to_ppm = ()        => stripIndent`
+                                 P3
+                                 ${this.width} ${this.height}
+                                 ${MAX_RGB}` + '\n' +
+                                     arr.flatmap(row =>
+                                         row.flatmap(col =>
+                                             mul(col, MAX_RGB).arr))
+                                        .map(x => _.clamp(x, 0, MAX_RGB)) // Math.clamp?
+                                        .join(' ')
+                                        .split(`^(?:.\{1,${MAX_LEN}\})\s`)
+                                        .join('\n') + '\n'
 }
 Object.defineProperties(exports.canvas.prototype, {
     'width':  { get: function() { return this.arr.find(Boolean).length } },
