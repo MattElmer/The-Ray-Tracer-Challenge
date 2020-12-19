@@ -17,7 +17,7 @@ exports.canvas = class {
                                         //      row.flatmap(col =>
                                         //          mul(col, MAX_RGB).arr))
                                         //      .join(' ')
-                                        //      .split(`^(?:.\{${MAX_LEN}\})\s`)
+                                        //      .split(`^(?:.\{1,${MAX_LEN}\})\s`)
                                         //      .join('\n') + '\n'
 }
 Object.defineProperties(exports.canvas.prototype, {
