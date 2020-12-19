@@ -16,10 +16,10 @@ exports.canvas = class {
                                  ${MAX_RGB}` + '\n' +
                                      arr.flatmap(row =>
                                          row.flatmap(col =>
-                                             mul(col, MAX_RGB).arr))
-                                        .map(x => _.clamp(x, 0, MAX_RGB)) // Math.clamp?
-                                        .join(' ')
-                                        .split(`^(?:.\{1,${MAX_LEN}\})\s`)
+                                             mul(col, MAX_RGB).arr)
+                                            .map(x => _.clamp(x, 0, MAX_RGB)) // Math.clamp?
+                                            .join(' ')
+                                            .split(`^(?:.\{1,${MAX_LEN}\})\s`))
                                         .join('\n') + '\n'
 }
 Object.defineProperties(exports.canvas.prototype, {
