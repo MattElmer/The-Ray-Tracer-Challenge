@@ -11,16 +11,16 @@ exports.canvas = class {
     write_pixel   = (x, y, c) => this.arr[y][x] = c
     pixel_at      = (x, y)    => this.arr[y][x]
     canvas_to_ppm = ()        => stripIndent`
-                                 P3
-                                 ${this.width} ${this.height}
-                                 ${MAX_RGB}` + '\n' +
-                                     arr.flatmap(row =>
-                                         row.flatmap(col =>
-                                             mul(col, MAX_RGB).arr)
-                                            .map(x => _.clamp(x, 0, MAX_RGB)) // Math.clamp?
-                                            .join(' ')
-                                            .split(`^(?:.\{1,${MAX_LEN}\})\s`))
-                                        .join('\n') + '\n'
+        P3
+        ${this.width} ${this.height}
+        ${MAX_RGB}` + '\n' +
+        arr.flatmap(row =>
+            row.flatmap(col =>
+                mul(col, MAX_RGB).arr)             // scale components
+               .map(x => _.clamp(x, 0, MAX_RGB))   // Math.clamp?
+               .join(' ')                          // stringify line
+               .split(`^(?:.\{1,${MAX_LEN}\})\s`)) // break up long lines
+           .join('\n') + '\n'                      // rejoin and terminate
 }
 Object.defineProperties(exports.canvas.prototype, {
     'width':  { get: function() { return this.arr.find(Boolean).length } },
