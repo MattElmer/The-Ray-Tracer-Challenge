@@ -1,4 +1,3 @@
-const _ = require('lodash')
 const { stripIndent } = require('common-tags')
 const { color, mul } = require('./tuple')
 const BLACK = Object.freeze(color(0, 0, 0))
@@ -16,11 +15,12 @@ exports.canvas = class {
         ${MAX_RGB}` + '\n' +
         arr.flatmap(row =>
             row.flatmap(col =>
-                mul(col, MAX_RGB).arr)             // scale components
-               .map(x => _.clamp(x, 0, MAX_RGB))   // Math.clamp?
-               .join(' ')                          // stringify line
-               .split(`^(?:.\{1,${MAX_LEN}\})\s`)) // break up long lines
-           .join('\n') + '\n'                      // rejoin and terminate
+                col.arr
+                   .map(x => MAX_RGB *                    //scale components
+                             Math.max(0, Math.min(x, 1))) // Math.clamp()?
+               .join(' ')                                 // stringify line
+               .split(`^(?:.\{1,${MAX_LEN}\})\s`))        // break up long lines
+           .join('\n') + '\n'                             // rejoin and terminate
 }
 Object.defineProperties(exports.canvas.prototype, {
     'width':  { get: function() { return this.arr.find(Boolean).length } },
