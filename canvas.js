@@ -1,5 +1,5 @@
 const { stripIndent } = require('common-tags')
-const { color, mul } = require('./tuple')
+const { color } = require('./tuple')
 const BLACK = Object.freeze(color(0, 0, 0))
 const MAX_RGB = 255
 const MAX_LEN = 70
