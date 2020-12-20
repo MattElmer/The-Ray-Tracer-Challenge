@@ -19,7 +19,7 @@ exports.canvas = class {
                    .map(x => MAX_RGB *                    // scale components
                              Math.max(0, Math.min(x, 1))) // Math.clamp(x, 0, 1)?
                .join(' ')                                 // stringify line
-               .split(`^(?:.\{1,${MAX_LEN}\})\s`))        // break up long lines
+               .split(`^(?:.\{1,${MAX_LEN}\})\\s`))       // break up long lines
            .join('\n') + '\n'                             // rejoin and terminate
 }
 Object.defineProperties(exports.canvas.prototype, {
