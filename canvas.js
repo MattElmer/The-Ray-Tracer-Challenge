@@ -16,7 +16,7 @@ exports.canvas = class {
         arr.flatmap(row =>
             row.flatmap(col =>
                 col.arr
-                   .map(x => MAX_RGB *                    //scale components
+                   .map(x => MAX_RGB *                    // scale components
                              Math.max(0, Math.min(x, 1))) // Math.clamp(x, 0, 1)?
                .join(' ')                                 // stringify line
                .split(`^(?:.\{1,${MAX_LEN}\})\s`))        // break up long lines
