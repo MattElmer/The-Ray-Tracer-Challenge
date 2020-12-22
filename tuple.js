@@ -28,7 +28,7 @@ exports.add = (a1, a2) => new exports.tuple(..._.zipWith(a1.arr, a2.arr, _.add))
 
 exports.sub = (a1, a2) => new exports.tuple(..._.zipWith(a1.arr, a2.arr, _.subtract))
 
-exports.neg = a => exports.sub(new exports.tuple(0, 0, 0, 0), a)
+exports.neg = a => exports.mul(a, -1)
 
 exports.mul = (t, s) => new exports.tuple(..._.isNumber(s) ? t.arr.map(x => s * x) : _.zipWith(t.arr, s.arr, _.multiply))
 
@@ -42,6 +42,6 @@ exports.normalize = v => exports.div(v, exports.magnitude(v))
 
 exports.cross = (a, b) => exports.vector(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
 
-exports.color = (r, g, b) => new exports.tuple(r, g, b, 0)
+exports.color = (r=0, g=0, b=0) => new exports.tuple(r, g, b)
 
 exports.reflect = (v, n) => exports.sub(v, exports.mul(n, 2 * exports.dot(v, n)))

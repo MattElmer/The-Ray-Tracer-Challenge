@@ -46,9 +46,11 @@ let c
         // Then('every pixel of c is color\({float}, {float}, {int})', function (float, float2, int) {
         Then('every pixel of c is color\\({float}, {float}, {float})', function (float, float2, float3) {
           // Write code here that turns the phrase above into concrete actions
-          assert(c.arr.flat().every(col => equal(col.arr, color(float, float2, float3).arr)))
+          let col = color(float, float2, float3)
+          _.range(c.height).forEach(i =>
+              _.range(c.width).forEach(j =>
+                  assert(equal(c.pixel_at(j, i), col))))
         });
-//
 //
 //2) Scenario: Writing pixels to a canvas # ../features/canvas.feature:9
 //   ? Given c ← canvas(10, 20)
@@ -133,7 +135,7 @@ let ppm
         // Then('lines {float}-{int} of ppm are', function (float, int, docString) {
         // Then('lines {float}-{float} of ppm are', function (float, float2, docString) {
           // Write code here that turns the phrase above into concrete actions
-          assert(ppm.startsWith(docString))
+          assert(ppm.split('\n').slice(int - 1, int2).join('\n') == docString)
         });
 //
 //
@@ -148,7 +150,7 @@ let ppm
 //           // Write code here that turns the phrase above into concrete actions
 //           return 'pending';
 //         });
-let c1, c2, c3
+let c3
 //   - And c1 ← color(1.5, 0, 0) # ../features/step_definitions/tuples_steps.js:611
 //   - And c2 ← color(0, 0.5, 0) # ../features/step_definitions/tuples_steps.js:619
 //   ? And c3 ← color(-0.5, 0, 1)
@@ -219,7 +221,6 @@ let c1, c2, c3
 //           return 'pending';
 //         });
 //
-//
 //5) Scenario: Splitting long lines in PPM files # ../features/canvas.feature:41
 //   ? Given c ← canvas(10, 2)
 //       Undefined. Implement with the following snippet:
@@ -238,7 +239,10 @@ let c1, c2, c3
 //         When('every pixel of c is set to color\({int}, {float}, {float})', function (int, float, float2) {
         When('every pixel of c is set to color\\({float}, {float}, {float})', function (float, float2, float3) {
           // Write code here that turns the phrase above into concrete actions
-          c.arr.forEach(row => row.fill(color(float, float2, float3)))
+          // c.arr.forEach(row => row.fill(color(float, float2, float3)))
+          _.range(c.height).forEach(i =>
+              _.range(c.width).forEach(j =>
+                  c.write_pixel(j, i, color(float, float2, float3))))
         });
 //
 //   ? And ppm ← canvas_to_ppm(c)

@@ -603,7 +603,7 @@ let c
             assert(equal(c.blue, b))
           });
 
-let c1, c2
+//let c1, c2
 // Scenario: Adding colors # features/tuples.feature:121
     // Given c1 ← color(0.9, 0.6, 0.75)
         // Implement with the following snippet:
