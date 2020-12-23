@@ -16,7 +16,9 @@ ${MAX_RGB}
             row.flatMap(col =>
                 col.arr
                    .map(x => Math.round(MAX_RGB *                   // scale to closest int
-                             Math.max(0, Math.min(x, 1)))))         // Math.clamp(x, 0, 1)?
+                                        Math.max(0, 
+                                        Math.min(x,                 // 0 <= x <= 1
+                                                 1)))))             // Math.clamp(x, 0, 1)?
                .join(' ')                                           // stringify line
                .match(new RegExp(`.\{1,${MAX_LEN}\}(\\s|\$)`, 'g')) // break up long lines
                .map(s => s.trimEnd() + '\n'))                       // remove trailing space

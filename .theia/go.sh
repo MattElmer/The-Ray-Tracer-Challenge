@@ -1,1 +1,1 @@
-node --inspect ../node_modules/.bin/cucumber-js ../features/canvas.feature
+node --inspect ../node_modules/.bin/cucumber-js ../features/rays.feature

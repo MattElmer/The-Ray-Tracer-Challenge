@@ -37,7 +37,7 @@ let direction
 //
 //   ? When r ← ray(origin, direction)
 //       Undefined. Implement with the following snippet:
-let r
+//let r
         When('r ← ray\\(origin, direction)', function () {
            // Write code here that turns the phrase above into concrete actions
            r = ray.ray(origin, direction)
@@ -127,7 +127,7 @@ let r
 //         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {int}))', function (float, float2, float3, float4, int, int2) {
 //         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {float}))', function (float, float2, float3, float4, int, float5) {
 //         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}, {int}))', function (float, float2, float3, float4, float5, int) {
-         Given('r ← ray\\(point\\({float}, {float}, {float}), vector\\({float}, {float}, {float}))', function (float, float2, float3, float4, float5, float6) {
+         Given('r ← ray\\(point {float}, {float}, {float} , vector {float}, {float}, {float})', function (float, float2, float3, float4, float5, float6) {
            // Write code here that turns the phrase above into concrete actions
            r = ray.ray(point(float, float2, float3), vector(float4, float5, float6))
          });
@@ -280,9 +280,8 @@ let r
 //         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {int}))', function (float, float2, float3, float4, int, int2) {
 //         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {float}))', function (float, float2, float3, float4, int, float5) {
 //         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}, {int}))', function (float, float2, float3, float4, float5, int) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}, {float}))', function (float, float2, float3, float4, float5, float6) {
+//         Given('r ← ray\\(point\\({float}, {float}, {float}), vector\\({float}, {float}, {float}))', function (float, float2, float3, float4, float5, float6) {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
 //         });
 //
 //   ? And m ← translation(3, 4, 5)
@@ -318,10 +317,10 @@ let m
 //         // Then('r2.origin = point\({float}, {int}, {int})', function (float, int, int2) {
 //         // Then('r2.origin = point\({float}, {int}, {float})', function (float, int, float2) {
 //         // Then('r2.origin = point\({float}, {float}, {int})', function (float, float2, int) {
-//         // Then('r2.origin = point\({float}, {float}, {float})', function (float, float2, float3) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Then('r2.origin = point\\({float}, {float}, {float})', function (float, float2, float3) {
+           // Write code here that turns the phrase above into concrete actions
+           assert(equal(ray.origin(r2), point(float, float2, float3)))
+         });
 //
 //   ? And r2.direction = vector(0, 1, 0)
 //       Undefined. Implement with the following snippet:
@@ -333,10 +332,10 @@ let m
 //         // Then('r2.direction = vector\({float}, {int}, {int})', function (float, int, int2) {
 //         // Then('r2.direction = vector\({float}, {int}, {float})', function (float, int, float2) {
 //         // Then('r2.direction = vector\({float}, {float}, {int})', function (float, float2, int) {
-//         // Then('r2.direction = vector\({float}, {float}, {float})', function (float, float2, float3) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Then('r2.direction = vector\\({float}, {float}, {float})', function (float, float2, float3) {
+           // Write code here that turns the phrase above into concrete actions
+           assert(equal(ray.direction(r2), vector(float, float2, float3)))
+         });
 //
 //
 //4) Scenario: Scaling a ray # ../features/rays.feature:24
@@ -421,10 +420,10 @@ let m
 //         // Given('m ← scaling\({float}, {int}, {int})', function (float, int, int2) {
 //         // Given('m ← scaling\({float}, {int}, {float})', function (float, int, float2) {
 //         // Given('m ← scaling\({float}, {float}, {int})', function (float, float2, int) {
-//         // Given('m ← scaling\({float}, {float}, {float})', function (float, float2, float3) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Given('m ← scaling\\({float}, {float}, {float})', function (float, float2, float3) {
+           // Write code here that turns the phrase above into concrete actions
+           m = new transformation().scaling(float, float2, float3)
+         });
 //
 //   ? When r2 ← transform(r, m)
 //       Undefined. Implement with the following snippet:
