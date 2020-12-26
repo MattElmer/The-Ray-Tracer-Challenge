@@ -1291,10 +1291,10 @@ let from, to
 //    ? When t ← view_transform(from, to, up)
 //        Undefined. Implement with the following snippet:
 //
-//          When('t ← view_transform\\(from, to, up)', function () {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          When('t ← view_transform\\(from, to, up)', function () {
+            // Write code here that turns the phrase above into concrete actions
+            return 'pending';
+          });
 //
 //    ? Then t = identity_matrix
 //        Undefined. Implement with the following snippet:
@@ -1369,10 +1369,10 @@ let from, to
 //          // Then('t = scaling\\({float}, {int}, {int})', function (float, int, int2) {
 //          // Then('t = scaling\\({float}, {int}, {float})', function (float, int, float2) {
 //          // Then('t = scaling\\({float}, {float}, {int})', function (float, float2, int) {
-//          // Then('t = scaling\\({float}, {float}, {float})', function (float, float2, float3) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Then('t = scaling\\({float}, {float}, {float})', function (float, float2, float3) {
+            // Write code here that turns the phrase above into concrete actions
+            return 'pending';
+          });
 //
 //
 //22) Scenario: The view transformation moves the world # ../transformations.feature:134
@@ -1439,10 +1439,10 @@ let from, to
 //          // Then('t = translation\\({float}, {int}, {int})', function (float, int, int2) {
 //          // Then('t = translation\\({float}, {int}, {float})', function (float, int, float2) {
 //          // Then('t = translation\\({float}, {float}, {int})', function (float, float2, int) {
-//          // Then('t = translation\\({float}, {float}, {float})', function (float, float2, float3) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Then('t = translation\\({float}, {float}, {float})', function (float, float2, float3) {
+            // Write code here that turns the phrase above into concrete actions
+            return 'pending';
+          });
 //
 //
 //23) Scenario: An arbitrary view transformation # ../transformations.feature:141
@@ -1506,7 +1506,7 @@ let from, to
 //        | 0.00000  | 0.00000 | 0.00000  | 1.00000  |
 //        Undefined. Implement with the following snippet:
 //
-//          Then('t is the following 4x4 matrix:', function (dataTable) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Then('t is the following 4x4 matrix:', function (dataTable) {
+            // Write code here that turns the phrase above into concrete actions
+            return 'pending';
+          });
