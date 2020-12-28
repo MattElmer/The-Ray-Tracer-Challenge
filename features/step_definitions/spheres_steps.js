@@ -1,83 +1,16 @@
 const { Before, Given, When, Then } = require('@cucumber/cucumber')
 const ray = require('../../ray')
 const assert = require('assert')
+const { equal } = require('../../utility')
+const { point, vector } = require('../../tuple')
+const { sphere, intersect } = require('../../sphere')
 //
 //1) Scenario: A ray intersects a sphere at two points # ../features/spheres.feature:3
-//   ? Given r ← ray(point(0, 0, -5), vector(0, 0, 1))
-//       Undefined. Implement with the following snippet:
-//
-//         Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {int}, {int}))', function (int, int2, int3, int4, int5, int6) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {int}, {float}))', function (int, int2, int3, int4, int5, float) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {float}, {int}))', function (int, int2, int3, int4, float, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {float}, {float}))', function (int, int2, int3, int4, float, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {int}, {int}))', function (int, int2, int3, float, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {int}, {float}))', function (int, int2, int3, float, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {float}, {int}))', function (int, int2, int3, float, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {float}, {float}))', function (int, int2, int3, float, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {int}, {int}))', function (int, int2, float, int3, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {int}, {float}))', function (int, int2, float, int3, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {float}, {int}))', function (int, int2, float, int3, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {float}, {float}))', function (int, int2, float, int3, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {int}, {int}))', function (int, int2, float, float2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {int}, {float}))', function (int, int2, float, float2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {float}, {int}))', function (int, int2, float, float2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {float}, {float}))', function (int, int2, float, float2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {int}, {int}))', function (int, float, int2, int3, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {int}, {float}))', function (int, float, int2, int3, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {float}, {int}))', function (int, float, int2, int3, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {float}, {float}))', function (int, float, int2, int3, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {int}, {int}))', function (int, float, int2, float2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {int}, {float}))', function (int, float, int2, float2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {float}, {int}))', function (int, float, int2, float2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {float}, {float}))', function (int, float, int2, float2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {int}, {int}))', function (int, float, float2, int2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {int}, {float}))', function (int, float, float2, int2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {float}, {int}))', function (int, float, float2, int2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {float}, {float}))', function (int, float, float2, int2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {int}, {int}))', function (int, float, float2, float3, int2, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {int}, {float}))', function (int, float, float2, float3, int2, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {float}, {int}))', function (int, float, float2, float3, float4, int2) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {float}, {float}))', function (int, float, float2, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {int}, {int}))', function (float, int, int2, int3, int4, int5) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {int}, {float}))', function (float, int, int2, int3, int4, float2) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {float}, {int}))', function (float, int, int2, int3, float2, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {float}, {float}))', function (float, int, int2, int3, float2, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {int}, {int}))', function (float, int, int2, float2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {int}, {float}))', function (float, int, int2, float2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {float}, {int}))', function (float, int, int2, float2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {float}, {float}))', function (float, int, int2, float2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {int}, {int}))', function (float, int, float2, int2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {int}, {float}))', function (float, int, float2, int2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {float}, {int}))', function (float, int, float2, int2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {float}, {float}))', function (float, int, float2, int2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {int}, {int}))', function (float, int, float2, float3, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {int}, {float}))', function (float, int, float2, float3, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {float}, {int}))', function (float, int, float2, float3, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {float}, {float}))', function (float, int, float2, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {int}, {int}))', function (float, float2, int, int2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {int}, {float}))', function (float, float2, int, int2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {float}, {int}))', function (float, float2, int, int2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {float}, {float}))', function (float, float2, int, int2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {int}, {int}))', function (float, float2, int, float3, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {int}, {float}))', function (float, float2, int, float3, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {float}, {int}))', function (float, float2, int, float3, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {float}, {float}))', function (float, float2, int, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {int}, {int}))', function (float, float2, float3, int, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {int}, {float}))', function (float, float2, float3, int, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {float}, {int}))', function (float, float2, float3, int, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {float}, {float}))', function (float, float2, float3, int, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {int}))', function (float, float2, float3, float4, int, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {float}))', function (float, float2, float3, float4, int, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}, {int}))', function (float, float2, float3, float4, float5, int) {
-         Given('r ← ray\\(point {float}, {float}, {float} , vector {float}, {float}, {float})', function (float, float2, float3, float4, float5, float6) {
-           // Write code here that turns the phrase above into concrete actions
-           r = ray.ray(point(float, float2, float3), vector(float4, float5, float6))
-         });
-//
-//   ? And s ← sphere()
+//   ✔ Given r ← ray(point 0, 0, -5, vector 0, 0, 1) # ../features/step_definitions/rays_steps.js:130
+//   ? And s ← sphere
 //       Undefined. Implement with the following snippet:
 let s
-           Given('s ← sphere\\()', function () {
+           Given('s ← sphere', function () {
              // Write code here that turns the phrase above into concrete actions
              s = new sphere()
            });
@@ -96,7 +29,7 @@ let xs
          Then('xs.count = {int}', function (int) {
          // Then('xs.count = {float}', function (float) {
            // Write code here that turns the phrase above into concrete actions
-           assert(xs.length == 2)
+           assert(xs.length == int)
          });
 //
 //   ? And xs[0] = 4.0
@@ -119,81 +52,11 @@ let xs
 //
 //
 //2) Scenario: A ray intersects a sphere at a tangent # ../features/spheres.feature:11
-//   ? Given r ← ray(point(0, 1, -5), vector(0, 0, 1))
+//   ✔ Given r ← ray(point 0, 1, -5, vector 0, 0, 1) # ../features/step_definitions/rays_steps.js:130
+//   ? And s ← sphere
 //       Undefined. Implement with the following snippet:
 //
-//         Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {int}, {int}))', function (int, int2, int3, int4, int5, int6) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {int}, {float}))', function (int, int2, int3, int4, int5, float) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {float}, {int}))', function (int, int2, int3, int4, float, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {float}, {float}))', function (int, int2, int3, int4, float, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {int}, {int}))', function (int, int2, int3, float, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {int}, {float}))', function (int, int2, int3, float, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {float}, {int}))', function (int, int2, int3, float, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {float}, {float}))', function (int, int2, int3, float, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {int}, {int}))', function (int, int2, float, int3, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {int}, {float}))', function (int, int2, float, int3, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {float}, {int}))', function (int, int2, float, int3, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {float}, {float}))', function (int, int2, float, int3, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {int}, {int}))', function (int, int2, float, float2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {int}, {float}))', function (int, int2, float, float2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {float}, {int}))', function (int, int2, float, float2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {float}, {float}))', function (int, int2, float, float2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {int}, {int}))', function (int, float, int2, int3, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {int}, {float}))', function (int, float, int2, int3, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {float}, {int}))', function (int, float, int2, int3, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {float}, {float}))', function (int, float, int2, int3, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {int}, {int}))', function (int, float, int2, float2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {int}, {float}))', function (int, float, int2, float2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {float}, {int}))', function (int, float, int2, float2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {float}, {float}))', function (int, float, int2, float2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {int}, {int}))', function (int, float, float2, int2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {int}, {float}))', function (int, float, float2, int2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {float}, {int}))', function (int, float, float2, int2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {float}, {float}))', function (int, float, float2, int2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {int}, {int}))', function (int, float, float2, float3, int2, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {int}, {float}))', function (int, float, float2, float3, int2, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {float}, {int}))', function (int, float, float2, float3, float4, int2) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {float}, {float}))', function (int, float, float2, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {int}, {int}))', function (float, int, int2, int3, int4, int5) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {int}, {float}))', function (float, int, int2, int3, int4, float2) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {float}, {int}))', function (float, int, int2, int3, float2, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {float}, {float}))', function (float, int, int2, int3, float2, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {int}, {int}))', function (float, int, int2, float2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {int}, {float}))', function (float, int, int2, float2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {float}, {int}))', function (float, int, int2, float2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {float}, {float}))', function (float, int, int2, float2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {int}, {int}))', function (float, int, float2, int2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {int}, {float}))', function (float, int, float2, int2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {float}, {int}))', function (float, int, float2, int2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {float}, {float}))', function (float, int, float2, int2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {int}, {int}))', function (float, int, float2, float3, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {int}, {float}))', function (float, int, float2, float3, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {float}, {int}))', function (float, int, float2, float3, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {float}, {float}))', function (float, int, float2, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {int}, {int}))', function (float, float2, int, int2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {int}, {float}))', function (float, float2, int, int2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {float}, {int}))', function (float, float2, int, int2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {float}, {float}))', function (float, float2, int, int2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {int}, {int}))', function (float, float2, int, float3, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {int}, {float}))', function (float, float2, int, float3, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {float}, {int}))', function (float, float2, int, float3, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {float}, {float}))', function (float, float2, int, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {int}, {int}))', function (float, float2, float3, int, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {int}, {float}))', function (float, float2, float3, int, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {float}, {int}))', function (float, float2, float3, int, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {float}, {float}))', function (float, float2, float3, int, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {int}))', function (float, float2, float3, float4, int, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {float}))', function (float, float2, float3, float4, int, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}, {int}))', function (float, float2, float3, float4, float5, int) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}, {float}))', function (float, float2, float3, float4, float5, float6) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
-//
-//   ? And s ← sphere()
-//       Undefined. Implement with the following snippet:
-//
-//         Given('s ← sphere\()', function () {
+//         Given('s ← sphere', function () {
 //           // Write code here that turns the phrase above into concrete actions
 //           return 'pending';
 //         });
@@ -235,81 +98,11 @@ let xs
 //
 //
 //3) Scenario: A ray misses a sphere # ../features/spheres.feature:19
-//   ? Given r ← ray(point(0, 2, -5), vector(0, 0, 1))
+//   ✔ Given r ← ray(point 0, 2, -5, vector 0, 0, 1) # ../features/step_definitions/rays_steps.js:130
+//   ? And s ← sphere
 //       Undefined. Implement with the following snippet:
 //
-//         Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {int}, {int}))', function (int, int2, int3, int4, int5, int6) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {int}, {float}))', function (int, int2, int3, int4, int5, float) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {float}, {int}))', function (int, int2, int3, int4, float, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {float}, {float}))', function (int, int2, int3, int4, float, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {int}, {int}))', function (int, int2, int3, float, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {int}, {float}))', function (int, int2, int3, float, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {float}, {int}))', function (int, int2, int3, float, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {float}, {float}))', function (int, int2, int3, float, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {int}, {int}))', function (int, int2, float, int3, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {int}, {float}))', function (int, int2, float, int3, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {float}, {int}))', function (int, int2, float, int3, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {float}, {float}))', function (int, int2, float, int3, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {int}, {int}))', function (int, int2, float, float2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {int}, {float}))', function (int, int2, float, float2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {float}, {int}))', function (int, int2, float, float2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {float}, {float}))', function (int, int2, float, float2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {int}, {int}))', function (int, float, int2, int3, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {int}, {float}))', function (int, float, int2, int3, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {float}, {int}))', function (int, float, int2, int3, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {float}, {float}))', function (int, float, int2, int3, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {int}, {int}))', function (int, float, int2, float2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {int}, {float}))', function (int, float, int2, float2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {float}, {int}))', function (int, float, int2, float2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {float}, {float}))', function (int, float, int2, float2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {int}, {int}))', function (int, float, float2, int2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {int}, {float}))', function (int, float, float2, int2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {float}, {int}))', function (int, float, float2, int2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {float}, {float}))', function (int, float, float2, int2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {int}, {int}))', function (int, float, float2, float3, int2, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {int}, {float}))', function (int, float, float2, float3, int2, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {float}, {int}))', function (int, float, float2, float3, float4, int2) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {float}, {float}))', function (int, float, float2, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {int}, {int}))', function (float, int, int2, int3, int4, int5) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {int}, {float}))', function (float, int, int2, int3, int4, float2) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {float}, {int}))', function (float, int, int2, int3, float2, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {float}, {float}))', function (float, int, int2, int3, float2, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {int}, {int}))', function (float, int, int2, float2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {int}, {float}))', function (float, int, int2, float2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {float}, {int}))', function (float, int, int2, float2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {float}, {float}))', function (float, int, int2, float2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {int}, {int}))', function (float, int, float2, int2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {int}, {float}))', function (float, int, float2, int2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {float}, {int}))', function (float, int, float2, int2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {float}, {float}))', function (float, int, float2, int2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {int}, {int}))', function (float, int, float2, float3, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {int}, {float}))', function (float, int, float2, float3, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {float}, {int}))', function (float, int, float2, float3, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {float}, {float}))', function (float, int, float2, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {int}, {int}))', function (float, float2, int, int2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {int}, {float}))', function (float, float2, int, int2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {float}, {int}))', function (float, float2, int, int2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {float}, {float}))', function (float, float2, int, int2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {int}, {int}))', function (float, float2, int, float3, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {int}, {float}))', function (float, float2, int, float3, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {float}, {int}))', function (float, float2, int, float3, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {float}, {float}))', function (float, float2, int, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {int}, {int}))', function (float, float2, float3, int, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {int}, {float}))', function (float, float2, float3, int, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {float}, {int}))', function (float, float2, float3, int, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {float}, {float}))', function (float, float2, float3, int, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {int}))', function (float, float2, float3, float4, int, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {float}))', function (float, float2, float3, float4, int, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}, {int}))', function (float, float2, float3, float4, float5, int) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}, {float}))', function (float, float2, float3, float4, float5, float6) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
-//
-//   ? And s ← sphere()
-//       Undefined. Implement with the following snippet:
-//
-//         Given('s ← sphere\()', function () {
+//         Given('s ← sphere', function () {
 //           // Write code here that turns the phrase above into concrete actions
 //           return 'pending';
 //         });
@@ -333,81 +126,11 @@ let xs
 //
 //
 //4) Scenario: A ray originates inside a sphere # ../features/spheres.feature:25
-//   ? Given r ← ray(point(0, 0, 0), vector(0, 0, 1))
+//   ✔ Given r ← ray(point 0, 0, 0, vector 0, 0, 1) # ../features/step_definitions/rays_steps.js:130
+//   ? And s ← sphere
 //       Undefined. Implement with the following snippet:
 //
-//         Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {int}, {int}))', function (int, int2, int3, int4, int5, int6) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {int}, {float}))', function (int, int2, int3, int4, int5, float) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {float}, {int}))', function (int, int2, int3, int4, float, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {float}, {float}))', function (int, int2, int3, int4, float, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {int}, {int}))', function (int, int2, int3, float, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {int}, {float}))', function (int, int2, int3, float, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {float}, {int}))', function (int, int2, int3, float, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {float}, {float}))', function (int, int2, int3, float, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {int}, {int}))', function (int, int2, float, int3, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {int}, {float}))', function (int, int2, float, int3, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {float}, {int}))', function (int, int2, float, int3, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {float}, {float}))', function (int, int2, float, int3, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {int}, {int}))', function (int, int2, float, float2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {int}, {float}))', function (int, int2, float, float2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {float}, {int}))', function (int, int2, float, float2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {float}, {float}))', function (int, int2, float, float2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {int}, {int}))', function (int, float, int2, int3, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {int}, {float}))', function (int, float, int2, int3, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {float}, {int}))', function (int, float, int2, int3, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {float}, {float}))', function (int, float, int2, int3, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {int}, {int}))', function (int, float, int2, float2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {int}, {float}))', function (int, float, int2, float2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {float}, {int}))', function (int, float, int2, float2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {float}, {float}))', function (int, float, int2, float2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {int}, {int}))', function (int, float, float2, int2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {int}, {float}))', function (int, float, float2, int2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {float}, {int}))', function (int, float, float2, int2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {float}, {float}))', function (int, float, float2, int2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {int}, {int}))', function (int, float, float2, float3, int2, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {int}, {float}))', function (int, float, float2, float3, int2, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {float}, {int}))', function (int, float, float2, float3, float4, int2) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {float}, {float}))', function (int, float, float2, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {int}, {int}))', function (float, int, int2, int3, int4, int5) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {int}, {float}))', function (float, int, int2, int3, int4, float2) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {float}, {int}))', function (float, int, int2, int3, float2, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {float}, {float}))', function (float, int, int2, int3, float2, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {int}, {int}))', function (float, int, int2, float2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {int}, {float}))', function (float, int, int2, float2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {float}, {int}))', function (float, int, int2, float2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {float}, {float}))', function (float, int, int2, float2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {int}, {int}))', function (float, int, float2, int2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {int}, {float}))', function (float, int, float2, int2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {float}, {int}))', function (float, int, float2, int2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {float}, {float}))', function (float, int, float2, int2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {int}, {int}))', function (float, int, float2, float3, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {int}, {float}))', function (float, int, float2, float3, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {float}, {int}))', function (float, int, float2, float3, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {float}, {float}))', function (float, int, float2, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {int}, {int}))', function (float, float2, int, int2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {int}, {float}))', function (float, float2, int, int2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {float}, {int}))', function (float, float2, int, int2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {float}, {float}))', function (float, float2, int, int2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {int}, {int}))', function (float, float2, int, float3, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {int}, {float}))', function (float, float2, int, float3, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {float}, {int}))', function (float, float2, int, float3, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {float}, {float}))', function (float, float2, int, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {int}, {int}))', function (float, float2, float3, int, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {int}, {float}))', function (float, float2, float3, int, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {float}, {int}))', function (float, float2, float3, int, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {float}, {float}))', function (float, float2, float3, int, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {int}))', function (float, float2, float3, float4, int, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {float}))', function (float, float2, float3, float4, int, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}, {int}))', function (float, float2, float3, float4, float5, int) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}, {float}))', function (float, float2, float3, float4, float5, float6) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
-//
-//   ? And s ← sphere()
-//       Undefined. Implement with the following snippet:
-//
-//         Given('s ← sphere\()', function () {
+//         Given('s ← sphere', function () {
 //           // Write code here that turns the phrase above into concrete actions
 //           return 'pending';
 //         });
@@ -449,81 +172,11 @@ let xs
 //
 //
 //5) Scenario: A sphere is behind a ray # ../features/spheres.feature:33
-//   ? Given r ← ray(point(0, 0, 5), vector(0, 0, 1))
+//   ✔ Given r ← ray(point 0, 0, 5, vector 0, 0, 1) # ../features/step_definitions/rays_steps.js:130
+//   ? And s ← sphere
 //       Undefined. Implement with the following snippet:
 //
-//         Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {int}, {int}))', function (int, int2, int3, int4, int5, int6) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {int}, {float}))', function (int, int2, int3, int4, int5, float) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {float}, {int}))', function (int, int2, int3, int4, float, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {float}, {float}))', function (int, int2, int3, int4, float, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {int}, {int}))', function (int, int2, int3, float, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {int}, {float}))', function (int, int2, int3, float, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {float}, {int}))', function (int, int2, int3, float, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {float}, {float}))', function (int, int2, int3, float, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {int}, {int}))', function (int, int2, float, int3, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {int}, {float}))', function (int, int2, float, int3, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {float}, {int}))', function (int, int2, float, int3, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {float}, {float}))', function (int, int2, float, int3, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {int}, {int}))', function (int, int2, float, float2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {int}, {float}))', function (int, int2, float, float2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {float}, {int}))', function (int, int2, float, float2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {float}, {float}))', function (int, int2, float, float2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {int}, {int}))', function (int, float, int2, int3, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {int}, {float}))', function (int, float, int2, int3, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {float}, {int}))', function (int, float, int2, int3, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {float}, {float}))', function (int, float, int2, int3, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {int}, {int}))', function (int, float, int2, float2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {int}, {float}))', function (int, float, int2, float2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {float}, {int}))', function (int, float, int2, float2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {float}, {float}))', function (int, float, int2, float2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {int}, {int}))', function (int, float, float2, int2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {int}, {float}))', function (int, float, float2, int2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {float}, {int}))', function (int, float, float2, int2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {float}, {float}))', function (int, float, float2, int2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {int}, {int}))', function (int, float, float2, float3, int2, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {int}, {float}))', function (int, float, float2, float3, int2, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {float}, {int}))', function (int, float, float2, float3, float4, int2) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {float}, {float}))', function (int, float, float2, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {int}, {int}))', function (float, int, int2, int3, int4, int5) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {int}, {float}))', function (float, int, int2, int3, int4, float2) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {float}, {int}))', function (float, int, int2, int3, float2, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {float}, {float}))', function (float, int, int2, int3, float2, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {int}, {int}))', function (float, int, int2, float2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {int}, {float}))', function (float, int, int2, float2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {float}, {int}))', function (float, int, int2, float2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {float}, {float}))', function (float, int, int2, float2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {int}, {int}))', function (float, int, float2, int2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {int}, {float}))', function (float, int, float2, int2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {float}, {int}))', function (float, int, float2, int2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {float}, {float}))', function (float, int, float2, int2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {int}, {int}))', function (float, int, float2, float3, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {int}, {float}))', function (float, int, float2, float3, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {float}, {int}))', function (float, int, float2, float3, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {float}, {float}))', function (float, int, float2, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {int}, {int}))', function (float, float2, int, int2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {int}, {float}))', function (float, float2, int, int2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {float}, {int}))', function (float, float2, int, int2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {float}, {float}))', function (float, float2, int, int2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {int}, {int}))', function (float, float2, int, float3, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {int}, {float}))', function (float, float2, int, float3, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {float}, {int}))', function (float, float2, int, float3, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {float}, {float}))', function (float, float2, int, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {int}, {int}))', function (float, float2, float3, int, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {int}, {float}))', function (float, float2, float3, int, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {float}, {int}))', function (float, float2, float3, int, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {float}, {float}))', function (float, float2, float3, int, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {int}))', function (float, float2, float3, float4, int, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {float}))', function (float, float2, float3, float4, int, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}, {int}))', function (float, float2, float3, float4, float5, int) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}, {float}))', function (float, float2, float3, float4, float5, float6) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
-//
-//   ? And s ← sphere()
-//       Undefined. Implement with the following snippet:
-//
-//         Given('s ← sphere\()', function () {
+//         Given('s ← sphere', function () {
 //           // Write code here that turns the phrase above into concrete actions
 //           return 'pending';
 //         });
@@ -565,81 +218,11 @@ let xs
 //
 //
 //6) Scenario: Intersect sets the object on the intersection # ../features/spheres.feature:41
-//   ? Given r ← ray(point(0, 0, -5), vector(0, 0, 1))
+//   ✔ Given r ← ray(point 0, 0, -5, vector 0, 0, 1) # ../features/step_definitions/rays_steps.js:130
+//   ? And s ← sphere
 //       Undefined. Implement with the following snippet:
 //
-//         Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {int}, {int}))', function (int, int2, int3, int4, int5, int6) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {int}, {float}))', function (int, int2, int3, int4, int5, float) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {float}, {int}))', function (int, int2, int3, int4, float, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {float}, {float}))', function (int, int2, int3, int4, float, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {int}, {int}))', function (int, int2, int3, float, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {int}, {float}))', function (int, int2, int3, float, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {float}, {int}))', function (int, int2, int3, float, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {float}, {float}))', function (int, int2, int3, float, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {int}, {int}))', function (int, int2, float, int3, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {int}, {float}))', function (int, int2, float, int3, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {float}, {int}))', function (int, int2, float, int3, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {float}, {float}))', function (int, int2, float, int3, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {int}, {int}))', function (int, int2, float, float2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {int}, {float}))', function (int, int2, float, float2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {float}, {int}))', function (int, int2, float, float2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {float}, {float}))', function (int, int2, float, float2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {int}, {int}))', function (int, float, int2, int3, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {int}, {float}))', function (int, float, int2, int3, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {float}, {int}))', function (int, float, int2, int3, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {float}, {float}))', function (int, float, int2, int3, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {int}, {int}))', function (int, float, int2, float2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {int}, {float}))', function (int, float, int2, float2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {float}, {int}))', function (int, float, int2, float2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {float}, {float}))', function (int, float, int2, float2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {int}, {int}))', function (int, float, float2, int2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {int}, {float}))', function (int, float, float2, int2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {float}, {int}))', function (int, float, float2, int2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {float}, {float}))', function (int, float, float2, int2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {int}, {int}))', function (int, float, float2, float3, int2, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {int}, {float}))', function (int, float, float2, float3, int2, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {float}, {int}))', function (int, float, float2, float3, float4, int2) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {float}, {float}))', function (int, float, float2, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {int}, {int}))', function (float, int, int2, int3, int4, int5) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {int}, {float}))', function (float, int, int2, int3, int4, float2) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {float}, {int}))', function (float, int, int2, int3, float2, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {float}, {float}))', function (float, int, int2, int3, float2, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {int}, {int}))', function (float, int, int2, float2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {int}, {float}))', function (float, int, int2, float2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {float}, {int}))', function (float, int, int2, float2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {float}, {float}))', function (float, int, int2, float2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {int}, {int}))', function (float, int, float2, int2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {int}, {float}))', function (float, int, float2, int2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {float}, {int}))', function (float, int, float2, int2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {float}, {float}))', function (float, int, float2, int2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {int}, {int}))', function (float, int, float2, float3, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {int}, {float}))', function (float, int, float2, float3, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {float}, {int}))', function (float, int, float2, float3, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {float}, {float}))', function (float, int, float2, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {int}, {int}))', function (float, float2, int, int2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {int}, {float}))', function (float, float2, int, int2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {float}, {int}))', function (float, float2, int, int2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {float}, {float}))', function (float, float2, int, int2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {int}, {int}))', function (float, float2, int, float3, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {int}, {float}))', function (float, float2, int, float3, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {float}, {int}))', function (float, float2, int, float3, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {float}, {float}))', function (float, float2, int, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {int}, {int}))', function (float, float2, float3, int, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {int}, {float}))', function (float, float2, float3, int, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {float}, {int}))', function (float, float2, float3, int, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {float}, {float}))', function (float, float2, float3, int, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {int}))', function (float, float2, float3, float4, int, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {float}))', function (float, float2, float3, float4, int, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}, {int}))', function (float, float2, float3, float4, float5, int) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}, {float}))', function (float, float2, float3, float4, float5, float6) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
-//
-//   ? And s ← sphere()
-//       Undefined. Implement with the following snippet:
-//
-//         Given('s ← sphere\()', function () {
+//         Given('s ← sphere', function () {
 //           // Write code here that turns the phrase above into concrete actions
 //           return 'pending';
 //         });
@@ -681,10 +264,10 @@ let xs
 //
 //
 //7) Scenario: A sphere's default transformation # ../features/spheres.feature:49
-//   ? Given s ← sphere()
+//   ? Given s ← sphere
 //       Undefined. Implement with the following snippet:
 //
-//         Given('s ← sphere\()', function () {
+//         Given('s ← sphere', function () {
 //           // Write code here that turns the phrase above into concrete actions
 //           return 'pending';
 //         });
@@ -699,10 +282,10 @@ let xs
 //
 //
 //8) Scenario: Changing a sphere's transformation # ../features/spheres.feature:53
-//   ? Given s ← sphere()
+//   ? Given s ← sphere
 //       Undefined. Implement with the following snippet:
 //
-//         Given('s ← sphere\()', function () {
+//         Given('s ← sphere', function () {
 //           // Write code here that turns the phrase above into concrete actions
 //           return 'pending';
 //         });
@@ -740,96 +323,26 @@ let xs
 //
 //
 //9) Scenario: Intersecting a scaled sphere with a ray # ../features/spheres.feature:59
-//   ? Given r ← ray(point(0, 0, -5), vector(0, 0, 1))
+//   ✔ Given r ← ray(point 0, 0, -5, vector 0, 0, 1) # ../features/step_definitions/rays_steps.js:130
+//   ? And s ← sphere
 //       Undefined. Implement with the following snippet:
 //
-//         Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {int}, {int}))', function (int, int2, int3, int4, int5, int6) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {int}, {float}))', function (int, int2, int3, int4, int5, float) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {float}, {int}))', function (int, int2, int3, int4, float, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {float}, {float}))', function (int, int2, int3, int4, float, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {int}, {int}))', function (int, int2, int3, float, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {int}, {float}))', function (int, int2, int3, float, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {float}, {int}))', function (int, int2, int3, float, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {float}, {float}))', function (int, int2, int3, float, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {int}, {int}))', function (int, int2, float, int3, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {int}, {float}))', function (int, int2, float, int3, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {float}, {int}))', function (int, int2, float, int3, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {float}, {float}))', function (int, int2, float, int3, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {int}, {int}))', function (int, int2, float, float2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {int}, {float}))', function (int, int2, float, float2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {float}, {int}))', function (int, int2, float, float2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {float}, {float}))', function (int, int2, float, float2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {int}, {int}))', function (int, float, int2, int3, int4, int5) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {int}, {float}))', function (int, float, int2, int3, int4, float2) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {float}, {int}))', function (int, float, int2, int3, float2, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {float}, {float}))', function (int, float, int2, int3, float2, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {int}, {int}))', function (int, float, int2, float2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {int}, {float}))', function (int, float, int2, float2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {float}, {int}))', function (int, float, int2, float2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {float}, {float}))', function (int, float, int2, float2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {int}, {int}))', function (int, float, float2, int2, int3, int4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {int}, {float}))', function (int, float, float2, int2, int3, float3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {float}, {int}))', function (int, float, float2, int2, float3, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {float}, {float}))', function (int, float, float2, int2, float3, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {int}, {int}))', function (int, float, float2, float3, int2, int3) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {int}, {float}))', function (int, float, float2, float3, int2, float4) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {float}, {int}))', function (int, float, float2, float3, float4, int2) {
-//         // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {float}, {float}))', function (int, float, float2, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {int}, {int}))', function (float, int, int2, int3, int4, int5) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {int}, {float}))', function (float, int, int2, int3, int4, float2) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {float}, {int}))', function (float, int, int2, int3, float2, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {float}, {float}))', function (float, int, int2, int3, float2, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {int}, {int}))', function (float, int, int2, float2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {int}, {float}))', function (float, int, int2, float2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {float}, {int}))', function (float, int, int2, float2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {float}, {float}))', function (float, int, int2, float2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {int}, {int}))', function (float, int, float2, int2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {int}, {float}))', function (float, int, float2, int2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {float}, {int}))', function (float, int, float2, int2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {float}, {float}))', function (float, int, float2, int2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {int}, {int}))', function (float, int, float2, float3, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {int}, {float}))', function (float, int, float2, float3, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {float}, {int}))', function (float, int, float2, float3, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {float}, {float}))', function (float, int, float2, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {int}, {int}))', function (float, float2, int, int2, int3, int4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {int}, {float}))', function (float, float2, int, int2, int3, float3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {float}, {int}))', function (float, float2, int, int2, float3, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {float}, {float}))', function (float, float2, int, int2, float3, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {int}, {int}))', function (float, float2, int, float3, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {int}, {float}))', function (float, float2, int, float3, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {float}, {int}))', function (float, float2, int, float3, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {float}, {float}))', function (float, float2, int, float3, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {int}, {int}))', function (float, float2, float3, int, int2, int3) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {int}, {float}))', function (float, float2, float3, int, int2, float4) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {float}, {int}))', function (float, float2, float3, int, float4, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {float}, {float}))', function (float, float2, float3, int, float4, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {int}))', function (float, float2, float3, float4, int, int2) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {float}))', function (float, float2, float3, float4, int, float5) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}, {int}))', function (float, float2, float3, float4, float5, int) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}, {float}))', function (float, float2, float3, float4, float5, float6) {
+//         Given('s ← sphere', function () {
 //           // Write code here that turns the phrase above into concrete actions
 //           return 'pending';
 //         });
 //
-//   ? And s ← sphere()
+//   ? When set_transform(s, scaling 2, 2, 2)
 //       Undefined. Implement with the following snippet:
 //
-//         Given('s ← sphere\()', function () {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
-//
-//   ? When set_transform(s, scaling(2, 2, 2))
-//       Undefined. Implement with the following snippet:
-//
-//         When('set_transform\(s, scaling\({int}, {int}, {int}))', function (int, int2, int3) {
-//         // When('set_transform\(s, scaling\({int}, {int}, {float}))', function (int, int2, float) {
-//         // When('set_transform\(s, scaling\({int}, {float}, {int}))', function (int, float, int2) {
-//         // When('set_transform\(s, scaling\({int}, {float}, {float}))', function (int, float, float2) {
-//         // When('set_transform\(s, scaling\({float}, {int}, {int}))', function (float, int, int2) {
-//         // When('set_transform\(s, scaling\({float}, {int}, {float}))', function (float, int, float2) {
-//         // When('set_transform\(s, scaling\({float}, {float}, {int}))', function (float, float2, int) {
-//         // When('set_transform\(s, scaling\({float}, {float}, {float}))', function (float, float2, float3) {
+//         When('set_transform\(s, scaling {int}, {int}, {int})', function (int, int2, int3) {
+//         // When('set_transform\(s, scaling {int}, {int}, {float})', function (int, int2, float) {
+//         // When('set_transform\(s, scaling {int}, {float}, {int})', function (int, float, int2) {
+//         // When('set_transform\(s, scaling {int}, {float}, {float})', function (int, float, float2) {
+//         // When('set_transform\(s, scaling {float}, {int}, {int})', function (float, int, int2) {
+//         // When('set_transform\(s, scaling {float}, {int}, {float})', function (float, int, float2) {
+//         // When('set_transform\(s, scaling {float}, {float}, {int})', function (float, float2, int) {
+//         // When('set_transform\(s, scaling {float}, {float}, {float})', function (float, float2, float3) {
 //           // Write code here that turns the phrase above into concrete actions
 //           return 'pending';
 //         });
@@ -875,96 +388,26 @@ let xs
 //
 //
 //10) Scenario: Intersecting a translated sphere with a ray # ../features/spheres.feature:68
-//    ? Given r ← ray(point(0, 0, -5), vector(0, 0, 1))
+//    ✔ Given r ← ray(point 0, 0, -5, vector 0, 0, 1) # ../features/step_definitions/rays_steps.js:130
+//    ? And s ← sphere
 //        Undefined. Implement with the following snippet:
 //
-//          Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {int}, {int}))', function (int, int2, int3, int4, int5, int6) {
-//          // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {int}, {float}))', function (int, int2, int3, int4, int5, float) {
-//          // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {float}, {int}))', function (int, int2, int3, int4, float, int5) {
-//          // Given('r ← ray\(point\({int}, {int}, {int}), vector\({int}, {float}, {float}))', function (int, int2, int3, int4, float, float2) {
-//          // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {int}, {int}))', function (int, int2, int3, float, int4, int5) {
-//          // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {int}, {float}))', function (int, int2, int3, float, int4, float2) {
-//          // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {float}, {int}))', function (int, int2, int3, float, float2, int4) {
-//          // Given('r ← ray\(point\({int}, {int}, {int}), vector\({float}, {float}, {float}))', function (int, int2, int3, float, float2, float3) {
-//          // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {int}, {int}))', function (int, int2, float, int3, int4, int5) {
-//          // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {int}, {float}))', function (int, int2, float, int3, int4, float2) {
-//          // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {float}, {int}))', function (int, int2, float, int3, float2, int4) {
-//          // Given('r ← ray\(point\({int}, {int}, {float}), vector\({int}, {float}, {float}))', function (int, int2, float, int3, float2, float3) {
-//          // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {int}, {int}))', function (int, int2, float, float2, int3, int4) {
-//          // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {int}, {float}))', function (int, int2, float, float2, int3, float3) {
-//          // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {float}, {int}))', function (int, int2, float, float2, float3, int3) {
-//          // Given('r ← ray\(point\({int}, {int}, {float}), vector\({float}, {float}, {float}))', function (int, int2, float, float2, float3, float4) {
-//          // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {int}, {int}))', function (int, float, int2, int3, int4, int5) {
-//          // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {int}, {float}))', function (int, float, int2, int3, int4, float2) {
-//          // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {float}, {int}))', function (int, float, int2, int3, float2, int4) {
-//          // Given('r ← ray\(point\({int}, {float}, {int}), vector\({int}, {float}, {float}))', function (int, float, int2, int3, float2, float3) {
-//          // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {int}, {int}))', function (int, float, int2, float2, int3, int4) {
-//          // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {int}, {float}))', function (int, float, int2, float2, int3, float3) {
-//          // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {float}, {int}))', function (int, float, int2, float2, float3, int3) {
-//          // Given('r ← ray\(point\({int}, {float}, {int}), vector\({float}, {float}, {float}))', function (int, float, int2, float2, float3, float4) {
-//          // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {int}, {int}))', function (int, float, float2, int2, int3, int4) {
-//          // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {int}, {float}))', function (int, float, float2, int2, int3, float3) {
-//          // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {float}, {int}))', function (int, float, float2, int2, float3, int3) {
-//          // Given('r ← ray\(point\({int}, {float}, {float}), vector\({int}, {float}, {float}))', function (int, float, float2, int2, float3, float4) {
-//          // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {int}, {int}))', function (int, float, float2, float3, int2, int3) {
-//          // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {int}, {float}))', function (int, float, float2, float3, int2, float4) {
-//          // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {float}, {int}))', function (int, float, float2, float3, float4, int2) {
-//          // Given('r ← ray\(point\({int}, {float}, {float}), vector\({float}, {float}, {float}))', function (int, float, float2, float3, float4, float5) {
-//          // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {int}, {int}))', function (float, int, int2, int3, int4, int5) {
-//          // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {int}, {float}))', function (float, int, int2, int3, int4, float2) {
-//          // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {float}, {int}))', function (float, int, int2, int3, float2, int4) {
-//          // Given('r ← ray\(point\({float}, {int}, {int}), vector\({int}, {float}, {float}))', function (float, int, int2, int3, float2, float3) {
-//          // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {int}, {int}))', function (float, int, int2, float2, int3, int4) {
-//          // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {int}, {float}))', function (float, int, int2, float2, int3, float3) {
-//          // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {float}, {int}))', function (float, int, int2, float2, float3, int3) {
-//          // Given('r ← ray\(point\({float}, {int}, {int}), vector\({float}, {float}, {float}))', function (float, int, int2, float2, float3, float4) {
-//          // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {int}, {int}))', function (float, int, float2, int2, int3, int4) {
-//          // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {int}, {float}))', function (float, int, float2, int2, int3, float3) {
-//          // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {float}, {int}))', function (float, int, float2, int2, float3, int3) {
-//          // Given('r ← ray\(point\({float}, {int}, {float}), vector\({int}, {float}, {float}))', function (float, int, float2, int2, float3, float4) {
-//          // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {int}, {int}))', function (float, int, float2, float3, int2, int3) {
-//          // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {int}, {float}))', function (float, int, float2, float3, int2, float4) {
-//          // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {float}, {int}))', function (float, int, float2, float3, float4, int2) {
-//          // Given('r ← ray\(point\({float}, {int}, {float}), vector\({float}, {float}, {float}))', function (float, int, float2, float3, float4, float5) {
-//          // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {int}, {int}))', function (float, float2, int, int2, int3, int4) {
-//          // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {int}, {float}))', function (float, float2, int, int2, int3, float3) {
-//          // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {float}, {int}))', function (float, float2, int, int2, float3, int3) {
-//          // Given('r ← ray\(point\({float}, {float}, {int}), vector\({int}, {float}, {float}))', function (float, float2, int, int2, float3, float4) {
-//          // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {int}, {int}))', function (float, float2, int, float3, int2, int3) {
-//          // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {int}, {float}))', function (float, float2, int, float3, int2, float4) {
-//          // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {float}, {int}))', function (float, float2, int, float3, float4, int2) {
-//          // Given('r ← ray\(point\({float}, {float}, {int}), vector\({float}, {float}, {float}))', function (float, float2, int, float3, float4, float5) {
-//          // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {int}, {int}))', function (float, float2, float3, int, int2, int3) {
-//          // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {int}, {float}))', function (float, float2, float3, int, int2, float4) {
-//          // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {float}, {int}))', function (float, float2, float3, int, float4, int2) {
-//          // Given('r ← ray\(point\({float}, {float}, {float}), vector\({int}, {float}, {float}))', function (float, float2, float3, int, float4, float5) {
-//          // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {int}))', function (float, float2, float3, float4, int, int2) {
-//          // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {int}, {float}))', function (float, float2, float3, float4, int, float5) {
-//          // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}, {int}))', function (float, float2, float3, float4, float5, int) {
-//          // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}, {float}))', function (float, float2, float3, float4, float5, float6) {
+//          Given('s ← sphere', function () {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
 //
-//    ? And s ← sphere()
+//    ? When set_transform(s, translation 5, 0, 0)
 //        Undefined. Implement with the following snippet:
 //
-//          Given('s ← sphere\()', function () {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
-//
-//    ? When set_transform(s, translation(5, 0, 0))
-//        Undefined. Implement with the following snippet:
-//
-//          When('set_transform\(s, translation\({int}, {int}, {int}))', function (int, int2, int3) {
-//          // When('set_transform\(s, translation\({int}, {int}, {float}))', function (int, int2, float) {
-//          // When('set_transform\(s, translation\({int}, {float}, {int}))', function (int, float, int2) {
-//          // When('set_transform\(s, translation\({int}, {float}, {float}))', function (int, float, float2) {
-//          // When('set_transform\(s, translation\({float}, {int}, {int}))', function (float, int, int2) {
-//          // When('set_transform\(s, translation\({float}, {int}, {float}))', function (float, int, float2) {
-//          // When('set_transform\(s, translation\({float}, {float}, {int}))', function (float, float2, int) {
-//          // When('set_transform\(s, translation\({float}, {float}, {float}))', function (float, float2, float3) {
+//          When('set_transform\(s, translation {int}, {int}, {int})', function (int, int2, int3) {
+//          // When('set_transform\(s, translation {int}, {int}, {float})', function (int, int2, float) {
+//          // When('set_transform\(s, translation {int}, {float}, {int})', function (int, float, int2) {
+//          // When('set_transform\(s, translation {int}, {float}, {float})', function (int, float, float2) {
+//          // When('set_transform\(s, translation {float}, {int}, {int})', function (float, int, int2) {
+//          // When('set_transform\(s, translation {float}, {int}, {float})', function (float, int, float2) {
+//          // When('set_transform\(s, translation {float}, {float}, {int})', function (float, float2, int) {
+//          // When('set_transform\(s, translation {float}, {float}, {float})', function (float, float2, float3) {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
@@ -988,25 +431,25 @@ let xs
 //
 //
 //11) Scenario: The normal on a sphere at a point on the x axis # ../features/spheres.feature:75
-//    ? Given s ← sphere()
+//    ? Given s ← sphere
 //        Undefined. Implement with the following snippet:
 //
-//          Given('s ← sphere\()', function () {
+//          Given('s ← sphere', function () {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
 //
-//    ? When n ← normal_at(s, point(1, 0, 0))
+//    ? When n ← normal_at(s, point 1, 0, 0)
 //        Undefined. Implement with the following snippet:
 //
-//          When('n ← normal_at\(s, point\({int}, {int}, {int}))', function (int, int2, int3) {
-//          // When('n ← normal_at\(s, point\({int}, {int}, {float}))', function (int, int2, float) {
-//          // When('n ← normal_at\(s, point\({int}, {float}, {int}))', function (int, float, int2) {
-//          // When('n ← normal_at\(s, point\({int}, {float}, {float}))', function (int, float, float2) {
-//          // When('n ← normal_at\(s, point\({float}, {int}, {int}))', function (float, int, int2) {
-//          // When('n ← normal_at\(s, point\({float}, {int}, {float}))', function (float, int, float2) {
-//          // When('n ← normal_at\(s, point\({float}, {float}, {int}))', function (float, float2, int) {
-//          // When('n ← normal_at\(s, point\({float}, {float}, {float}))', function (float, float2, float3) {
+//          When('n ← normal_at\(s, point {int}, {int}, {int})', function (int, int2, int3) {
+//          // When('n ← normal_at\(s, point {int}, {int}, {float})', function (int, int2, float) {
+//          // When('n ← normal_at\(s, point {int}, {float}, {int})', function (int, float, int2) {
+//          // When('n ← normal_at\(s, point {int}, {float}, {float})', function (int, float, float2) {
+//          // When('n ← normal_at\(s, point {float}, {int}, {int})', function (float, int, int2) {
+//          // When('n ← normal_at\(s, point {float}, {int}, {float})', function (float, int, float2) {
+//          // When('n ← normal_at\(s, point {float}, {float}, {int})', function (float, float2, int) {
+//          // When('n ← normal_at\(s, point {float}, {float}, {float})', function (float, float2, float3) {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
@@ -1028,25 +471,25 @@ let xs
 //
 //
 //12) Scenario: The normal on a sphere at a point on the y axis # ../features/spheres.feature:80
-//    ? Given s ← sphere()
+//    ? Given s ← sphere
 //        Undefined. Implement with the following snippet:
 //
-//          Given('s ← sphere\()', function () {
+//          Given('s ← sphere', function () {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
 //
-//    ? When n ← normal_at(s, point(0, 1, 0))
+//    ? When n ← normal_at(s, point 0, 1, 0)
 //        Undefined. Implement with the following snippet:
 //
-//          When('n ← normal_at\(s, point\({int}, {int}, {int}))', function (int, int2, int3) {
-//          // When('n ← normal_at\(s, point\({int}, {int}, {float}))', function (int, int2, float) {
-//          // When('n ← normal_at\(s, point\({int}, {float}, {int}))', function (int, float, int2) {
-//          // When('n ← normal_at\(s, point\({int}, {float}, {float}))', function (int, float, float2) {
-//          // When('n ← normal_at\(s, point\({float}, {int}, {int}))', function (float, int, int2) {
-//          // When('n ← normal_at\(s, point\({float}, {int}, {float}))', function (float, int, float2) {
-//          // When('n ← normal_at\(s, point\({float}, {float}, {int}))', function (float, float2, int) {
-//          // When('n ← normal_at\(s, point\({float}, {float}, {float}))', function (float, float2, float3) {
+//          When('n ← normal_at\(s, point {int}, {int}, {int})', function (int, int2, int3) {
+//          // When('n ← normal_at\(s, point {int}, {int}, {float})', function (int, int2, float) {
+//          // When('n ← normal_at\(s, point {int}, {float}, {int})', function (int, float, int2) {
+//          // When('n ← normal_at\(s, point {int}, {float}, {float})', function (int, float, float2) {
+//          // When('n ← normal_at\(s, point {float}, {int}, {int})', function (float, int, int2) {
+//          // When('n ← normal_at\(s, point {float}, {int}, {float})', function (float, int, float2) {
+//          // When('n ← normal_at\(s, point {float}, {float}, {int})', function (float, float2, int) {
+//          // When('n ← normal_at\(s, point {float}, {float}, {float})', function (float, float2, float3) {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
@@ -1068,25 +511,25 @@ let xs
 //
 //
 //13) Scenario: The normal on a sphere at a point on the z axis # ../features/spheres.feature:85
-//    ? Given s ← sphere()
+//    ? Given s ← sphere
 //        Undefined. Implement with the following snippet:
 //
-//          Given('s ← sphere\()', function () {
+//          Given('s ← sphere', function () {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
 //
-//    ? When n ← normal_at(s, point(0, 0, 1))
+//    ? When n ← normal_at(s, point 0, 0, 1)
 //        Undefined. Implement with the following snippet:
 //
-//          When('n ← normal_at\(s, point\({int}, {int}, {int}))', function (int, int2, int3) {
-//          // When('n ← normal_at\(s, point\({int}, {int}, {float}))', function (int, int2, float) {
-//          // When('n ← normal_at\(s, point\({int}, {float}, {int}))', function (int, float, int2) {
-//          // When('n ← normal_at\(s, point\({int}, {float}, {float}))', function (int, float, float2) {
-//          // When('n ← normal_at\(s, point\({float}, {int}, {int}))', function (float, int, int2) {
-//          // When('n ← normal_at\(s, point\({float}, {int}, {float}))', function (float, int, float2) {
-//          // When('n ← normal_at\(s, point\({float}, {float}, {int}))', function (float, float2, int) {
-//          // When('n ← normal_at\(s, point\({float}, {float}, {float}))', function (float, float2, float3) {
+//          When('n ← normal_at\(s, point {int}, {int}, {int})', function (int, int2, int3) {
+//          // When('n ← normal_at\(s, point {int}, {int}, {float})', function (int, int2, float) {
+//          // When('n ← normal_at\(s, point {int}, {float}, {int})', function (int, float, int2) {
+//          // When('n ← normal_at\(s, point {int}, {float}, {float})', function (int, float, float2) {
+//          // When('n ← normal_at\(s, point {float}, {int}, {int})', function (float, int, int2) {
+//          // When('n ← normal_at\(s, point {float}, {int}, {float})', function (float, int, float2) {
+//          // When('n ← normal_at\(s, point {float}, {float}, {int})', function (float, float2, int) {
+//          // When('n ← normal_at\(s, point {float}, {float}, {float})', function (float, float2, float3) {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
@@ -1108,81 +551,81 @@ let xs
 //
 //
 //14) Scenario: The normal on a sphere at a nonaxial point # ../features/spheres.feature:90
-//    ? Given s ← sphere()
+//    ? Given s ← sphere
 //        Undefined. Implement with the following snippet:
 //
-//          Given('s ← sphere\()', function () {
+//          Given('s ← sphere', function () {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
 //
-//    ? When n ← normal_at(s, point(√3/3, √3/3, √3/3))
+//    ? When n ← normal_at(s, point √3/3, √3/3, √3/3)
 //        Undefined. Implement with the following snippet:
 //
-//          When('n ← normal_at\(s, point\(√{int}\/{int}, √{int}\/{int}, √{int}\/{int}))', function (int, int2, int3, int4, int5, int6) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{int}\/{int}, √{int}\/{float}))', function (int, int2, int3, int4, int5, float) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{int}\/{int}, √{float}\/{int}))', function (int, int2, int3, int4, float, int5) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{int}\/{int}, √{float}\/{float}))', function (int, int2, int3, int4, float, float2) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{int}\/{float}, √{int}\/{int}))', function (int, int2, int3, float, int4, int5) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{int}\/{float}, √{int}\/{float}))', function (int, int2, int3, float, int4, float2) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{int}\/{float}, √{float}\/{int}))', function (int, int2, int3, float, float2, int4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{int}\/{float}, √{float}\/{float}))', function (int, int2, int3, float, float2, float3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{float}\/{int}, √{int}\/{int}))', function (int, int2, float, int3, int4, int5) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{float}\/{int}, √{int}\/{float}))', function (int, int2, float, int3, int4, float2) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{float}\/{int}, √{float}\/{int}))', function (int, int2, float, int3, float2, int4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{float}\/{int}, √{float}\/{float}))', function (int, int2, float, int3, float2, float3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{float}\/{float}, √{int}\/{int}))', function (int, int2, float, float2, int3, int4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{float}\/{float}, √{int}\/{float}))', function (int, int2, float, float2, int3, float3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{float}\/{float}, √{float}\/{int}))', function (int, int2, float, float2, float3, int3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{float}\/{float}, √{float}\/{float}))', function (int, int2, float, float2, float3, float4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{int}\/{int}, √{int}\/{int}))', function (int, float, int2, int3, int4, int5) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{int}\/{int}, √{int}\/{float}))', function (int, float, int2, int3, int4, float2) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{int}\/{int}, √{float}\/{int}))', function (int, float, int2, int3, float2, int4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{int}\/{int}, √{float}\/{float}))', function (int, float, int2, int3, float2, float3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{int}\/{float}, √{int}\/{int}))', function (int, float, int2, float2, int3, int4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{int}\/{float}, √{int}\/{float}))', function (int, float, int2, float2, int3, float3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{int}\/{float}, √{float}\/{int}))', function (int, float, int2, float2, float3, int3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{int}\/{float}, √{float}\/{float}))', function (int, float, int2, float2, float3, float4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{float}\/{int}, √{int}\/{int}))', function (int, float, float2, int2, int3, int4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{float}\/{int}, √{int}\/{float}))', function (int, float, float2, int2, int3, float3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{float}\/{int}, √{float}\/{int}))', function (int, float, float2, int2, float3, int3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{float}\/{int}, √{float}\/{float}))', function (int, float, float2, int2, float3, float4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{float}\/{float}, √{int}\/{int}))', function (int, float, float2, float3, int2, int3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{float}\/{float}, √{int}\/{float}))', function (int, float, float2, float3, int2, float4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{float}\/{float}, √{float}\/{int}))', function (int, float, float2, float3, float4, int2) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{float}\/{float}, √{float}\/{float}))', function (int, float, float2, float3, float4, float5) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{int}\/{int}, √{int}\/{int}))', function (float, int, int2, int3, int4, int5) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{int}\/{int}, √{int}\/{float}))', function (float, int, int2, int3, int4, float2) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{int}\/{int}, √{float}\/{int}))', function (float, int, int2, int3, float2, int4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{int}\/{int}, √{float}\/{float}))', function (float, int, int2, int3, float2, float3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{int}\/{float}, √{int}\/{int}))', function (float, int, int2, float2, int3, int4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{int}\/{float}, √{int}\/{float}))', function (float, int, int2, float2, int3, float3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{int}\/{float}, √{float}\/{int}))', function (float, int, int2, float2, float3, int3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{int}\/{float}, √{float}\/{float}))', function (float, int, int2, float2, float3, float4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{float}\/{int}, √{int}\/{int}))', function (float, int, float2, int2, int3, int4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{float}\/{int}, √{int}\/{float}))', function (float, int, float2, int2, int3, float3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{float}\/{int}, √{float}\/{int}))', function (float, int, float2, int2, float3, int3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{float}\/{int}, √{float}\/{float}))', function (float, int, float2, int2, float3, float4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{float}\/{float}, √{int}\/{int}))', function (float, int, float2, float3, int2, int3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{float}\/{float}, √{int}\/{float}))', function (float, int, float2, float3, int2, float4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{float}\/{float}, √{float}\/{int}))', function (float, int, float2, float3, float4, int2) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{float}\/{float}, √{float}\/{float}))', function (float, int, float2, float3, float4, float5) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{int}\/{int}, √{int}\/{int}))', function (float, float2, int, int2, int3, int4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{int}\/{int}, √{int}\/{float}))', function (float, float2, int, int2, int3, float3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{int}\/{int}, √{float}\/{int}))', function (float, float2, int, int2, float3, int3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{int}\/{int}, √{float}\/{float}))', function (float, float2, int, int2, float3, float4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{int}\/{float}, √{int}\/{int}))', function (float, float2, int, float3, int2, int3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{int}\/{float}, √{int}\/{float}))', function (float, float2, int, float3, int2, float4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{int}\/{float}, √{float}\/{int}))', function (float, float2, int, float3, float4, int2) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{int}\/{float}, √{float}\/{float}))', function (float, float2, int, float3, float4, float5) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{float}\/{int}, √{int}\/{int}))', function (float, float2, float3, int, int2, int3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{float}\/{int}, √{int}\/{float}))', function (float, float2, float3, int, int2, float4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{float}\/{int}, √{float}\/{int}))', function (float, float2, float3, int, float4, int2) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{float}\/{int}, √{float}\/{float}))', function (float, float2, float3, int, float4, float5) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{float}\/{float}, √{int}\/{int}))', function (float, float2, float3, float4, int, int2) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{float}\/{float}, √{int}\/{float}))', function (float, float2, float3, float4, int, float5) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{float}\/{float}, √{float}\/{int}))', function (float, float2, float3, float4, float5, int) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{float}\/{float}, √{float}\/{float}))', function (float, float2, float3, float4, float5, float6) {
+//          When('n ← normal_at\(s, point √{int}\/{int}, √{int}\/{int}, √{int}\/{int})', function (int, int2, int3, int4, int5, int6) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{int}\/{int}, √{int}\/{float})', function (int, int2, int3, int4, int5, float) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{int}\/{int}, √{float}\/{int})', function (int, int2, int3, int4, float, int5) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{int}\/{int}, √{float}\/{float})', function (int, int2, int3, int4, float, float2) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{int}\/{float}, √{int}\/{int})', function (int, int2, int3, float, int4, int5) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{int}\/{float}, √{int}\/{float})', function (int, int2, int3, float, int4, float2) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{int}\/{float}, √{float}\/{int})', function (int, int2, int3, float, float2, int4) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{int}\/{float}, √{float}\/{float})', function (int, int2, int3, float, float2, float3) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{float}\/{int}, √{int}\/{int})', function (int, int2, float, int3, int4, int5) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{float}\/{int}, √{int}\/{float})', function (int, int2, float, int3, int4, float2) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{float}\/{int}, √{float}\/{int})', function (int, int2, float, int3, float2, int4) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{float}\/{int}, √{float}\/{float})', function (int, int2, float, int3, float2, float3) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{float}\/{float}, √{int}\/{int})', function (int, int2, float, float2, int3, int4) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{float}\/{float}, √{int}\/{float})', function (int, int2, float, float2, int3, float3) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{float}\/{float}, √{float}\/{int})', function (int, int2, float, float2, float3, int3) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{float}\/{float}, √{float}\/{float})', function (int, int2, float, float2, float3, float4) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{int}\/{int}, √{int}\/{int})', function (int, float, int2, int3, int4, int5) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{int}\/{int}, √{int}\/{float})', function (int, float, int2, int3, int4, float2) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{int}\/{int}, √{float}\/{int})', function (int, float, int2, int3, float2, int4) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{int}\/{int}, √{float}\/{float})', function (int, float, int2, int3, float2, float3) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{int}\/{float}, √{int}\/{int})', function (int, float, int2, float2, int3, int4) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{int}\/{float}, √{int}\/{float})', function (int, float, int2, float2, int3, float3) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{int}\/{float}, √{float}\/{int})', function (int, float, int2, float2, float3, int3) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{int}\/{float}, √{float}\/{float})', function (int, float, int2, float2, float3, float4) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{float}\/{int}, √{int}\/{int})', function (int, float, float2, int2, int3, int4) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{float}\/{int}, √{int}\/{float})', function (int, float, float2, int2, int3, float3) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{float}\/{int}, √{float}\/{int})', function (int, float, float2, int2, float3, int3) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{float}\/{int}, √{float}\/{float})', function (int, float, float2, int2, float3, float4) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{float}\/{float}, √{int}\/{int})', function (int, float, float2, float3, int2, int3) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{float}\/{float}, √{int}\/{float})', function (int, float, float2, float3, int2, float4) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{float}\/{float}, √{float}\/{int})', function (int, float, float2, float3, float4, int2) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{float}\/{float}, √{float}\/{float})', function (int, float, float2, float3, float4, float5) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{int}\/{int}, √{int}\/{int})', function (float, int, int2, int3, int4, int5) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{int}\/{int}, √{int}\/{float})', function (float, int, int2, int3, int4, float2) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{int}\/{int}, √{float}\/{int})', function (float, int, int2, int3, float2, int4) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{int}\/{int}, √{float}\/{float})', function (float, int, int2, int3, float2, float3) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{int}\/{float}, √{int}\/{int})', function (float, int, int2, float2, int3, int4) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{int}\/{float}, √{int}\/{float})', function (float, int, int2, float2, int3, float3) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{int}\/{float}, √{float}\/{int})', function (float, int, int2, float2, float3, int3) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{int}\/{float}, √{float}\/{float})', function (float, int, int2, float2, float3, float4) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{float}\/{int}, √{int}\/{int})', function (float, int, float2, int2, int3, int4) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{float}\/{int}, √{int}\/{float})', function (float, int, float2, int2, int3, float3) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{float}\/{int}, √{float}\/{int})', function (float, int, float2, int2, float3, int3) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{float}\/{int}, √{float}\/{float})', function (float, int, float2, int2, float3, float4) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{float}\/{float}, √{int}\/{int})', function (float, int, float2, float3, int2, int3) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{float}\/{float}, √{int}\/{float})', function (float, int, float2, float3, int2, float4) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{float}\/{float}, √{float}\/{int})', function (float, int, float2, float3, float4, int2) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{float}\/{float}, √{float}\/{float})', function (float, int, float2, float3, float4, float5) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{int}\/{int}, √{int}\/{int})', function (float, float2, int, int2, int3, int4) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{int}\/{int}, √{int}\/{float})', function (float, float2, int, int2, int3, float3) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{int}\/{int}, √{float}\/{int})', function (float, float2, int, int2, float3, int3) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{int}\/{int}, √{float}\/{float})', function (float, float2, int, int2, float3, float4) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{int}\/{float}, √{int}\/{int})', function (float, float2, int, float3, int2, int3) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{int}\/{float}, √{int}\/{float})', function (float, float2, int, float3, int2, float4) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{int}\/{float}, √{float}\/{int})', function (float, float2, int, float3, float4, int2) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{int}\/{float}, √{float}\/{float})', function (float, float2, int, float3, float4, float5) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{int}, √{int}\/{int})', function (float, float2, float3, int, int2, int3) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{int}, √{int}\/{float})', function (float, float2, float3, int, int2, float4) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{int}, √{float}\/{int})', function (float, float2, float3, int, float4, int2) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{int}, √{float}\/{float})', function (float, float2, float3, int, float4, float5) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{float}, √{int}\/{int})', function (float, float2, float3, float4, int, int2) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{float}, √{int}\/{float})', function (float, float2, float3, float4, int, float5) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{float}, √{float}\/{int})', function (float, float2, float3, float4, float5, int) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{float}, √{float}\/{float})', function (float, float2, float3, float4, float5, float6) {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
@@ -1260,81 +703,81 @@ let xs
 //
 //
 //15) Scenario: The normal is a normalized vector # ../features/spheres.feature:95
-//    ? Given s ← sphere()
+//    ? Given s ← sphere
 //        Undefined. Implement with the following snippet:
 //
-//          Given('s ← sphere\()', function () {
+//          Given('s ← sphere', function () {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
 //
-//    ? When n ← normal_at(s, point(√3/3, √3/3, √3/3))
+//    ? When n ← normal_at(s, point √3/3, √3/3, √3/3)
 //        Undefined. Implement with the following snippet:
 //
-//          When('n ← normal_at\(s, point\(√{int}\/{int}, √{int}\/{int}, √{int}\/{int}))', function (int, int2, int3, int4, int5, int6) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{int}\/{int}, √{int}\/{float}))', function (int, int2, int3, int4, int5, float) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{int}\/{int}, √{float}\/{int}))', function (int, int2, int3, int4, float, int5) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{int}\/{int}, √{float}\/{float}))', function (int, int2, int3, int4, float, float2) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{int}\/{float}, √{int}\/{int}))', function (int, int2, int3, float, int4, int5) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{int}\/{float}, √{int}\/{float}))', function (int, int2, int3, float, int4, float2) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{int}\/{float}, √{float}\/{int}))', function (int, int2, int3, float, float2, int4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{int}\/{float}, √{float}\/{float}))', function (int, int2, int3, float, float2, float3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{float}\/{int}, √{int}\/{int}))', function (int, int2, float, int3, int4, int5) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{float}\/{int}, √{int}\/{float}))', function (int, int2, float, int3, int4, float2) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{float}\/{int}, √{float}\/{int}))', function (int, int2, float, int3, float2, int4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{float}\/{int}, √{float}\/{float}))', function (int, int2, float, int3, float2, float3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{float}\/{float}, √{int}\/{int}))', function (int, int2, float, float2, int3, int4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{float}\/{float}, √{int}\/{float}))', function (int, int2, float, float2, int3, float3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{float}\/{float}, √{float}\/{int}))', function (int, int2, float, float2, float3, int3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{int}, √{float}\/{float}, √{float}\/{float}))', function (int, int2, float, float2, float3, float4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{int}\/{int}, √{int}\/{int}))', function (int, float, int2, int3, int4, int5) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{int}\/{int}, √{int}\/{float}))', function (int, float, int2, int3, int4, float2) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{int}\/{int}, √{float}\/{int}))', function (int, float, int2, int3, float2, int4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{int}\/{int}, √{float}\/{float}))', function (int, float, int2, int3, float2, float3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{int}\/{float}, √{int}\/{int}))', function (int, float, int2, float2, int3, int4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{int}\/{float}, √{int}\/{float}))', function (int, float, int2, float2, int3, float3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{int}\/{float}, √{float}\/{int}))', function (int, float, int2, float2, float3, int3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{int}\/{float}, √{float}\/{float}))', function (int, float, int2, float2, float3, float4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{float}\/{int}, √{int}\/{int}))', function (int, float, float2, int2, int3, int4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{float}\/{int}, √{int}\/{float}))', function (int, float, float2, int2, int3, float3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{float}\/{int}, √{float}\/{int}))', function (int, float, float2, int2, float3, int3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{float}\/{int}, √{float}\/{float}))', function (int, float, float2, int2, float3, float4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{float}\/{float}, √{int}\/{int}))', function (int, float, float2, float3, int2, int3) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{float}\/{float}, √{int}\/{float}))', function (int, float, float2, float3, int2, float4) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{float}\/{float}, √{float}\/{int}))', function (int, float, float2, float3, float4, int2) {
-//          // When('n ← normal_at\(s, point\(√{int}\/{float}, √{float}\/{float}, √{float}\/{float}))', function (int, float, float2, float3, float4, float5) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{int}\/{int}, √{int}\/{int}))', function (float, int, int2, int3, int4, int5) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{int}\/{int}, √{int}\/{float}))', function (float, int, int2, int3, int4, float2) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{int}\/{int}, √{float}\/{int}))', function (float, int, int2, int3, float2, int4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{int}\/{int}, √{float}\/{float}))', function (float, int, int2, int3, float2, float3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{int}\/{float}, √{int}\/{int}))', function (float, int, int2, float2, int3, int4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{int}\/{float}, √{int}\/{float}))', function (float, int, int2, float2, int3, float3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{int}\/{float}, √{float}\/{int}))', function (float, int, int2, float2, float3, int3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{int}\/{float}, √{float}\/{float}))', function (float, int, int2, float2, float3, float4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{float}\/{int}, √{int}\/{int}))', function (float, int, float2, int2, int3, int4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{float}\/{int}, √{int}\/{float}))', function (float, int, float2, int2, int3, float3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{float}\/{int}, √{float}\/{int}))', function (float, int, float2, int2, float3, int3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{float}\/{int}, √{float}\/{float}))', function (float, int, float2, int2, float3, float4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{float}\/{float}, √{int}\/{int}))', function (float, int, float2, float3, int2, int3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{float}\/{float}, √{int}\/{float}))', function (float, int, float2, float3, int2, float4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{float}\/{float}, √{float}\/{int}))', function (float, int, float2, float3, float4, int2) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{int}, √{float}\/{float}, √{float}\/{float}))', function (float, int, float2, float3, float4, float5) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{int}\/{int}, √{int}\/{int}))', function (float, float2, int, int2, int3, int4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{int}\/{int}, √{int}\/{float}))', function (float, float2, int, int2, int3, float3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{int}\/{int}, √{float}\/{int}))', function (float, float2, int, int2, float3, int3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{int}\/{int}, √{float}\/{float}))', function (float, float2, int, int2, float3, float4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{int}\/{float}, √{int}\/{int}))', function (float, float2, int, float3, int2, int3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{int}\/{float}, √{int}\/{float}))', function (float, float2, int, float3, int2, float4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{int}\/{float}, √{float}\/{int}))', function (float, float2, int, float3, float4, int2) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{int}\/{float}, √{float}\/{float}))', function (float, float2, int, float3, float4, float5) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{float}\/{int}, √{int}\/{int}))', function (float, float2, float3, int, int2, int3) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{float}\/{int}, √{int}\/{float}))', function (float, float2, float3, int, int2, float4) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{float}\/{int}, √{float}\/{int}))', function (float, float2, float3, int, float4, int2) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{float}\/{int}, √{float}\/{float}))', function (float, float2, float3, int, float4, float5) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{float}\/{float}, √{int}\/{int}))', function (float, float2, float3, float4, int, int2) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{float}\/{float}, √{int}\/{float}))', function (float, float2, float3, float4, int, float5) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{float}\/{float}, √{float}\/{int}))', function (float, float2, float3, float4, float5, int) {
-//          // When('n ← normal_at\(s, point\(√{float}\/{float}, √{float}\/{float}, √{float}\/{float}))', function (float, float2, float3, float4, float5, float6) {
+//          When('n ← normal_at\(s, point √{int}\/{int}, √{int}\/{int}, √{int}\/{int})', function (int, int2, int3, int4, int5, int6) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{int}\/{int}, √{int}\/{float})', function (int, int2, int3, int4, int5, float) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{int}\/{int}, √{float}\/{int})', function (int, int2, int3, int4, float, int5) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{int}\/{int}, √{float}\/{float})', function (int, int2, int3, int4, float, float2) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{int}\/{float}, √{int}\/{int})', function (int, int2, int3, float, int4, int5) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{int}\/{float}, √{int}\/{float})', function (int, int2, int3, float, int4, float2) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{int}\/{float}, √{float}\/{int})', function (int, int2, int3, float, float2, int4) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{int}\/{float}, √{float}\/{float})', function (int, int2, int3, float, float2, float3) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{float}\/{int}, √{int}\/{int})', function (int, int2, float, int3, int4, int5) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{float}\/{int}, √{int}\/{float})', function (int, int2, float, int3, int4, float2) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{float}\/{int}, √{float}\/{int})', function (int, int2, float, int3, float2, int4) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{float}\/{int}, √{float}\/{float})', function (int, int2, float, int3, float2, float3) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{float}\/{float}, √{int}\/{int})', function (int, int2, float, float2, int3, int4) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{float}\/{float}, √{int}\/{float})', function (int, int2, float, float2, int3, float3) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{float}\/{float}, √{float}\/{int})', function (int, int2, float, float2, float3, int3) {
+//          // When('n ← normal_at\(s, point √{int}\/{int}, √{float}\/{float}, √{float}\/{float})', function (int, int2, float, float2, float3, float4) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{int}\/{int}, √{int}\/{int})', function (int, float, int2, int3, int4, int5) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{int}\/{int}, √{int}\/{float})', function (int, float, int2, int3, int4, float2) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{int}\/{int}, √{float}\/{int})', function (int, float, int2, int3, float2, int4) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{int}\/{int}, √{float}\/{float})', function (int, float, int2, int3, float2, float3) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{int}\/{float}, √{int}\/{int})', function (int, float, int2, float2, int3, int4) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{int}\/{float}, √{int}\/{float})', function (int, float, int2, float2, int3, float3) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{int}\/{float}, √{float}\/{int})', function (int, float, int2, float2, float3, int3) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{int}\/{float}, √{float}\/{float})', function (int, float, int2, float2, float3, float4) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{float}\/{int}, √{int}\/{int})', function (int, float, float2, int2, int3, int4) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{float}\/{int}, √{int}\/{float})', function (int, float, float2, int2, int3, float3) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{float}\/{int}, √{float}\/{int})', function (int, float, float2, int2, float3, int3) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{float}\/{int}, √{float}\/{float})', function (int, float, float2, int2, float3, float4) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{float}\/{float}, √{int}\/{int})', function (int, float, float2, float3, int2, int3) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{float}\/{float}, √{int}\/{float})', function (int, float, float2, float3, int2, float4) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{float}\/{float}, √{float}\/{int})', function (int, float, float2, float3, float4, int2) {
+//          // When('n ← normal_at\(s, point √{int}\/{float}, √{float}\/{float}, √{float}\/{float})', function (int, float, float2, float3, float4, float5) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{int}\/{int}, √{int}\/{int})', function (float, int, int2, int3, int4, int5) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{int}\/{int}, √{int}\/{float})', function (float, int, int2, int3, int4, float2) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{int}\/{int}, √{float}\/{int})', function (float, int, int2, int3, float2, int4) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{int}\/{int}, √{float}\/{float})', function (float, int, int2, int3, float2, float3) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{int}\/{float}, √{int}\/{int})', function (float, int, int2, float2, int3, int4) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{int}\/{float}, √{int}\/{float})', function (float, int, int2, float2, int3, float3) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{int}\/{float}, √{float}\/{int})', function (float, int, int2, float2, float3, int3) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{int}\/{float}, √{float}\/{float})', function (float, int, int2, float2, float3, float4) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{float}\/{int}, √{int}\/{int})', function (float, int, float2, int2, int3, int4) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{float}\/{int}, √{int}\/{float})', function (float, int, float2, int2, int3, float3) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{float}\/{int}, √{float}\/{int})', function (float, int, float2, int2, float3, int3) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{float}\/{int}, √{float}\/{float})', function (float, int, float2, int2, float3, float4) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{float}\/{float}, √{int}\/{int})', function (float, int, float2, float3, int2, int3) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{float}\/{float}, √{int}\/{float})', function (float, int, float2, float3, int2, float4) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{float}\/{float}, √{float}\/{int})', function (float, int, float2, float3, float4, int2) {
+//          // When('n ← normal_at\(s, point √{float}\/{int}, √{float}\/{float}, √{float}\/{float})', function (float, int, float2, float3, float4, float5) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{int}\/{int}, √{int}\/{int})', function (float, float2, int, int2, int3, int4) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{int}\/{int}, √{int}\/{float})', function (float, float2, int, int2, int3, float3) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{int}\/{int}, √{float}\/{int})', function (float, float2, int, int2, float3, int3) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{int}\/{int}, √{float}\/{float})', function (float, float2, int, int2, float3, float4) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{int}\/{float}, √{int}\/{int})', function (float, float2, int, float3, int2, int3) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{int}\/{float}, √{int}\/{float})', function (float, float2, int, float3, int2, float4) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{int}\/{float}, √{float}\/{int})', function (float, float2, int, float3, float4, int2) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{int}\/{float}, √{float}\/{float})', function (float, float2, int, float3, float4, float5) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{int}, √{int}\/{int})', function (float, float2, float3, int, int2, int3) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{int}, √{int}\/{float})', function (float, float2, float3, int, int2, float4) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{int}, √{float}\/{int})', function (float, float2, float3, int, float4, int2) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{int}, √{float}\/{float})', function (float, float2, float3, int, float4, float5) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{float}, √{int}\/{int})', function (float, float2, float3, float4, int, int2) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{float}, √{int}\/{float})', function (float, float2, float3, float4, int, float5) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{float}, √{float}\/{int})', function (float, float2, float3, float4, float5, int) {
+//          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{float}, √{float}\/{float})', function (float, float2, float3, float4, float5, float6) {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
@@ -1349,34 +792,34 @@ let xs
 //
 //
 //16) Scenario: Computing the normal on a translated sphere # ../features/spheres.feature:100
-//    ? Given s ← sphere()
+//    ? Given s ← sphere
 //        Undefined. Implement with the following snippet:
 //
-//          Given('s ← sphere\()', function () {
+//          Given('s ← sphere', function () {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
 //
-//    ? And set_transform(s, translation(0, 1, 0))
+//    ? And set_transform(s, translation 0, 1, 0)
 //        Undefined. Implement with the following snippet:
 //
-//          Given('set_transform\(s, translation\({int}, {int}, {int}))', function (int, int2, int3) {
-//          // Given('set_transform\(s, translation\({int}, {int}, {float}))', function (int, int2, float) {
-//          // Given('set_transform\(s, translation\({int}, {float}, {int}))', function (int, float, int2) {
-//          // Given('set_transform\(s, translation\({int}, {float}, {float}))', function (int, float, float2) {
-//          // Given('set_transform\(s, translation\({float}, {int}, {int}))', function (float, int, int2) {
-//          // Given('set_transform\(s, translation\({float}, {int}, {float}))', function (float, int, float2) {
-//          // Given('set_transform\(s, translation\({float}, {float}, {int}))', function (float, float2, int) {
-//          // Given('set_transform\(s, translation\({float}, {float}, {float}))', function (float, float2, float3) {
+//          Given('set_transform\(s, translation {int}, {int}, {int})', function (int, int2, int3) {
+//          // Given('set_transform\(s, translation {int}, {int}, {float})', function (int, int2, float) {
+//          // Given('set_transform\(s, translation {int}, {float}, {int})', function (int, float, int2) {
+//          // Given('set_transform\(s, translation {int}, {float}, {float})', function (int, float, float2) {
+//          // Given('set_transform\(s, translation {float}, {int}, {int})', function (float, int, int2) {
+//          // Given('set_transform\(s, translation {float}, {int}, {float})', function (float, int, float2) {
+//          // Given('set_transform\(s, translation {float}, {float}, {int})', function (float, float2, int) {
+//          // Given('set_transform\(s, translation {float}, {float}, {float})', function (float, float2, float3) {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
 //
-//    ? When n ← normal_at(s, point(0, 1.70711, -0.70711))
+//    ? When n ← normal_at(s, point 0, 1.70711, -0.70711)
 //        Undefined. Implement with the following snippet:
 //
-//          When('n ← normal_at\(s, point\({int}, {float}, {float}))', function (int, float, float2) {
-//          // When('n ← normal_at\(s, point\({float}, {float}, {float}))', function (float, float2, float3) {
+//          When('n ← normal_at\(s, point {int}, {float}, {float})', function (int, float, float2) {
+//          // When('n ← normal_at\(s, point {float}, {float}, {float})', function (float, float2, float3) {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
@@ -1392,10 +835,10 @@ let xs
 //
 //
 //17) Scenario: Computing the normal on a transformed sphere # ../features/spheres.feature:106
-//    ? Given s ← sphere()
+//    ? Given s ← sphere
 //        Undefined. Implement with the following snippet:
 //
-//          Given('s ← sphere\()', function () {
+//          Given('s ← sphere', function () {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
@@ -1423,41 +866,41 @@ let xs
 //            return 'pending';
 //          });
 //
-//    ? When n ← normal_at(s, point(0, √2/2, -√2/2))
+//    ? When n ← normal_at(s, point 0, √2/2, -√2/2)
 //        Undefined. Implement with the following snippet:
 //
-//          When('n ← normal_at\(s, point\({int}, √{int}\/{int}, {float}√{int}\/{int}))', function (int, int2, int3, float, int4, int5) {
-//          // When('n ← normal_at\(s, point\({int}, √{int}\/{int}, {float}√{int}\/{float}))', function (int, int2, int3, float, int4, float2) {
-//          // When('n ← normal_at\(s, point\({int}, √{int}\/{int}, {float}√{float}\/{int}))', function (int, int2, int3, float, float2, int4) {
-//          // When('n ← normal_at\(s, point\({int}, √{int}\/{int}, {float}√{float}\/{float}))', function (int, int2, int3, float, float2, float3) {
-//          // When('n ← normal_at\(s, point\({int}, √{int}\/{float}, {float}√{int}\/{int}))', function (int, int2, float, float2, int3, int4) {
-//          // When('n ← normal_at\(s, point\({int}, √{int}\/{float}, {float}√{int}\/{float}))', function (int, int2, float, float2, int3, float3) {
-//          // When('n ← normal_at\(s, point\({int}, √{int}\/{float}, {float}√{float}\/{int}))', function (int, int2, float, float2, float3, int3) {
-//          // When('n ← normal_at\(s, point\({int}, √{int}\/{float}, {float}√{float}\/{float}))', function (int, int2, float, float2, float3, float4) {
-//          // When('n ← normal_at\(s, point\({int}, √{float}\/{int}, {float}√{int}\/{int}))', function (int, float, int2, float2, int3, int4) {
-//          // When('n ← normal_at\(s, point\({int}, √{float}\/{int}, {float}√{int}\/{float}))', function (int, float, int2, float2, int3, float3) {
-//          // When('n ← normal_at\(s, point\({int}, √{float}\/{int}, {float}√{float}\/{int}))', function (int, float, int2, float2, float3, int3) {
-//          // When('n ← normal_at\(s, point\({int}, √{float}\/{int}, {float}√{float}\/{float}))', function (int, float, int2, float2, float3, float4) {
-//          // When('n ← normal_at\(s, point\({int}, √{float}\/{float}, {float}√{int}\/{int}))', function (int, float, float2, float3, int2, int3) {
-//          // When('n ← normal_at\(s, point\({int}, √{float}\/{float}, {float}√{int}\/{float}))', function (int, float, float2, float3, int2, float4) {
-//          // When('n ← normal_at\(s, point\({int}, √{float}\/{float}, {float}√{float}\/{int}))', function (int, float, float2, float3, float4, int2) {
-//          // When('n ← normal_at\(s, point\({int}, √{float}\/{float}, {float}√{float}\/{float}))', function (int, float, float2, float3, float4, float5) {
-//          // When('n ← normal_at\(s, point\({float}, √{int}\/{int}, {float}√{int}\/{int}))', function (float, int, int2, float2, int3, int4) {
-//          // When('n ← normal_at\(s, point\({float}, √{int}\/{int}, {float}√{int}\/{float}))', function (float, int, int2, float2, int3, float3) {
-//          // When('n ← normal_at\(s, point\({float}, √{int}\/{int}, {float}√{float}\/{int}))', function (float, int, int2, float2, float3, int3) {
-//          // When('n ← normal_at\(s, point\({float}, √{int}\/{int}, {float}√{float}\/{float}))', function (float, int, int2, float2, float3, float4) {
-//          // When('n ← normal_at\(s, point\({float}, √{int}\/{float}, {float}√{int}\/{int}))', function (float, int, float2, float3, int2, int3) {
-//          // When('n ← normal_at\(s, point\({float}, √{int}\/{float}, {float}√{int}\/{float}))', function (float, int, float2, float3, int2, float4) {
-//          // When('n ← normal_at\(s, point\({float}, √{int}\/{float}, {float}√{float}\/{int}))', function (float, int, float2, float3, float4, int2) {
-//          // When('n ← normal_at\(s, point\({float}, √{int}\/{float}, {float}√{float}\/{float}))', function (float, int, float2, float3, float4, float5) {
-//          // When('n ← normal_at\(s, point\({float}, √{float}\/{int}, {float}√{int}\/{int}))', function (float, float2, int, float3, int2, int3) {
-//          // When('n ← normal_at\(s, point\({float}, √{float}\/{int}, {float}√{int}\/{float}))', function (float, float2, int, float3, int2, float4) {
-//          // When('n ← normal_at\(s, point\({float}, √{float}\/{int}, {float}√{float}\/{int}))', function (float, float2, int, float3, float4, int2) {
-//          // When('n ← normal_at\(s, point\({float}, √{float}\/{int}, {float}√{float}\/{float}))', function (float, float2, int, float3, float4, float5) {
-//          // When('n ← normal_at\(s, point\({float}, √{float}\/{float}, {float}√{int}\/{int}))', function (float, float2, float3, float4, int, int2) {
-//          // When('n ← normal_at\(s, point\({float}, √{float}\/{float}, {float}√{int}\/{float}))', function (float, float2, float3, float4, int, float5) {
-//          // When('n ← normal_at\(s, point\({float}, √{float}\/{float}, {float}√{float}\/{int}))', function (float, float2, float3, float4, float5, int) {
-//          // When('n ← normal_at\(s, point\({float}, √{float}\/{float}, {float}√{float}\/{float}))', function (float, float2, float3, float4, float5, float6) {
+//          When('n ← normal_at\(s, point {int}, √{int}\/{int}, {float}√{int}\/{int})', function (int, int2, int3, float, int4, int5) {
+//          // When('n ← normal_at\(s, point {int}, √{int}\/{int}, {float}√{int}\/{float})', function (int, int2, int3, float, int4, float2) {
+//          // When('n ← normal_at\(s, point {int}, √{int}\/{int}, {float}√{float}\/{int})', function (int, int2, int3, float, float2, int4) {
+//          // When('n ← normal_at\(s, point {int}, √{int}\/{int}, {float}√{float}\/{float})', function (int, int2, int3, float, float2, float3) {
+//          // When('n ← normal_at\(s, point {int}, √{int}\/{float}, {float}√{int}\/{int})', function (int, int2, float, float2, int3, int4) {
+//          // When('n ← normal_at\(s, point {int}, √{int}\/{float}, {float}√{int}\/{float})', function (int, int2, float, float2, int3, float3) {
+//          // When('n ← normal_at\(s, point {int}, √{int}\/{float}, {float}√{float}\/{int})', function (int, int2, float, float2, float3, int3) {
+//          // When('n ← normal_at\(s, point {int}, √{int}\/{float}, {float}√{float}\/{float})', function (int, int2, float, float2, float3, float4) {
+//          // When('n ← normal_at\(s, point {int}, √{float}\/{int}, {float}√{int}\/{int})', function (int, float, int2, float2, int3, int4) {
+//          // When('n ← normal_at\(s, point {int}, √{float}\/{int}, {float}√{int}\/{float})', function (int, float, int2, float2, int3, float3) {
+//          // When('n ← normal_at\(s, point {int}, √{float}\/{int}, {float}√{float}\/{int})', function (int, float, int2, float2, float3, int3) {
+//          // When('n ← normal_at\(s, point {int}, √{float}\/{int}, {float}√{float}\/{float})', function (int, float, int2, float2, float3, float4) {
+//          // When('n ← normal_at\(s, point {int}, √{float}\/{float}, {float}√{int}\/{int})', function (int, float, float2, float3, int2, int3) {
+//          // When('n ← normal_at\(s, point {int}, √{float}\/{float}, {float}√{int}\/{float})', function (int, float, float2, float3, int2, float4) {
+//          // When('n ← normal_at\(s, point {int}, √{float}\/{float}, {float}√{float}\/{int})', function (int, float, float2, float3, float4, int2) {
+//          // When('n ← normal_at\(s, point {int}, √{float}\/{float}, {float}√{float}\/{float})', function (int, float, float2, float3, float4, float5) {
+//          // When('n ← normal_at\(s, point {float}, √{int}\/{int}, {float}√{int}\/{int})', function (float, int, int2, float2, int3, int4) {
+//          // When('n ← normal_at\(s, point {float}, √{int}\/{int}, {float}√{int}\/{float})', function (float, int, int2, float2, int3, float3) {
+//          // When('n ← normal_at\(s, point {float}, √{int}\/{int}, {float}√{float}\/{int})', function (float, int, int2, float2, float3, int3) {
+//          // When('n ← normal_at\(s, point {float}, √{int}\/{int}, {float}√{float}\/{float})', function (float, int, int2, float2, float3, float4) {
+//          // When('n ← normal_at\(s, point {float}, √{int}\/{float}, {float}√{int}\/{int})', function (float, int, float2, float3, int2, int3) {
+//          // When('n ← normal_at\(s, point {float}, √{int}\/{float}, {float}√{int}\/{float})', function (float, int, float2, float3, int2, float4) {
+//          // When('n ← normal_at\(s, point {float}, √{int}\/{float}, {float}√{float}\/{int})', function (float, int, float2, float3, float4, int2) {
+//          // When('n ← normal_at\(s, point {float}, √{int}\/{float}, {float}√{float}\/{float})', function (float, int, float2, float3, float4, float5) {
+//          // When('n ← normal_at\(s, point {float}, √{float}\/{int}, {float}√{int}\/{int})', function (float, float2, int, float3, int2, int3) {
+//          // When('n ← normal_at\(s, point {float}, √{float}\/{int}, {float}√{int}\/{float})', function (float, float2, int, float3, int2, float4) {
+//          // When('n ← normal_at\(s, point {float}, √{float}\/{int}, {float}√{float}\/{int})', function (float, float2, int, float3, float4, int2) {
+//          // When('n ← normal_at\(s, point {float}, √{float}\/{int}, {float}√{float}\/{float})', function (float, float2, int, float3, float4, float5) {
+//          // When('n ← normal_at\(s, point {float}, √{float}\/{float}, {float}√{int}\/{int})', function (float, float2, float3, float4, int, int2) {
+//          // When('n ← normal_at\(s, point {float}, √{float}\/{float}, {float}√{int}\/{float})', function (float, float2, float3, float4, int, float5) {
+//          // When('n ← normal_at\(s, point {float}, √{float}\/{float}, {float}√{float}\/{int})', function (float, float2, float3, float4, float5, int) {
+//          // When('n ← normal_at\(s, point {float}, √{float}\/{float}, {float}√{float}\/{float})', function (float, float2, float3, float4, float5, float6) {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
@@ -1473,10 +916,10 @@ let xs
 //
 //
 //18) Scenario: A sphere has a default material # ../features/spheres.feature:113
-//    ? Given s ← sphere()
+//    ? Given s ← sphere
 //        Undefined. Implement with the following snippet:
 //
-//          Given('s ← sphere\()', function () {
+//          Given('s ← sphere', function () {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
@@ -1499,10 +942,10 @@ let xs
 //
 //
 //19) Scenario: A sphere may be assigned a material # ../features/spheres.feature:118
-//    ? Given s ← sphere()
+//    ? Given s ← sphere
 //        Undefined. Implement with the following snippet:
 //
-//          Given('s ← sphere\()', function () {
+//          Given('s ← sphere', function () {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
@@ -1542,10 +985,10 @@ let xs
 //
 //
 //20) Scenario: A helper for producing a sphere with a glassy material # ../features/spheres.feature:125
-//    ? Given s ← glass_sphere()
+//    ? Given s ← glass_sphere
 //        Undefined. Implement with the following snippet:
 //
-//          Given('s ← glass_sphere\()', function () {
+//          Given('s ← glass_sphere', function () {
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
@@ -1573,3 +1016,4 @@ let xs
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
+//
