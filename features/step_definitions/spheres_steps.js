@@ -9,7 +9,7 @@ const { sphere, intersect } = require('../../sphere')
 //   ✔ Given r ← ray(point 0, 0, -5, vector 0, 0, 1) # ../features/step_definitions/rays_steps.js:130
 //   ? And s ← sphere
 //       Undefined. Implement with the following snippet:
-let s
+//let s
            Given('s ← sphere', function () {
              // Write code here that turns the phrase above into concrete actions
              s = new sphere()
@@ -17,7 +17,7 @@ let s
 //
 //   ? When xs ← intersect(s, r)
 //       Undefined. Implement with the following snippet:
-let xs
+//let xs
          When('xs ← intersect\\(s, r)', function () {
            // Write code here that turns the phrase above into concrete actions
            xs = intersect(s, r)
@@ -247,11 +247,11 @@ let xs
 //   ? And xs[0].object = s
 //       Undefined. Implement with the following snippet:
 //
-//         Then('xs[{int}].object = s', function (int) {
+         Then('xs[{int}].object = s', function (int) {
 //         // Then('xs[{float}].object = s', function (float) {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           assert(xs[int].object === s)
+         });
 //
 //   ? And xs[1].object = s
 //       Undefined. Implement with the following snippet:

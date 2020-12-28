@@ -2,9 +2,7 @@ const { Before, Given, When, Then } = require('@cucumber/cucumber')
 const assert = require('assert')
 const { equal } = require('../../utility')
 
-const ray = require('../../ray')
-const { point, vector } = require('../../tuple')
-const { sphere, intersect } = require('../../sphere')
+const { intersection, intersections, hit } = require('../../intersection')
 //
 //1) Scenario: An intersection encapsulates t and object # ../features/intersections.feature:3
 //   ? Given s ← sphere()
@@ -17,27 +15,27 @@ const { sphere, intersect } = require('../../sphere')
 //
 //   ? When i ← intersection(3.5, s)
 //       Undefined. Implement with the following snippet:
-//
-//         When('i ← intersection\({float}, s)', function (float) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+let i
+         When('i ← intersection\\({float}, s)', function (float) {
+           // Write code here that turns the phrase above into concrete actions
+           i = intersection(float, s)
+         });
 //
 //   ? Then i.t = 3.5
 //       Undefined. Implement with the following snippet:
 //
-//         Then('i.t = {float}', function (float) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Then('i.t = {float}', function (float) {
+           // Write code here that turns the phrase above into concrete actions
+           assert(equal(i.t, float))
+         });
 //
 //   ? And i.object = s
 //       Undefined. Implement with the following snippet:
 //
-//         Then('i.object = s', function () {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Then('i.object = s', function () {
+           // Write code here that turns the phrase above into concrete actions
+           assert(i.object === s)
+         });
 //
 //
 //2) Scenario: Precomputing the state of an intersection # ../features/intersections.feature:9
@@ -1036,41 +1034,41 @@ const { sphere, intersect } = require('../../sphere')
 //
 //   ? And i1 ← intersection(1, s)
 //       Undefined. Implement with the following snippet:
-//
+let i1
 //         Given('i1 ← intersection\({int}, s)', function (int) {
-//         // Given('i1 ← intersection\({float}, s)', function (float) {
+         Given('i1 ← intersection\\({float}, s)', function (float) {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           i1 = intersection(float, s)
+         });
 //
 //   ? And i2 ← intersection(2, s)
 //       Undefined. Implement with the following snippet:
-//
+let i2
 //         Given('i2 ← intersection\({int}, s)', function (int) {
-//         // Given('i2 ← intersection\({float}, s)', function (float) {
+         Given('i2 ← intersection\\({float}, s)', function (float) {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           i2 = intersection(float, s)
+         });
 //
 //   ? When xs ← intersections(i1, i2)
 //       Undefined. Implement with the following snippet:
-//
-//         When('xs ← intersections\(i1, i2)', function () {
+//let xs
+         When('xs ← intersections\\(i1, i2)', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           xs = intersections(i1, i2)
+         });
 //
 //   - Then xs.count = 2 # ../features/step_definitions/spheres_steps.js:29
 //   ? And xs[0].t = 1
 //       Undefined. Implement with the following snippet:
 //
 //         Then('xs[{int}].t = {int}', function (int, int2) {
-//         // Then('xs[{int}].t = {float}', function (int, float) {
+         Then('xs[{int}].t = {float}', function (int, float) {
 //         // Then('xs[{float}].t = {int}', function (float, int) {
 //         // Then('xs[{float}].t = {float}', function (float, float2) {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           assert(equal(xs[int].t, float))
+         });
 //
 //   ? And xs[1].t = 2
 //       Undefined. Implement with the following snippet:
@@ -1114,26 +1112,26 @@ const { sphere, intersect } = require('../../sphere')
 //   ? And xs ← intersections(i2, i1)
 //       Undefined. Implement with the following snippet:
 //
-//         Given('xs ← intersections\(i2, i1)', function () {
+         Given('xs ← intersections\\(i2, i1)', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           xs = intersections(i2, i1)
+         });
 //
 //   ? When i ← hit(xs)
 //       Undefined. Implement with the following snippet:
 //
-//         When('i ← hit\(xs)', function () {
+         When('i ← hit\\(xs)', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           i = hit(xs)
+         });
 //
 //   ? Then i = i1
 //       Undefined. Implement with the following snippet:
 //
-//         Then('i = i1', function () {
+         Then('i = i1', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           assert(i === i1)
+         });
 //
 //
 //10) Scenario: The hit, when some intersections have negative t # ../features/intersections.feature:81
@@ -1182,10 +1180,10 @@ const { sphere, intersect } = require('../../sphere')
 //    ? Then i = i2
 //        Undefined. Implement with the following snippet:
 //
-//          Then('i = i2', function () {
+          Then('i = i2', function () {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            assert(i === i2)
+          });
 //
 //
 //11) Scenario: The hit, when all intersections have negative t # ../features/intersections.feature:89
@@ -1234,10 +1232,10 @@ const { sphere, intersect } = require('../../sphere')
 //    ? Then i is nothing
 //        Undefined. Implement with the following snippet:
 //
-//          Then('i is nothing', function () {
+          Then('i is nothing', function () {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            assert(i === undefined)
+          });
 //
 //
 //12) Scenario: The hit is always the lowest nonnegative intersection # ../features/intersections.feature:97
@@ -1269,29 +1267,29 @@ const { sphere, intersect } = require('../../sphere')
 //
 //    ? And i3 ← intersection(-3, s)
 //        Undefined. Implement with the following snippet:
-//
+let i3
 //          Given('i3 ← intersection\({int}, s)', function (int) {
-//          // Given('i3 ← intersection\({float}, s)', function (float) {
+          Given('i3 ← intersection\\({float}, s)', function (float) {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            i3 = intersection(float, s)
+          });
 //
 //    ? And i4 ← intersection(2, s)
 //        Undefined. Implement with the following snippet:
-//
+let i4
 //          Given('i4 ← intersection\({int}, s)', function (int) {
-//          // Given('i4 ← intersection\({float}, s)', function (float) {
+          Given('i4 ← intersection\\({float}, s)', function (float) {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            i4 = intersection(float, s)
+          });
 //
 //    ? And xs ← intersections(i1, i2, i3, i4)
 //        Undefined. Implement with the following snippet:
 //
-//          Given('xs ← intersections\(i1, i2, i3, i4)', function () {
+          Given('xs ← intersections\\(i1, i2, i3, i4)', function () {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            xs = intersections(i1, i2, i3, i4)
+          });
 //
 //    ? When i ← hit(xs)
 //        Undefined. Implement with the following snippet:
@@ -1304,10 +1302,10 @@ const { sphere, intersect } = require('../../sphere')
 //    ? Then i = i4
 //        Undefined. Implement with the following snippet:
 //
-//          Then('i = i4', function () {
+          Then('i = i4', function () {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            assert(i === i4)
+          });
 //
 //
 //13) Scenario: Finding n1 and n2 at various intersections # ../features/intersections.feature:125
