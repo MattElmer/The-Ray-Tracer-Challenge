@@ -3,7 +3,9 @@ const ray = require('../../ray')
 const assert = require('assert')
 const { equal } = require('../../utility')
 const { point, vector } = require('../../tuple')
-const { sphere, intersect } = require('../../sphere')
+const { sphere, intersect, set_transform } = require('../../sphere')
+const matrix = require('../../matrix')
+const { transformation } = require('../../transformation')
 //
 //1) Scenario: A ray intersects a sphere at two points # ../features/spheres.feature:3
 //   ✔ Given r ← ray(point 0, 0, -5, vector 0, 0, 1) # ../features/step_definitions/rays_steps.js:130
@@ -275,10 +277,10 @@ const { sphere, intersect } = require('../../sphere')
 //   ? Then s.transform = identity_matrix
 //       Undefined. Implement with the following snippet:
 //
-//         Then('s.transform = identity_matrix', function () {
+         Then('s.transform = identity_matrix', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           assert(equal(s.transform.M, matrix.IDENTITY))
+         });
 //
 //
 //8) Scenario: Changing a sphere's transformation # ../features/spheres.feature:53
@@ -292,7 +294,7 @@ const { sphere, intersect } = require('../../sphere')
 //
 //   ? And t ← translation(2, 3, 4)
 //       Undefined. Implement with the following snippet:
-//
+let t
 //         Given('t ← translation\({int}, {int}, {int})', function (int, int2, int3) {
 //         // Given('t ← translation\({int}, {int}, {float})', function (int, int2, float) {
 //         // Given('t ← translation\({int}, {float}, {int})', function (int, float, int2) {
@@ -300,26 +302,26 @@ const { sphere, intersect } = require('../../sphere')
 //         // Given('t ← translation\({float}, {int}, {int})', function (float, int, int2) {
 //         // Given('t ← translation\({float}, {int}, {float})', function (float, int, float2) {
 //         // Given('t ← translation\({float}, {float}, {int})', function (float, float2, int) {
-//         // Given('t ← translation\({float}, {float}, {float})', function (float, float2, float3) {
+         Given('t ← translation\\({float}, {float}, {float})', function (float, float2, float3) {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           t = new transformation().translation(float, float2, float3)
+         });
 //
 //   ? When set_transform(s, t)
 //       Undefined. Implement with the following snippet:
 //
-//         When('set_transform\(s, t)', function () {
+         When('set_transform\\(s, t)', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           set_transform(s, t)
+         });
 //
 //   ? Then s.transform = t
 //       Undefined. Implement with the following snippet:
 //
-//         Then('s.transform = t', function () {
+         Then('s.transform = t', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           assert(equal(s.transform, t))
+         });
 //
 //
 //9) Scenario: Intersecting a scaled sphere with a ray # ../features/spheres.feature:59
@@ -342,10 +344,10 @@ const { sphere, intersect } = require('../../sphere')
 //         // When('set_transform\(s, scaling {float}, {int}, {int})', function (float, int, int2) {
 //         // When('set_transform\(s, scaling {float}, {int}, {float})', function (float, int, float2) {
 //         // When('set_transform\(s, scaling {float}, {float}, {int})', function (float, float2, int) {
-//         // When('set_transform\(s, scaling {float}, {float}, {float})', function (float, float2, float3) {
+         When('set_transform\\(s, scaling {float}, {float}, {float})', function (float, float2, float3) {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           set_transform(s, new transformation().scaling(float, float2, float3))
+         });
 //
 //   ? And xs ← intersect(s, r)
 //       Undefined. Implement with the following snippet:
@@ -407,10 +409,10 @@ const { sphere, intersect } = require('../../sphere')
 //          // When('set_transform\(s, translation {float}, {int}, {int})', function (float, int, int2) {
 //          // When('set_transform\(s, translation {float}, {int}, {float})', function (float, int, float2) {
 //          // When('set_transform\(s, translation {float}, {float}, {int})', function (float, float2, int) {
-//          // When('set_transform\(s, translation {float}, {float}, {float})', function (float, float2, float3) {
+          When('set_transform\\(s, translation {float}, {float}, {float})', function (float, float2, float3) {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            set_transform(s, new transformation().translation(float, float2, float3))
+          });
 //
 //    ? And xs ← intersect(s, r)
 //        Undefined. Implement with the following snippet:
