@@ -2,10 +2,11 @@ const { Before, Given, When, Then } = require('@cucumber/cucumber')
 const ray = require('../../ray')
 const assert = require('assert')
 const { equal } = require('../../utility')
-const { point, vector } = require('../../tuple')
-const { sphere, intersect, set_transform } = require('../../sphere')
+const { point, vector, normalize } = require('../../tuple')
+const { sphere, intersect, set_transform, normal_at } = require('../../sphere')
 const matrix = require('../../matrix')
 const { transformation } = require('../../transformation')
+const { material } = require('../../lighting')
 //
 //1) Scenario: A ray intersects a sphere at two points # ../features/spheres.feature:3
 //   ✔ Given r ← ray(point 0, 0, -5, vector 0, 0, 1) # ../features/step_definitions/rays_steps.js:130
@@ -443,7 +444,7 @@ let t
 //
 //    ? When n ← normal_at(s, point 1, 0, 0)
 //        Undefined. Implement with the following snippet:
-//
+let n
 //          When('n ← normal_at\(s, point {int}, {int}, {int})', function (int, int2, int3) {
 //          // When('n ← normal_at\(s, point {int}, {int}, {float})', function (int, int2, float) {
 //          // When('n ← normal_at\(s, point {int}, {float}, {int})', function (int, float, int2) {
@@ -451,10 +452,10 @@ let t
 //          // When('n ← normal_at\(s, point {float}, {int}, {int})', function (float, int, int2) {
 //          // When('n ← normal_at\(s, point {float}, {int}, {float})', function (float, int, float2) {
 //          // When('n ← normal_at\(s, point {float}, {float}, {int})', function (float, float2, int) {
-//          // When('n ← normal_at\(s, point {float}, {float}, {float})', function (float, float2, float3) {
+          When('n ← normal_at\\(s, point {float}, {float}, {float})', function (float, float2, float3) {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            n = normal_at(s, point(float, float2, float3))
+          });
 //
 //    ? Then n = vector(1, 0, 0)
 //        Undefined. Implement with the following snippet:
@@ -466,10 +467,10 @@ let t
 //          // Then('n = vector\({float}, {int}, {int})', function (float, int, int2) {
 //          // Then('n = vector\({float}, {int}, {float})', function (float, int, float2) {
 //          // Then('n = vector\({float}, {float}, {int})', function (float, float2, int) {
-//          // Then('n = vector\({float}, {float}, {float})', function (float, float2, float3) {
+          Then('n = vector\\({float}, {float}, {float})', function (float, float2, float3) {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            assert(equal(n, vector(float, float2, float3)))
+          });
 //
 //
 //12) Scenario: The normal on a sphere at a point on the y axis # ../features/spheres.feature:80
@@ -627,10 +628,12 @@ let t
 //          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{float}, √{int}\/{int})', function (float, float2, float3, float4, int, int2) {
 //          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{float}, √{int}\/{float})', function (float, float2, float3, float4, int, float5) {
 //          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{float}, √{float}\/{int})', function (float, float2, float3, float4, float5, int) {
-//          // When('n ← normal_at\(s, point √{float}\/{float}, √{float}\/{float}, √{float}\/{float})', function (float, float2, float3, float4, float5, float6) {
+          When('n ← normal_at\\(s, point √{float}\\/{float}, √{float}\\/{float}, √{float}\\/{float})', function (float, float2, float3, float4, float5, float6) {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            n = normal_at(s, point(Math.sqrt(float)  / float2,
+                                   Math.sqrt(float3) / float4,
+                                   Math.sqrt(float5) / float6))
+          });
 //
 //    ? Then n = vector(√3/3, √3/3, √3/3)
 //        Undefined. Implement with the following snippet:
@@ -698,10 +701,12 @@ let t
 //          // Then('n = vector\(√{float}\/{float}, √{float}\/{float}, √{int}\/{int})', function (float, float2, float3, float4, int, int2) {
 //          // Then('n = vector\(√{float}\/{float}, √{float}\/{float}, √{int}\/{float})', function (float, float2, float3, float4, int, float5) {
 //          // Then('n = vector\(√{float}\/{float}, √{float}\/{float}, √{float}\/{int})', function (float, float2, float3, float4, float5, int) {
-//          // Then('n = vector\(√{float}\/{float}, √{float}\/{float}, √{float}\/{float})', function (float, float2, float3, float4, float5, float6) {
+          Then('n = vector\\(√{float}\\/{float}, √{float}\\/{float}, √{float}\\/{float})', function (float, float2, float3, float4, float5, float6) {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            assert(equal(n, vector(Math.sqrt(float)  / float2,
+                                   Math.sqrt(float3) / float4,
+                                   Math.sqrt(float5) / float6)))
+          });
 //
 //
 //15) Scenario: The normal is a normalized vector # ../features/spheres.feature:95
@@ -787,10 +792,10 @@ let t
 //    ? Then n = normalize(n)
 //        Undefined. Implement with the following snippet:
 //
-//          Then('n = normalize\(n)', function () {
+          Then('n = normalize\\(n)', function () {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            assert(equal(n, normalize(n)))
+          });
 //
 //
 //16) Scenario: Computing the normal on a translated sphere # ../features/spheres.feature:100
@@ -847,7 +852,7 @@ let t
 //
 //    ? And m ← scaling(1, 0.5, 1) * rotation_z(π/5)
 //        Undefined. Implement with the following snippet:
-//
+//let m
 //          Given('m ← scaling\({int}, {float}, {int}) * rotation_z\(π\/{int})', function (int, float, int2, int3) {
 //          // Given('m ← scaling\({int}, {float}, {int}) * rotation_z\(π\/{float})', function (int, float, int2, float2) {
 //          // Given('m ← scaling\({int}, {float}, {float}) * rotation_z\(π\/{int})', function (int, float, float2, int2) {
@@ -855,18 +860,18 @@ let t
 //          // Given('m ← scaling\({float}, {float}, {int}) * rotation_z\(π\/{int})', function (float, float2, int, int2) {
 //          // Given('m ← scaling\({float}, {float}, {int}) * rotation_z\(π\/{float})', function (float, float2, int, float3) {
 //          // Given('m ← scaling\({float}, {float}, {float}) * rotation_z\(π\/{int})', function (float, float2, float3, int) {
-//          // Given('m ← scaling\({float}, {float}, {float}) * rotation_z\(π\/{float})', function (float, float2, float3, float4) {
+          Given('m ← scaling\\({float}, {float}, {float}) * rotation_z\\(π\\/{float})', function (float, float2, float3, float4) {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            m = new transformation().rotation_z(Math.PI / float4).scaling(float, float2, float3)
+          });
 //
 //    ? And set_transform(s, m)
 //        Undefined. Implement with the following snippet:
 //
-//          Given('set_transform\(s, m)', function () {
+          Given('set_transform\\(s, m)', function () {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            set_transform(s, m)
+          });
 //
 //    ? When n ← normal_at(s, point 0, √2/2, -√2/2)
 //        Undefined. Implement with the following snippet:
@@ -902,19 +907,19 @@ let t
 //          // When('n ← normal_at\(s, point {float}, √{float}\/{float}, {float}√{int}\/{int})', function (float, float2, float3, float4, int, int2) {
 //          // When('n ← normal_at\(s, point {float}, √{float}\/{float}, {float}√{int}\/{float})', function (float, float2, float3, float4, int, float5) {
 //          // When('n ← normal_at\(s, point {float}, √{float}\/{float}, {float}√{float}\/{int})', function (float, float2, float3, float4, float5, int) {
-//          // When('n ← normal_at\(s, point {float}, √{float}\/{float}, {float}√{float}\/{float})', function (float, float2, float3, float4, float5, float6) {
+          When('n ← normal_at\\(s, point {float}, √{float}\\/{float}, {float}√{float}\\/{float})', function (float, float2, float3, float4, float5, float6) {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            n = normal_at(s, point(float, Math.sqrt(float2) / float3, -Math.sqrt(float5) / float6))
+          });
 //
 //    ? Then n = vector(0, 0.97014, -0.24254)
 //        Undefined. Implement with the following snippet:
 //
 //          Then('n = vector\({int}, {float}, {float})', function (int, float, float2) {
-//          // Then('n = vector\({float}, {float}, {float})', function (float, float2, float3) {
+          //Then('n = vector\\({float}, {float}, {float})', function (float, float2, float3) {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            //assert(equal(n, vector(float, float2, float3)))
+          //});
 //
 //
 //18) Scenario: A sphere has a default material # ../features/spheres.feature:113
@@ -929,18 +934,18 @@ let t
 //    ? When m ← s.material
 //        Undefined. Implement with the following snippet:
 //
-//          When('m ← s.material', function () {
+          When('m ← s.material', function () {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            m = s.material
+          });
 //
 //    ? Then m = material()
 //        Undefined. Implement with the following snippet:
 //
-//          Then('m = material\()', function () {
+          Then('m = material', function () {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            assert(equal(m, new material()))
+          });
 //
 //
 //19) Scenario: A sphere may be assigned a material # ../features/spheres.feature:118
@@ -955,35 +960,35 @@ let t
 //    ? And m ← material()
 //        Undefined. Implement with the following snippet:
 //
-//          Given('m ← material\()', function () {
+          Given('m ← material', function () {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            m = new material()
+          });
 //
 //    ? And m.ambient ← 1
 //        Undefined. Implement with the following snippet:
 //
 //          Given('m.ambient ← {int}', function (int) {
-//          // Given('m.ambient ← {float}', function (float) {
+          Given('m.ambient ← {float}', function (float) {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            m.ambient = float
+          });
 //
 //    ? When s.material ← m
 //        Undefined. Implement with the following snippet:
 //
-//          When('s.material ← m', function () {
+          When('s.material ← m', function () {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            s.material = m
+          });
 //
 //    ? Then s.material = m
 //        Undefined. Implement with the following snippet:
 //
-//          Then('s.material = m', function () {
+          Then('s.material = m', function () {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            assert(equal(s.material, m))
+          });
 //
 //
 //20) Scenario: A helper for producing a sphere with a glassy material # ../features/spheres.feature:125

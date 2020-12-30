@@ -1,11 +1,14 @@
-const { dot, point, sub } = require('./tuple')
+const { dot, point, sub, normalize, vector } = require('./tuple')
 const ray = require('./ray')
 const { intersection } = require('./intersection')
 const { transformation } = require('./transformation')
+const { transpose, mul, submatrix, inverse } = require('./matrix')
+const { material } = require('./lighting')
 
 exports.sphere = class {
     constructor() {
         this.transform = new transformation()
+        this.material = new material()
     }
 }
 
@@ -20,3 +23,10 @@ exports.intersect = (s, r) => {
 }
 
 exports.set_transform = (s, t) => s.transform = t
+
+exports.normal_at = (s, p) => {
+    let M = s.transform.M
+    return normalize(vector(...mul(transpose(inverse(submatrix(M, 3, 3))),
+                                   sub(mul(inverse(M), p), point(0, 0, 0)))
+                              .arr))
+}
