@@ -3,7 +3,7 @@ const { point, vector } = require('../../tuple')
 const ray = require('../../ray')
 const assert = require('assert')
 const { equal } = require('../../utility')
-const { transformation } = require('../../transformation')
+const { transformation, identity } = require('../../transformation')
 //1) Scenario: Creating and querying a ray # ../features/rays.feature:3
 //   ? Given origin ← point(1, 2, 3)
 //       Undefined. Implement with the following snippet:
@@ -296,7 +296,7 @@ let m
 //         // Given('m ← translation\({float}, {float}, {int})', function (float, float2, int) {
          Given('m ← translation\\({float}, {float}, {float})', function (float, float2, float3) {
            // Write code here that turns the phrase above into concrete actions
-           m = new transformation().translation(float, float2, float3)
+           m = identity().translation(float, float2, float3)
          });
 //
 //   ? When r2 ← transform(r, m)
@@ -422,7 +422,7 @@ let m
 //         // Given('m ← scaling\({float}, {float}, {int})', function (float, float2, int) {
          Given('m ← scaling\\({float}, {float}, {float})', function (float, float2, float3) {
            // Write code here that turns the phrase above into concrete actions
-           m = new transformation().scaling(float, float2, float3)
+           m = identity().scaling(float, float2, float3)
          });
 //
 //   ? When r2 ← transform(r, m)

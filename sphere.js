@@ -1,13 +1,13 @@
 const { dot, point, sub, normalize, vector } = require('./tuple')
 const { transform, origin, direction } = require('./ray')
 const { intersection } = require('./intersection')
-const { transformation } = require('./transformation')
+const { transformation, identity } = require('./transformation')
 const { transpose, mul, submatrix, inverse } = require('./matrix')
 const { material } = require('./lighting')
 
 exports.sphere = class {
     constructor() {
-        this.transform = new transformation()
+        this.transform = identity()
         this.material = new material()
     }
 }

@@ -39,7 +39,7 @@ exports.lighting = (material, light, point, eyev, normalv) => {
   else
   {
 //    # compute the diffuse contribution
-    var diffuse = [effective_color, material.diffuse, light_dot_normal].reduce(mul)
+    var diffuse = mul(effective_color, material.diffuse * light_dot_normal)
 //
 //    # reflect_dot_eye represents the cosine of the angle between the
 //    # reflection vector and the eye vector. A negative number means the
@@ -54,7 +54,7 @@ exports.lighting = (material, light, point, eyev, normalv) => {
     {
 //      # compute the specular contribution
       let factor = Math.pow(reflect_dot_eye, material.shininess)
-      var specular = [light.intensity, material.specular, factor].reduce(mul)
+      var specular = mul(light.intensity, material.specular * factor)
     }
 //    end if
   }

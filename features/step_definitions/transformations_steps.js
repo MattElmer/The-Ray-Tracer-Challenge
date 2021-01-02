@@ -3,7 +3,7 @@ const assert = require('assert')
 const { equal } = require('../../utility')
 const matrix = require('../../matrix')
 const { tuple, point, vector } = require('../../tuple')
-const { transformation, translation } = require('../../transformation')
+const { transformation, identity } = require('../../transformation')
 let transform
 //1) Scenario: Multiplying by a translation matrix # ../transformations.feature:3
 //   ? Given transform ← translation(5, -3, 2)
@@ -18,7 +18,7 @@ let transform
 //         // Given('transform ← translation\\({float}, {float}, {int})', function (float, float2, int) {
         Given('transform ← translation\\({float}, {float}, {float})', function (x, y, z) {
           // Write code here that turns the phrase above into concrete actions
-          transform = new transformation().translation(x, y, z)
+          transform = identity().translation(x, y, z)
         });
 //
 //   - And p ← point(-3, 4, 5) # tuples_steps.js:127
@@ -118,7 +118,7 @@ let inv
 //         // Given('transform ← scaling\\({float}, {float}, {int})', function (float, float2, int) {
         Given('transform ← scaling\\({float}, {float}, {float})', function (x, y, z) {
           // Write code here that turns the phrase above into concrete actions
-          transform = new transformation().scaling(x, y, z)
+          transform = identity().scaling(x, y, z)
         });
 //
 //   - And p ← point(-4, 6, 8) # tuples_steps.js:127
@@ -253,7 +253,7 @@ let half_quarter
         Given('half_quarter ← rotation_x\\(π \/ {int})', function (d) {
         // Given('half_quarter ← rotation_x\\(π \/ {float})', function (float) {
           // Write code here that turns the phrase above into concrete actions
-          half_quarter = new transformation().rotation_x(Math.PI / d)
+          half_quarter = identity().rotation_x(Math.PI / d)
         });
 //
 //   ? And full_quarter ← rotation_x(π / 2)
@@ -262,7 +262,7 @@ let full_quarter
         Given('full_quarter ← rotation_x\\(π \/ {int})', function (d) {
         // Given('full_quarter ← rotation_x\\(π \\/ {float})', function (float) {
           // Write code here that turns the phrase above into concrete actions
-          full_quarter = new transformation().rotation_x(Math.PI / d)
+          full_quarter = identity().rotation_x(Math.PI / d)
         });
 //
 //   ? Then half_quarter * p = point(0, √2/2, √2/2)
@@ -387,7 +387,7 @@ let full_quarter
          Given('half_quarter ← rotation_y\\(π \/ {int})', function (int) {
          // Given('half_quarter ← rotation_y\\(π \\/ {float})', function (float) {
            // Write code here that turns the phrase above into concrete actions
-           half_quarter = new transformation().rotation_y(Math.PI / int)
+           half_quarter = identity().rotation_y(Math.PI / int)
          });
 //
 //    ? And full_quarter ← rotation_y(π / 2)
@@ -396,7 +396,7 @@ let full_quarter
          Given('full_quarter ← rotation_y\\(π \/ {int})', function (int) {
          // Given('full_quarter ← rotation_y\\(π \\/ {float})', function (float) {
            // Write code here that turns the phrase above into concrete actions
-           full_quarter = new transformation().rotation_y(Math.PI / int)
+           full_quarter = identity().rotation_y(Math.PI / int)
          });
 //
 //    ? Then half_quarter * p = point(√2/2, 0, √2/2)
@@ -462,7 +462,7 @@ let full_quarter
          Given('half_quarter ← rotation_z\\(π \/ {int})', function (int) {
          // Given('half_quarter ← rotation_z\\(π \\/ {float})', function (float) {
            // Write code here that turns the phrase above into concrete actions
-           half_quarter = new transformation().rotation_z(Math.PI / int)
+           half_quarter = identity().rotation_z(Math.PI / int)
          });
 //
 //    ? And full_quarter ← rotation_z(π / 2)
@@ -471,7 +471,7 @@ let full_quarter
          Given('full_quarter ← rotation_z\\(π \/ {int})', function (int) {
          // Given('full_quarter ← rotation_z\\(π \\/ {float})', function (float) {
            // Write code here that turns the phrase above into concrete actions
-           full_quarter = new transformation().rotation_z(Math.PI / int)
+           full_quarter = identity().rotation_z(Math.PI / int)
          });
 //
 //    ? Then half_quarter * p = point(-√2/2, √2/2, 0)
@@ -1043,7 +1043,7 @@ let full_quarter
 //          // Given('transform ← shearing\\({float}, {float}, {float}, {float}, {float}, {int})', function (float, float2, float3, float4, float5, int) {
          Given('transform ← shearing\\({float}, {float}, {float}, {float}, {float}, {float})', function (float, float2, float3, float4, float5, float6) {
            // Write code here that turns the phrase above into concrete actions
-           transform = new transformation().shearing(float, float2, float3, float4, float5, float6)
+           transform = identity().shearing(float, float2, float3, float4, float5, float6)
          });
 //
 //    - And p ← point(2, 3, 4) # tuples_steps.js:127
@@ -1071,7 +1071,7 @@ let full_quarter
          Given('A ← rotation_x\\(π \/ {int})', function (int) {
          // Given('A ← rotation_x\\(π \\/ {float})', function (float) {
            // Write code here that turns the phrase above into concrete actions
-           A = new transformation().rotation_x(Math.PI / int)
+           A = identity().rotation_x(Math.PI / int)
          });
 //
 //    ? And B ← scaling(5, 5, 5)
@@ -1086,7 +1086,7 @@ let full_quarter
 //          // Given('B ← scaling\\({float}, {float}, {int})', function (float, float2, int) {
          Given('B ← scaling\\({float}, {float}, {float})', function (float, float2, float3) {
            // Write code here that turns the phrase above into concrete actions
-           B = new transformation().scaling(float, float2, float3)
+           B = identity().scaling(float, float2, float3)
          });
 //
 //    ? And C ← translation(10, 5, 7)
@@ -1182,7 +1182,7 @@ let full_quarter
         //  Given('A ← rotation_x\\(π \/ {int})', function (int) {
         //  // Given('A ← rotation_x\\(π \\/ {float})', function (float) {
         //    // Write code here that turns the phrase above into concrete actions
-        //    A = new transformation().rotation_x(int)
+        //    A = identity().rotation_x(int)
         //  });
 //
 //    ? And B ← scaling(5, 5, 5)
@@ -1212,7 +1212,7 @@ let full_quarter
 //          // Given('C ← translation\\({float}, {float}, {int})', function (float, float2, int) {
          Given('C ← translation\\({float}, {float}, {float})', function (float, float2, float3) {
            // Write code here that turns the phrase above into concrete actions
-           C = new transformation().translation(float, float2, float3)
+           C = identity().translation(float, float2, float3)
          });
 //
 //    ? When T ← C * B * A
@@ -1220,10 +1220,7 @@ let full_quarter
 //
          When('T ← C * B * A', function () {
            // Write code here that turns the phrase above into concrete actions
-           T = new transformation()
-                   .rotation_x(Math.PI / 2)
-                   .scaling(5, 5, 5)
-                   .translation(10, 5, 7)
+           T = C.mul(B.mul(A))
          });
 //
 //    ? Then T * p = point(15, 0, 7)
@@ -1301,7 +1298,7 @@ let from, to
 //
          Then('t = identity_matrix', function () {
            // Write code here that turns the phrase above into concrete actions
-           assert(equal(t, matrix.IDENTITY))
+           assert(equal(t, matrix.identity_matrix))
          });
 //
 //

@@ -1,10 +1,10 @@
 const _ = require('lodash')
 const tuple = require('./tuple')
 
-exports.IDENTITY = Object.freeze([[1, 0, 0, 0],
-                                  [0, 1, 0, 0], 
-                                  [0, 0, 1, 0], 
-                                  [0, 0, 0, 1]].map(Object.freeze))
+exports.identity_matrix = Object.freeze([[1, 0, 0, 0],
+                                         [0, 1, 0, 0], 
+                                         [0, 0, 1, 0], 
+                                         [0, 0, 0, 1]].map(Object.freeze))
 
 exports.matrix = M => M.map(row => row.map(Number))
 

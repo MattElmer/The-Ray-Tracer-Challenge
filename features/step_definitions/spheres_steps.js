@@ -5,7 +5,7 @@ const { equal } = require('../../utility')
 const { point, vector, normalize } = require('../../tuple')
 const { sphere, intersect, set_transform, normal_at } = require('../../sphere')
 const matrix = require('../../matrix')
-const { transformation } = require('../../transformation')
+const { transformation, identity } = require('../../transformation')
 const { material } = require('../../lighting')
 //
 //1) Scenario: A ray intersects a sphere at two points # ../features/spheres.feature:3
@@ -305,7 +305,7 @@ let t
 //         // Given('t ← translation\({float}, {float}, {int})', function (float, float2, int) {
          Given('t ← translation\\({float}, {float}, {float})', function (float, float2, float3) {
 //           // Write code here that turns the phrase above into concrete actions
-           t = new transformation().translation(float, float2, float3)
+           t = identity().translation(float, float2, float3)
          });
 //
 //   ? When set_transform(s, t)
@@ -347,7 +347,7 @@ let t
 //         // When('set_transform\(s, scaling {float}, {float}, {int})', function (float, float2, int) {
          When('set_transform\\(s, scaling {float}, {float}, {float})', function (float, float2, float3) {
 //           // Write code here that turns the phrase above into concrete actions
-           set_transform(s, new transformation().scaling(float, float2, float3))
+           set_transform(s, identity().scaling(float, float2, float3))
          });
 //
 //   ? And xs ← intersect(s, r)
@@ -412,7 +412,7 @@ let t
 //          // When('set_transform\(s, translation {float}, {float}, {int})', function (float, float2, int) {
           When('set_transform\\(s, translation {float}, {float}, {float})', function (float, float2, float3) {
 //            // Write code here that turns the phrase above into concrete actions
-            set_transform(s, new transformation().translation(float, float2, float3))
+            set_transform(s, identity().translation(float, float2, float3))
           });
 //
 //    ? And xs ← intersect(s, r)
@@ -862,7 +862,7 @@ let n
 //          // Given('m ← scaling\({float}, {float}, {float}) * rotation_z\(π\/{int})', function (float, float2, float3, int) {
           Given('m ← scaling\\({float}, {float}, {float}) * rotation_z\\(π\\/{float})', function (float, float2, float3, float4) {
 //            // Write code here that turns the phrase above into concrete actions
-            m = new transformation().rotation_z(Math.PI / float4).scaling(float, float2, float3)
+            m = identity().rotation_z(Math.PI / float4).scaling(float, float2, float3)
           });
 //
 //    ? And set_transform(s, m)
