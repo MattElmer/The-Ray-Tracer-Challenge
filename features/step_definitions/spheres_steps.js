@@ -13,7 +13,7 @@ const { material } = require('../../lighting')
 //   ? And s ← sphere
 //       Undefined. Implement with the following snippet:
 //let s
-           Given('s ← sphere', function () {
+           Given('s ← new sphere', function () {
              // Write code here that turns the phrase above into concrete actions
              s = new sphere()
            });

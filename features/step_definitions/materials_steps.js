@@ -238,7 +238,7 @@ let normalv
 //         // Given('light ← point_light\(point\({float}, {float}, {float}), color\({float}, {int}, {int}))', function (float, float2, float3, float4, int, int2) {
 //         // Given('light ← point_light\(point\({float}, {float}, {float}), color\({float}, {int}, {float}))', function (float, float2, float3, float4, int, float5) {
 //         // Given('light ← point_light\(point\({float}, {float}, {float}), color\({float}, {float}, {int}))', function (float, float2, float3, float4, float5, int) {
-         Given('light ← point_light\\(point {float}, {float}, {float}, color {float}, {float}, {float})', function (float, float2, float3, float4, float5, float6) {
+         Given('light ← point_light\\(point {float}, {float}, {float} color {float}, {float}, {float})', function (float, float2, float3, float4, float5, float6) {
 //           // Write code here that turns the phrase above into concrete actions
            light = new point_light(point(float, float2, float3), color(float4, float5, float6))
          });
