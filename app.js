@@ -1,6 +1,6 @@
 var a, p, v, c1, c2, r, s, xs, m
 
-//if (!!process.argv) process.exit() // don't run if nothing passed in
+if (!process.argv[2]) process.exit() // don't run if nothing passed in
 
 const { point, color, normalize, sub, neg } = require('./tuple')
 const { sphere, intersect, normal_at } = require('./sphere')
@@ -9,6 +9,7 @@ const { ray, direction } = require('./ray')
 const { hit } = require('./intersection')
 const _ = require('lodash')
 const { point_light, material, lighting } = require('./lighting')
+const fs = require('fs')
 
 //# start the ray at z = -5
 let ray_origin = point(0, 0, -5)
@@ -59,4 +60,4 @@ _.range(canvas_pixels).forEach(y => {
 //  end for
 })
 //end for
-console.log(file.canvas_to_ppm())
+fs.writeFile(process.argv[2], file.canvas_to_ppm(), () => {})
