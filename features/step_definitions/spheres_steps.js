@@ -13,10 +13,10 @@ const { material } = require('../../lighting')
 //   ? And s ← sphere
 //       Undefined. Implement with the following snippet:
 //let s
-           Given('s ← new sphere', function () {
+           //Given('s ← sphere', function () {
              // Write code here that turns the phrase above into concrete actions
-             s = new sphere()
-           });
+             //s = new sphere()
+           //});
 //
 //   ? When xs ← intersect(s, r)
 //       Undefined. Implement with the following snippet:
@@ -280,7 +280,7 @@ const { material } = require('../../lighting')
 //
          Then('s.transform = identity_matrix', function () {
 //           // Write code here that turns the phrase above into concrete actions
-           assert(equal(s.transform.M, matrix.IDENTITY))
+           assert(equal(s.transform.M, matrix.identity_matrix))
          });
 //
 //
@@ -960,9 +960,9 @@ let n
 //    ? And m ← material()
 //        Undefined. Implement with the following snippet:
 //
-          Given('m ← material', function () {
+          Given('m ← new material', function () {
 //            // Write code here that turns the phrase above into concrete actions
-            m = new material()
+            m = new material
           });
 //
 //    ? And m.ambient ← 1

@@ -1,6 +1,7 @@
 const { Before, Given, When, Then } = require('@cucumber/cucumber')
 const assert = require('assert')
 const { equal } = require('../../utility')
+const { sphere } = require('../../sphere')
 
 const { intersection, intersections, hit } = require('../../intersection')
 //
@@ -8,10 +9,10 @@ const { intersection, intersections, hit } = require('../../intersection')
 //   ? Given s ← sphere()
 //       Undefined. Implement with the following snippet:
 //
-//         Given('s ← sphere\()', function () {
+         Given('s ← new sphere', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           s = new sphere
+         });
 //
 //   ? When i ← intersection(3.5, s)
 //       Undefined. Implement with the following snippet:

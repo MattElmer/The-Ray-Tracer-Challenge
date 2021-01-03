@@ -9,6 +9,7 @@ exports.transformation = class {
     mul = t => t instanceof exports.transformation ?
                new exports.transformation(mul(this.M, t.M)) :
                mul(this.M, t)
+    valueOf = function() { return this.M } 
     translation = (x, y, z) =>
         new exports.transformation([[1, 0, 0, x],
                                     [0, 1, 0, y],
@@ -41,7 +42,6 @@ exports.transformation = class {
                                     [y_x,  1,  y_z, 0],
                                     [z_x, z_y,  1,  0],
                                     [ 0,   0,   0,  1]]).mul(this)
-
     inverse = () =>
         new exports.transformation(inverse(this.M))
 }

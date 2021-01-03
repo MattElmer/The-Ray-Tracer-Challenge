@@ -389,7 +389,7 @@ Scenario: Multiplying a matrix by the identity matrix # ../features/matrices.fea
 /*
    ? Then A * identity_matrix = A
 */
-let I = mat.IDENTITY
+let I = mat.identity_matrix
          Then('A * identity_matrix = A', function () {
            assert(equal(mat.mul(A, I), A))
          });
