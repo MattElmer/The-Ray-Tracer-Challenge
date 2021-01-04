@@ -9,7 +9,7 @@ exports.transformation = class {
     mul = t => t instanceof exports.transformation ?
                new exports.transformation(mul(this.M, t.M)) :
                mul(this.M, t)
-    valueOf = function() { return this.M } 
+    // valueOf = function() { return this.M } // direct matrix comparison?
     translation = (x, y, z) =>
         new exports.transformation([[1, 0, 0, x],
                                     [0, 1, 0, y],
@@ -47,3 +47,7 @@ exports.transformation = class {
 }
 
 exports.identity = () => new exports.transformation
+
+exports.translate = (...args) => exports.identity().translate(...args)
+
+exports.scaling = (...args) => exports.identity().scaling(...args)

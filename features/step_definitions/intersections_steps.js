@@ -2,8 +2,8 @@ const { Before, Given, When, Then } = require('@cucumber/cucumber')
 const assert = require('assert')
 const { equal } = require('../../utility')
 const { sphere } = require('../../sphere')
-
-const { intersection, intersections, hit } = require('../../intersection')
+const { point, vector } = require('../../tuple')
+const { intersection, intersections, hit, prepare_computations } = require('../../intersection')
 //
 //1) Scenario: An intersection encapsulates t and object # ../features/intersections.feature:3
 //   ? Given s ← sphere()
@@ -114,43 +114,43 @@ let i
 //   ? And shape ← sphere()
 //       Undefined. Implement with the following snippet:
 //
-//         Given('shape ← sphere\()', function () {
+         Given('shape ← new sphere', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           shape = new sphere
+         });
 //
 //   ? And i ← intersection(4, shape)
 //       Undefined. Implement with the following snippet:
 //
-//         Given('i ← intersection\({int}, shape)', function (int) {
+         Given('i ← intersection\\({float}, shape)', function (float) {
 //         // Given('i ← intersection\({float}, shape)', function (float) {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           i = intersection(float, shape)
+         });
 //
 //   ? When comps ← prepare_computations(i, r)
 //       Undefined. Implement with the following snippet:
-//
-//         When('comps ← prepare_computations\(i, r)', function () {
+let comps
+         When('comps ← prepare_computations\\(i, r)', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           comps = prepare_computations(i, r)
+         });
 //
 //   ? Then comps.t = i.t
 //       Undefined. Implement with the following snippet:
 //
-//         Then('comps.t = i.t', function () {
+         Then('comps.t = i.t', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           assert(equal(comps.t, i.t))
+         });
 //
 //   ? And comps.object = i.object
 //       Undefined. Implement with the following snippet:
 //
-//         Then('comps.object = i.object', function () {
+         Then('comps.object = i.object', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           assert(equal(comps.object, i.object))
+         });
 //
 //   ? And comps.point = point(0, 0, -1)
 //       Undefined. Implement with the following snippet:
@@ -162,10 +162,10 @@ let i
 //         // Then('comps.point = point\({float}, {int}, {int})', function (float, int, int2) {
 //         // Then('comps.point = point\({float}, {int}, {float})', function (float, int, float2) {
 //         // Then('comps.point = point\({float}, {float}, {int})', function (float, float2, int) {
-//         // Then('comps.point = point\({float}, {float}, {float})', function (float, float2, float3) {
+         Then('comps.point = point\\({float}, {float}, {float})', function (float, float2, float3) {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           assert(equal(comps.point, point(float, float2, float3)))
+         });
 //
 //   ? And comps.eyev = vector(0, 0, -1)
 //       Undefined. Implement with the following snippet:
@@ -177,10 +177,10 @@ let i
 //         // Then('comps.eyev = vector\({float}, {int}, {int})', function (float, int, int2) {
 //         // Then('comps.eyev = vector\({float}, {int}, {float})', function (float, int, float2) {
 //         // Then('comps.eyev = vector\({float}, {float}, {int})', function (float, float2, int) {
-//         // Then('comps.eyev = vector\({float}, {float}, {float})', function (float, float2, float3) {
+         Then('comps.eyev = vector\\({float}, {float}, {float})', function (float, float2, float3) {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           assert(equal(comps.eyev, vector(float, float2, float3)))
+         });
 //
 //   ? And comps.normalv = vector(0, 0, -1)
 //       Undefined. Implement with the following snippet:
@@ -192,10 +192,10 @@ let i
 //         // Then('comps.normalv = vector\({float}, {int}, {int})', function (float, int, int2) {
 //         // Then('comps.normalv = vector\({float}, {int}, {float})', function (float, int, float2) {
 //         // Then('comps.normalv = vector\({float}, {float}, {int})', function (float, float2, int) {
-//         // Then('comps.normalv = vector\({float}, {float}, {float})', function (float, float2, float3) {
+         Then('comps.normalv = vector\\({float}, {float}, {float})', function (float, float2, float3) {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           assert(equal(comps.normalv, vector(float, float2, float3)))
+         });
 //
 //
 //3) Scenario: Precomputing the reflection vector # ../features/intersections.feature:20
@@ -627,10 +627,10 @@ let i
 //   ? Then comps.inside = false
 //       Undefined. Implement with the following snippet:
 //
-//         Then('comps.inside = false', function () {
+         Then('comps.inside = false', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           assert(!comps.inside)
+         });
 //
 //
 //5) Scenario: The hit, when an intersection occurs on the inside # ../features/intersections.feature:34
@@ -763,10 +763,10 @@ let i
 //   ? And comps.inside = true
 //       Undefined. Implement with the following snippet:
 //
-//         Then('comps.inside = true', function () {
+         Then('comps.inside = true', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           assert(comps.inside)
+         });
 //
 //   ? And comps.normalv = vector(0, 0, -1)
 //       Undefined. Implement with the following snippet:

@@ -1,7 +1,11 @@
 const { Before, Given, When, Then } = require('@cucumber/cucumber')
 const assert = require('assert')
 const { equal } = require('../../utility')
-const { world, default_world } = require('../../world')
+const { world, default_world, intersect_world } = require('../../world')
+const { sphere } = require('../../sphere')
+const _ = require('lodash')
+const { color } = require('../../tuple')
+const { translate, scaling } = require('../../transformation')
 //
 //1) Scenario: Creating a world # ../features/world.feature:3
 //   ? Given w ← world()
@@ -106,52 +110,58 @@ let w
 //       | material.diffuse  | 0.7             |
 //       | material.specular | 0.2             |
 //       Undefined. Implement with the following snippet:
-//
-//         Given('s1 ← sphere\() with:', function (dataTable) {
+let s1
+         Given('s1 ← new sphere with:', function (dataTable) {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           s1 = new sphere
+           dataTable.raw().forEach(([path, expr]) =>
+               _.update(s1, path, obj =>
+                   obj = eval(expr)))
+         });
 //
 //   ? And s2 ← sphere() with:
 //       | transform | scaling(0.5, 0.5, 0.5) |
 //       Undefined. Implement with the following snippet:
-//
-//         Given('s2 ← sphere\() with:', function (dataTable) {
+let s2
+         Given('s2 ← new sphere with:', function (dataTable) {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           s2 = new sphere
+           dataTable.raw().forEach(([path, expr]) =>
+               _.update(s2, path, obj =>
+                   obj = eval(expr)))         
+         });
 //
 //   ? When w ← default_world()
 //       Undefined. Implement with the following snippet:
 //
-//         When('w ← default_world\()', function () {
+         When('w ← new default_world', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           w = new default_world
+         });
 //
 //   ? Then w.light = light
 //       Undefined. Implement with the following snippet:
 //
-//         Then('w.light = light', function () {
+         Then('w.light = light', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           assert(equal(w.light, light))
+         });
 //
 //   ? And w contains s1
 //       Undefined. Implement with the following snippet:
 //
-//         Then('w contains s1', function () {
+         Then('w contains s1', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           assert(w.objects.some(obj => equal(obj, s1)))
+         });
 //
 //   ? And w contains s2
 //       Undefined. Implement with the following snippet:
 //
-//         Then('w contains s2', function () {
+         Then('w contains s2', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           assert(w.objects.some(obj => equal(obj, s2)))
+         });
 //
 //
 //3) Scenario: Intersect a world with a ray # ../features/world.feature:21
@@ -237,10 +247,10 @@ let w
 //   ? When xs ← intersect_world(w, r)
 //       Undefined. Implement with the following snippet:
 //
-//         When('xs ← intersect_world\(w, r)', function () {
+         When('xs ← intersect_world\\(w, r)', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           xs = intersect_world(w, r)
+         });
 //
 //   - Then xs.count = 4 # ../features/step_definitions/spheres_steps.js:32
 //   - And xs[0].t = 4 # ../features/step_definitions/intersections_steps.js:1066
@@ -330,11 +340,11 @@ let w
 //
 //   ? And shape ← the first object in w
 //       Undefined. Implement with the following snippet:
-//
-//         Given('shape ← the first object in w', function () {
+let shape
+         Given('shape ← the first object in w', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           shape = w.objects.find(Boolean)
+         });
 //
 //   ? And i ← intersection(4, shape)
 //       Undefined. Implement with the following snippet:
