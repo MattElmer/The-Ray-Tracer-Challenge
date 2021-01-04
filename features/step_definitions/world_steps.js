@@ -1,11 +1,12 @@
 const { Before, Given, When, Then } = require('@cucumber/cucumber')
 const assert = require('assert')
 const { equal } = require('../../utility')
-const { world, default_world, intersect_world } = require('../../world')
+const { world, default_world, intersect_world, shade_hit, color_at } = require('../../world')
 const { sphere } = require('../../sphere')
 const _ = require('lodash')
-const { color } = require('../../tuple')
+const { color, point } = require('../../tuple')
 const { translate, scaling } = require('../../transformation')
+const { point_light } = require('../../lighting')
 //
 //1) Scenario: Creating a world # ../features/world.feature:3
 //   ? Given w ← world()
@@ -340,10 +341,10 @@ let s2
 //
 //   ? And shape ← the first object in w
 //       Undefined. Implement with the following snippet:
-let shape
+//let shape
          Given('shape ← the first object in w', function () {
 //           // Write code here that turns the phrase above into concrete actions
-           shape = w.objects.find(Boolean)
+           shape = w.objects[0]
          });
 //
 //   ? And i ← intersection(4, shape)
@@ -365,19 +366,19 @@ let shape
 //
 //   ? And c ← shade_hit(w, comps)
 //       Undefined. Implement with the following snippet:
-//
-//         When('c ← shade_hit\(w, comps)', function () {
+let c
+         When('c ← shade_hit\\(w, comps)', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           c = shade_hit(w, comps)
+         });
 //
 //   ? Then c = color(0.38066, 0.47583, 0.2855)
 //       Undefined. Implement with the following snippet:
 //
-//         Then('c = color\({float}, {float}, {float})', function (float, float2, float3) {
+         Then('c = color\\({float}, {float}, {float})', function (float, float2, float3) {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           assert(equal(c, color(float, float2, float3)))
+         });
 //
 //
 //5) Scenario: Shading an intersection from the inside # ../features/world.feature:40
@@ -423,10 +424,10 @@ let shape
 //         // Given('w.light ← point_light\(point\({float}, {float}, {float}), color\({float}, {int}, {int}))', function (float, float2, float3, float4, int, int2) {
 //         // Given('w.light ← point_light\(point\({float}, {float}, {float}), color\({float}, {int}, {float}))', function (float, float2, float3, float4, int, float5) {
 //         // Given('w.light ← point_light\(point\({float}, {float}, {float}), color\({float}, {float}, {int}))', function (float, float2, float3, float4, float5, int) {
-//         // Given('w.light ← point_light\(point\({float}, {float}, {float}), color\({float}, {float}, {float}))', function (float, float2, float3, float4, float5, float6) {
+         Given('w.light ← point_light\\(point {float}, {float}, {float},color {float}, {float}, {float})', function (float, float2, float3, float4, float5, float6) {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           w.light = new point_light(point(float, float2, float3), color(float4, float5, float6))
+         });
 //
 //   ? And r ← ray(point(0, 0, 0), vector(0, 0, 1))
 //       Undefined. Implement with the following snippet:
@@ -502,10 +503,10 @@ let shape
 //   ? And shape ← the second object in w
 //       Undefined. Implement with the following snippet:
 //
-//         Given('shape ← the second object in w', function () {
+         Given('shape ← the second object in w', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           shape = w.objects[1]
+         });
 //
 //   ? And i ← intersection(0.5, shape)
 //       Undefined. Implement with the following snippet:
@@ -623,10 +624,10 @@ let shape
 //   ? When c ← color_at(w, r)
 //       Undefined. Implement with the following snippet:
 //
-//         When('c ← color_at\(w, r)', function () {
+         When('c ← color_at\\(w, r)', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           c = color_at(w, r)
+         });
 //
 //   ? Then c = color(0, 0, 0)
 //       Undefined. Implement with the following snippet:
@@ -752,37 +753,37 @@ let shape
 //
 //   ? And outer ← the first object in w
 //       Undefined. Implement with the following snippet:
-//
-//         Given('outer ← the first object in w', function () {
+let outer
+         Given('outer ← the first object in w', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           outer = w.objects[0]
+         });
 //
 //   ? And outer.material.ambient ← 1
 //       Undefined. Implement with the following snippet:
 //
 //         Given('outer.material.ambient ← {int}', function (int) {
-//         // Given('outer.material.ambient ← {float}', function (float) {
+         Given('outer.material.ambient ← {float}', function (float) {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           outer.material.ambient = float
+         });
 //
 //   ? And inner ← the second object in w
 //       Undefined. Implement with the following snippet:
-//
-//         Given('inner ← the second object in w', function () {
+let inner
+         Given('inner ← the second object in w', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           inner = w.objects[1]
+         });
 //
 //   ? And inner.material.ambient ← 1
 //       Undefined. Implement with the following snippet:
 //
 //         Given('inner.material.ambient ← {int}', function (int) {
-//         // Given('inner.material.ambient ← {float}', function (float) {
+         Given('inner.material.ambient ← {float}', function (float) {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           inner.material.ambient = float
+         });
 //
 //   ? And r ← ray(point(0, 0, 0.75), vector(0, 0, -1))
 //       Undefined. Implement with the following snippet:
@@ -834,10 +835,10 @@ let shape
 //   ? Then c = inner.material.color
 //       Undefined. Implement with the following snippet:
 //
-//         Then('c = inner.material.color', function () {
+         Then('c = inner.material.color', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           assert(equal(c, inner.material.color))
+         });
 //
 //
 //9) Scenario: There is no shadow when nothing is collinear with point and light # ../features/world.feature:72

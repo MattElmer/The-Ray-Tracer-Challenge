@@ -1,4 +1,4 @@
-var a, p, v, c1, c2, r, s, xs, m
+var a, p, v, c1, c2, r, s, xs, m, shape, comps
 
 if (!process.argv[2]) process.exit() // don't run if nothing passed in
 
@@ -27,7 +27,7 @@ let half = wall_size / 2
 //
 let file = new canvas(canvas_pixels, canvas_pixels)
 //let red  = color(1, 0, 0) //# red
-let shape = new sphere()
+shape = new sphere()
 shape.material.color = color(1, 0.2, 1)
 let light = new point_light(point(-10, 10, -10), color(1, 1, 1))
 //

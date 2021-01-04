@@ -130,7 +130,7 @@ let i
 //
 //   ? When comps ← prepare_computations(i, r)
 //       Undefined. Implement with the following snippet:
-let comps
+//let comps
          When('comps ← prepare_computations\\(i, r)', function () {
 //           // Write code here that turns the phrase above into concrete actions
            comps = prepare_computations(i, r)
