@@ -3,7 +3,7 @@ const assert = require('assert')
 const { equal } = require('../../utility')
 const matrix = require('../../matrix')
 const { tuple, point, vector } = require('../../tuple')
-const { transformation, identity } = require('../../transformation')
+const { transformation, identity, scaling, translation, view_transformation } = require('../../transformation')
 let transform
 //1) Scenario: Multiplying by a translation matrix # ../transformations.feature:3
 //   ? Given transform ← translation(5, -3, 2)
@@ -1287,10 +1287,10 @@ let from, to
 //
 //    ? When t ← view_transform(from, to, up)
 //        Undefined. Implement with the following snippet:
-//
+let t
           When('t ← view_transform\\(from, to, up)', function () {
             // Write code here that turns the phrase above into concrete actions
-            return 'pending';
+            t = view_transformation(from, to, up)
           });
 //
 //    ? Then t = identity_matrix
@@ -1298,7 +1298,7 @@ let from, to
 //
          Then('t = identity_matrix', function () {
            // Write code here that turns the phrase above into concrete actions
-           assert(equal(t, matrix.identity_matrix))
+           assert(equal(t, identity()))
          });
 //
 //
@@ -1368,7 +1368,7 @@ let from, to
 //          // Then('t = scaling\\({float}, {float}, {int})', function (float, float2, int) {
           Then('t = scaling\\({float}, {float}, {float})', function (float, float2, float3) {
             // Write code here that turns the phrase above into concrete actions
-            return 'pending';
+            assert(equal(t, scaling(float, float2, float3)))
           });
 //
 //
@@ -1438,7 +1438,7 @@ let from, to
 //          // Then('t = translation\\({float}, {float}, {int})', function (float, float2, int) {
           Then('t = translation\\({float}, {float}, {float})', function (float, float2, float3) {
             // Write code here that turns the phrase above into concrete actions
-            return 'pending';
+            assert(equal(t, translation(float, float2, float3)))
           });
 //
 //
@@ -1505,5 +1505,5 @@ let from, to
 //
           Then('t is the following 4x4 matrix:', function (dataTable) {
             // Write code here that turns the phrase above into concrete actions
-            return 'pending';
+            assert(equal(t.M, matrix.matrix(dataTable.raw())))
           });

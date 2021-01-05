@@ -1,4 +1,5 @@
 const { identity_matrix, mul, inverse } = require('./matrix')
+const { normalize, cross, sub } = require('./tuple')
 const S = Math.sin
 const C = Math.cos
 
@@ -42,12 +43,32 @@ exports.transformation = class {
                                     [y_x,  1,  y_z, 0],
                                     [z_x, z_y,  1,  0],
                                     [ 0,   0,   0,  1]]).mul(this)
-    inverse = () =>
-        new exports.transformation(inverse(this.M))
+    view_transformation = (from, to, up) => {
+        let forward = normalize(sub(to, from))
+        let    left = cross(forward, normalize(up))
+                 up = cross(left, forward)
+        return new exports.transformation([[    left.x,     left.y,     left.z, 0],
+                                           [      up.x,       up.y,       up.z, 0],
+                                           [-forward.x, -forward.y, -forward.z, 0],
+                                           [         0,          0,          0, 1]])
+                          .mul(this.translation(-from.x, -from.y, -from.z))
+    }
+    inverse = () => new exports.transformation(inverse(this.M))
 }
-
 exports.identity = () => new exports.transformation
 
-exports.translate = (...args) => exports.identity().translate(...args)
+exports.translation = (...args) => exports.identity().translation(...args)
 
 exports.scaling = (...args) => exports.identity().scaling(...args)
+
+exports.rotation_x = (...args) => exports.identity().rotation_x(...args)
+
+exports.rotation_y = (...args) => exports.identity().rotation_y(...args)
+
+exports.rotation_z = (...args) => exports.identity().rotation_z(...args)
+
+exports.shearing = (...args) => exports.identity().shearing(...args)
+
+exports.view_transformation = (...args) => exports.identity().view_transformation(...args)
+
+// templatize with computed method names?
