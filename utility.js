@@ -1,6 +1,6 @@
 const _ = require('lodash')
 
-const EPSILON = 0.00001
+const EPSILON = 0.00001; exports.EPSILON = EPSILON
 
 exports.equal = (a, b) =>
     _.isEqualWith(a, b, (c1, c2) =>

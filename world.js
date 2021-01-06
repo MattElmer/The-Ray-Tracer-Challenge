@@ -26,7 +26,7 @@ exports.default_world = class extends exports.world {
 
 exports.intersect_world = (w, r) => intersections(...w.objects.flatMap(o => intersect(o, r)))
 
-exports.shade_hit = (w, comps) => lighting(comps.object.material, w.light, comps.point, comps.eyev, comps.normalv, exports.is_shadowed(w, comps.point))
+exports.shade_hit = (w, comps) => lighting(comps.object.material, w.light, comps.point, comps.eyev, comps.normalv, exports.is_shadowed(w, comps.over_point))
 
 exports.color_at = (w, r) => 
     (h => h ? exports.shade_hit(w, prepare_computations(h, r)) : color())
