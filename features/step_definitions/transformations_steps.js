@@ -1242,7 +1242,7 @@ let full_quarter
 //20) Scenario: The transformation matrix for the default orientation # ../transformations.feature:120
 //    ? Given from ← point(0, 0, 0)
 //        Undefined. Implement with the following snippet:
-let from, to
+//let from, to
 //          Given('from ← point\\({int}, {int}, {int})', function (int, int2, int3) {
 //          // Given('from ← point\\({int}, {int}, {float})', function (int, int2, float) {
 //          // Given('from ← point\\({int}, {float}, {int})', function (int, float, int2) {

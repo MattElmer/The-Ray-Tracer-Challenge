@@ -1,4 +1,4 @@
-var a, p, v, c1, c2, r, s, xs, m, shape, comps
+var a, p, v, c1, c2, r, s, xs, m, shape, comps, from, to, up, w
 
 if (!process.argv[2]) process.exit() // don't run if nothing passed in
 

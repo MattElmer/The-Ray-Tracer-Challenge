@@ -38,7 +38,7 @@ Scenario: Constructing a ray when the camera is transformed
     And r.direction = vector(√2/2, 0, -√2/2)
 
 Scenario: Rendering a world with a camera
-  Given w ← default_world()
+  Given w ← new default_world
     And c ← camera(11, 11, π/2)
     And from ← point(0, 0, -5)
     And to ← point(0, 0, 0)

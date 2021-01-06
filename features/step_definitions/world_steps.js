@@ -11,7 +11,7 @@ const { point_light } = require('../../lighting')
 //1) Scenario: Creating a world # ../features/world.feature:3
 //   ? Given w ← world()
 //       Undefined. Implement with the following snippet:
-let w
+//let w
          Given('w ← new world', function () {
 //           // Write code here that turns the phrase above into concrete actions
            w = new world
