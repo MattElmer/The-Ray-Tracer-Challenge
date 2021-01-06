@@ -50,7 +50,7 @@ let scene = new world
 scene.objects = [floor, left_wall, right_wall, middle, left, right]
 scene.light = new point_light(point(-10, 10, -10), color(1, 1, 1))
 
-let eye = new camera(100, 50, Math.PI/3)
+let eye = new camera(320, 200, Math.PI/3)
 eye.transform = view_transformation(point(0, 1.5, -5), point(0, 1, 0), vector(0, 1, 0))
 
 //# render the result to a canvas.

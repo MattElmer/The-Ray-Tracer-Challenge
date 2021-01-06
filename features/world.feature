@@ -69,40 +69,40 @@ Scenario: The color with an intersection behind the ray
   When c ← color_at(w, r)
   Then c = inner.material.color
 
-#Scenario: There is no shadow when nothing is collinear with point and light
-#  Given w ← new default_world
-#    And p ← point(0, 10, 0)
-#   Then is_shadowed(w, p) is false
-#
-#Scenario: The shadow when an object is between the point and the light
-#  Given w ← new default_world
-#    And p ← point(10, -10, 10)
-#   Then is_shadowed(w, p) is true
-#
-#Scenario: There is no shadow when an object is behind the light
-#  Given w ← new default_world
-#    And p ← point(-20, 20, -20)
-#   Then is_shadowed(w, p) is false
-#
-#Scenario: There is no shadow when an object is behind the point
-#  Given w ← new default_world
-#    And p ← point(-2, 2, -2)
-#   Then is_shadowed(w, p) is false
-#
-#Scenario: shade_hit() is given an intersection in shadow
-#  Given w ← new world
-#    And w.light ← point_light(point 0, 0, -10,color 1, 1, 1)
-#    And s1 ← new sphere
-#    And s1 is added to w
-#    And s2 ← new sphere with:
-#      | transform | translation(0, 0, 10) |
-#    And s2 is added to w
-#    And r ← ray(point 0, 0, 5,vector 0, 0, 1)
-#    And i ← intersection(4, s2)
-#  When comps ← prepare_computations(i, r)
-#    And c ← shade_hit(w, comps)
-#  Then c = color(0.1, 0.1, 0.1)
-#
+Scenario: There is no shadow when nothing is collinear with point and light
+  Given w ← new default_world
+    And p ← point(0, 10, 0)
+   Then is_shadowed(w, p) is false
+
+Scenario: The shadow when an object is between the point and the light
+  Given w ← new default_world
+    And p ← point(10, -10, 10)
+   Then is_shadowed(w, p) is true
+
+Scenario: There is no shadow when an object is behind the light
+  Given w ← new default_world
+    And p ← point(-20, 20, -20)
+   Then is_shadowed(w, p) is false
+
+Scenario: There is no shadow when an object is behind the point
+  Given w ← new default_world
+    And p ← point(-2, 2, -2)
+   Then is_shadowed(w, p) is false
+
+Scenario: shade_hit() is given an intersection in shadow
+  Given w ← new world
+    And w.light ← point_light(point 0, 0, -10,color 1, 1, 1)
+    And s1 ← new sphere
+    And s1 is added to w
+    And s2 ← new sphere with:
+      | transform | translation(0, 0, 10) |
+    And s2 is added to w
+    And r ← ray(point 0, 0, 5,vector 0, 0, 1)
+    And i ← intersection(4, s2)
+  When comps ← prepare_computations(i, r)
+    And c ← shade_hit(w, comps)
+  Then c = color(0.1, 0.1, 0.1)
+
 #Scenario: The reflected color for a nonreflective material
 #  Given w ← new default_world
 #    And r ← ray(point 0, 0, 0 vector 0, 0, 1)

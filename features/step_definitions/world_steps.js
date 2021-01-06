@@ -1,37 +1,38 @@
 const { Before, Given, When, Then } = require('@cucumber/cucumber')
 const assert = require('assert')
 const { equal } = require('../../utility')
-const { world, default_world, intersect_world, shade_hit, color_at } = require('../../world')
+const { world, default_world, intersect_world, shade_hit, color_at, is_shadowed } = require('../../world')
 const { sphere } = require('../../sphere')
 const _ = require('lodash')
 const { color, point } = require('../../tuple')
-const { translate, scaling } = require('../../transformation')
+const { translation, scaling } = require('../../transformation')
 const { point_light } = require('../../lighting')
+const { intersection } = require('../../intersection')
 //
 //1) Scenario: Creating a world # ../features/world.feature:3
 //   ? Given w ← world()
 //       Undefined. Implement with the following snippet:
 //let w
-         Given('w ← new world', function () {
-//           // Write code here that turns the phrase above into concrete actions
-           w = new world
-         });
+Given('w ← new world', function () {
+    //           // Write code here that turns the phrase above into concrete actions
+    w = new world
+});
 //
 //   ? Then w contains no objects
 //       Undefined. Implement with the following snippet:
 //
-         Then('w contains no objects', function () {
-//           // Write code here that turns the phrase above into concrete actions
-           assert(!w.objects)
-         });
+Then('w contains no objects', function () {
+    //           // Write code here that turns the phrase above into concrete actions
+    assert(!w.objects)
+});
 //
 //   ? And w has no light source
 //       Undefined. Implement with the following snippet:
 //
-         Then('w has no light source', function () {
-//           // Write code here that turns the phrase above into concrete actions
-           assert(!w.light)
-         });
+Then('w has no light source', function () {
+    //           // Write code here that turns the phrase above into concrete actions
+    assert(!w.light)
+});
 //
 //
 //2) Scenario: The default world # ../features/world.feature:8
@@ -112,57 +113,57 @@ const { point_light } = require('../../lighting')
 //       | material.specular | 0.2             |
 //       Undefined. Implement with the following snippet:
 let s1
-         Given('s1 ← new sphere with:', function (dataTable) {
-//           // Write code here that turns the phrase above into concrete actions
-           s1 = new sphere
-           dataTable.raw().forEach(([path, expr]) =>
-               _.update(s1, path, obj =>
-                   obj = eval(expr)))
-         });
+Given('s1 ← new sphere with:', function (dataTable) {
+    //           // Write code here that turns the phrase above into concrete actions
+    s1 = new sphere
+    dataTable.raw().forEach(([path, expr]) =>
+        _.update(s1, path, obj =>
+            obj = eval(expr)))
+});
 //
 //   ? And s2 ← sphere() with:
 //       | transform | scaling(0.5, 0.5, 0.5) |
 //       Undefined. Implement with the following snippet:
 let s2
-         Given('s2 ← new sphere with:', function (dataTable) {
-//           // Write code here that turns the phrase above into concrete actions
-           s2 = new sphere
-           dataTable.raw().forEach(([path, expr]) =>
-               _.update(s2, path, obj =>
-                   obj = eval(expr)))         
-         });
+Given('s2 ← new sphere with:', function (dataTable) {
+    //           // Write code here that turns the phrase above into concrete actions
+    s2 = new sphere
+    dataTable.raw().forEach(([path, expr]) =>
+        _.update(s2, path, obj =>
+            obj = eval(expr)))
+});
 //
 //   ? When w ← default_world()
 //       Undefined. Implement with the following snippet:
 //
-         When('w ← new default_world', function () {
-//           // Write code here that turns the phrase above into concrete actions
-           w = new default_world
-         });
+When('w ← new default_world', function () {
+    //           // Write code here that turns the phrase above into concrete actions
+    w = new default_world
+});
 //
 //   ? Then w.light = light
 //       Undefined. Implement with the following snippet:
 //
-         Then('w.light = light', function () {
-//           // Write code here that turns the phrase above into concrete actions
-           assert(equal(w.light, light))
-         });
+Then('w.light = light', function () {
+    //           // Write code here that turns the phrase above into concrete actions
+    assert(equal(w.light, light))
+});
 //
 //   ? And w contains s1
 //       Undefined. Implement with the following snippet:
 //
-         Then('w contains s1', function () {
-//           // Write code here that turns the phrase above into concrete actions
-           assert(w.objects.some(obj => equal(obj, s1)))
-         });
+Then('w contains s1', function () {
+    //           // Write code here that turns the phrase above into concrete actions
+    assert(w.objects.some(obj => equal(obj, s1)))
+});
 //
 //   ? And w contains s2
 //       Undefined. Implement with the following snippet:
 //
-         Then('w contains s2', function () {
-//           // Write code here that turns the phrase above into concrete actions
-           assert(w.objects.some(obj => equal(obj, s2)))
-         });
+Then('w contains s2', function () {
+    //           // Write code here that turns the phrase above into concrete actions
+    assert(w.objects.some(obj => equal(obj, s2)))
+});
 //
 //
 //3) Scenario: Intersect a world with a ray # ../features/world.feature:21
@@ -248,10 +249,10 @@ let s2
 //   ? When xs ← intersect_world(w, r)
 //       Undefined. Implement with the following snippet:
 //
-         When('xs ← intersect_world\\(w, r)', function () {
-//           // Write code here that turns the phrase above into concrete actions
-           xs = intersect_world(w, r)
-         });
+When('xs ← intersect_world\\(w, r)', function () {
+    //           // Write code here that turns the phrase above into concrete actions
+    xs = intersect_world(w, r)
+});
 //
 //   - Then xs.count = 4 # ../features/step_definitions/spheres_steps.js:32
 //   - And xs[0].t = 4 # ../features/step_definitions/intersections_steps.js:1066
@@ -342,10 +343,10 @@ let s2
 //   ? And shape ← the first object in w
 //       Undefined. Implement with the following snippet:
 //let shape
-         Given('shape ← the first object in w', function () {
-//           // Write code here that turns the phrase above into concrete actions
-           shape = w.objects[0]
-         });
+Given('shape ← the first object in w', function () {
+    //           // Write code here that turns the phrase above into concrete actions
+    shape = w.objects[0]
+});
 //
 //   ? And i ← intersection(4, shape)
 //       Undefined. Implement with the following snippet:
@@ -367,18 +368,18 @@ let s2
 //   ? And c ← shade_hit(w, comps)
 //       Undefined. Implement with the following snippet:
 let c
-         When('c ← shade_hit\\(w, comps)', function () {
-//           // Write code here that turns the phrase above into concrete actions
-           c = shade_hit(w, comps)
-         });
+When('c ← shade_hit\\(w, comps)', function () {
+    //           // Write code here that turns the phrase above into concrete actions
+    c = shade_hit(w, comps)
+});
 //
 //   ? Then c = color(0.38066, 0.47583, 0.2855)
 //       Undefined. Implement with the following snippet:
 //
-         Then('c = color\\({float}, {float}, {float})', function (float, float2, float3) {
-//           // Write code here that turns the phrase above into concrete actions
-           assert(equal(c, color(float, float2, float3)))
-         });
+Then('c = color\\({float}, {float}, {float})', function (float, float2, float3) {
+    //           // Write code here that turns the phrase above into concrete actions
+    assert(equal(c, color(float, float2, float3)))
+});
 //
 //
 //5) Scenario: Shading an intersection from the inside # ../features/world.feature:40
@@ -424,10 +425,10 @@ let c
 //         // Given('w.light ← point_light\(point\({float}, {float}, {float}), color\({float}, {int}, {int}))', function (float, float2, float3, float4, int, int2) {
 //         // Given('w.light ← point_light\(point\({float}, {float}, {float}), color\({float}, {int}, {float}))', function (float, float2, float3, float4, int, float5) {
 //         // Given('w.light ← point_light\(point\({float}, {float}, {float}), color\({float}, {float}, {int}))', function (float, float2, float3, float4, float5, int) {
-         Given('w.light ← point_light\\(point {float}, {float}, {float},color {float}, {float}, {float})', function (float, float2, float3, float4, float5, float6) {
-//           // Write code here that turns the phrase above into concrete actions
-           w.light = new point_light(point(float, float2, float3), color(float4, float5, float6))
-         });
+Given('w.light ← point_light\\(point {float}, {float}, {float},color {float}, {float}, {float})', function (float, float2, float3, float4, float5, float6) {
+    //           // Write code here that turns the phrase above into concrete actions
+    w.light = new point_light(point(float, float2, float3), color(float4, float5, float6))
+});
 //
 //   ? And r ← ray(point(0, 0, 0), vector(0, 0, 1))
 //       Undefined. Implement with the following snippet:
@@ -503,10 +504,10 @@ let c
 //   ? And shape ← the second object in w
 //       Undefined. Implement with the following snippet:
 //
-         Given('shape ← the second object in w', function () {
-//           // Write code here that turns the phrase above into concrete actions
-           shape = w.objects[1]
-         });
+Given('shape ← the second object in w', function () {
+    //           // Write code here that turns the phrase above into concrete actions
+    shape = w.objects[1]
+});
 //
 //   ? And i ← intersection(0.5, shape)
 //       Undefined. Implement with the following snippet:
@@ -624,10 +625,10 @@ let c
 //   ? When c ← color_at(w, r)
 //       Undefined. Implement with the following snippet:
 //
-         When('c ← color_at\\(w, r)', function () {
-//           // Write code here that turns the phrase above into concrete actions
-           c = color_at(w, r)
-         });
+When('c ← color_at\\(w, r)', function () {
+    //           // Write code here that turns the phrase above into concrete actions
+    c = color_at(w, r)
+});
 //
 //   ? Then c = color(0, 0, 0)
 //       Undefined. Implement with the following snippet:
@@ -754,36 +755,36 @@ let c
 //   ? And outer ← the first object in w
 //       Undefined. Implement with the following snippet:
 let outer
-         Given('outer ← the first object in w', function () {
-//           // Write code here that turns the phrase above into concrete actions
-           outer = w.objects[0]
-         });
+Given('outer ← the first object in w', function () {
+    //           // Write code here that turns the phrase above into concrete actions
+    outer = w.objects[0]
+});
 //
 //   ? And outer.material.ambient ← 1
 //       Undefined. Implement with the following snippet:
 //
 //         Given('outer.material.ambient ← {int}', function (int) {
-         Given('outer.material.ambient ← {float}', function (float) {
-//           // Write code here that turns the phrase above into concrete actions
-           outer.material.ambient = float
-         });
+Given('outer.material.ambient ← {float}', function (float) {
+    //           // Write code here that turns the phrase above into concrete actions
+    outer.material.ambient = float
+});
 //
 //   ? And inner ← the second object in w
 //       Undefined. Implement with the following snippet:
 let inner
-         Given('inner ← the second object in w', function () {
-//           // Write code here that turns the phrase above into concrete actions
-           inner = w.objects[1]
-         });
+Given('inner ← the second object in w', function () {
+    //           // Write code here that turns the phrase above into concrete actions
+    inner = w.objects[1]
+});
 //
 //   ? And inner.material.ambient ← 1
 //       Undefined. Implement with the following snippet:
 //
 //         Given('inner.material.ambient ← {int}', function (int) {
-         Given('inner.material.ambient ← {float}', function (float) {
-//           // Write code here that turns the phrase above into concrete actions
-           inner.material.ambient = float
-         });
+Given('inner.material.ambient ← {float}', function (float) {
+    //           // Write code here that turns the phrase above into concrete actions
+    inner.material.ambient = float
+});
 //
 //   ? And r ← ray(point(0, 0, 0.75), vector(0, 0, -1))
 //       Undefined. Implement with the following snippet:
@@ -835,10 +836,10 @@ let inner
 //   ? Then c = inner.material.color
 //       Undefined. Implement with the following snippet:
 //
-         Then('c = inner.material.color', function () {
-//           // Write code here that turns the phrase above into concrete actions
-           assert(equal(c, inner.material.color))
-         });
+Then('c = inner.material.color', function () {
+    //           // Write code here that turns the phrase above into concrete actions
+    assert(equal(c, inner.material.color))
+});
 //
 //
 //9) Scenario: There is no shadow when nothing is collinear with point and light # ../features/world.feature:72
@@ -854,10 +855,10 @@ let inner
 //   ? Then is_shadowed(w, p) is false
 //       Undefined. Implement with the following snippet:
 //
-//         Then('is_shadowed\(w, p) is false', function () {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+Then('is_shadowed\\(w, p) is false', function () {
+    //           // Write code here that turns the phrase above into concrete actions
+    assert(!is_shadowed(w, p))
+});
 //
 //
 //10) Scenario: The shadow when an object is between the point and the light # ../features/world.feature:77
@@ -873,10 +874,10 @@ let inner
 //    ? Then is_shadowed(w, p) is true
 //        Undefined. Implement with the following snippet:
 //
-//          Then('is_shadowed\(w, p) is true', function () {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+Then('is_shadowed\\(w, p) is true', function () {
+    //            // Write code here that turns the phrase above into concrete actions
+    assert(is_shadowed(w, p))
+});
 //
 //
 //11) Scenario: There is no shadow when an object is behind the light # ../features/world.feature:82
@@ -1000,18 +1001,18 @@ let inner
 //    ? And s1 ← sphere()
 //        Undefined. Implement with the following snippet:
 //
-//          Given('s1 ← sphere\()', function () {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+Given('s1 ← new sphere', function () {
+    //            // Write code here that turns the phrase above into concrete actions
+    s1 = new sphere
+});
 //
 //    ? And s1 is added to w
 //        Undefined. Implement with the following snippet:
 //
-//          Given('s1 is added to w', function () {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+Given('s1 is added to w', function () {
+    //            // Write code here that turns the phrase above into concrete actions
+    w.objects = [s1]
+});
 //
 //    ? And s2 ← sphere() with:
 //        | transform | translation(0, 0, 10) |
@@ -1025,10 +1026,10 @@ let inner
 //    ? And s2 is added to w
 //        Undefined. Implement with the following snippet:
 //
-//          Given('s2 is added to w', function () {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+Given('s2 is added to w', function () {
+    //            // Write code here that turns the phrase above into concrete actions
+    w.objects.push[s2]
+});
 //
 //    ? And r ← ray(point(0, 0, 5), vector(0, 0, 1))
 //        Undefined. Implement with the following snippet:
@@ -1103,12 +1104,12 @@ let inner
 //
 //    ? And i ← intersection(4, s2)
 //        Undefined. Implement with the following snippet:
-//
+let i
 //          Given('i ← intersection\({int}, s2)', function (int) {
-//          // Given('i ← intersection\({float}, s2)', function (float) {
+          Given('i ← intersection\\({float}, s2)', function (float) {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            i =intersection(float, s2)
+          });
 //
 //    ? When comps ← prepare_computations(i, r)
 //        Undefined. Implement with the following snippet:

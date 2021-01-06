@@ -933,19 +933,19 @@ let result
 //
 //   ? And in_shadow ← true
 //       Undefined. Implement with the following snippet:
-//
-//         Given('in_shadow ← true', function () {
+let in_shadow
+         Given('in_shadow ← true', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           in_shadow = true
+         });
 //
 //   ? When result ← lighting(m, light, position, eyev, normalv, in_shadow)
 //       Undefined. Implement with the following snippet:
 //
-//         When('result ← lighting\(m, light, position, eyev, normalv, in_shadow)', function () {
+         When('result ← lighting\\(m, light, position, eyev, normalv, in_shadow)', function () {
 //           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+           result = lighting(m, light, position, eyev, normalv, in_shadow)
+         });
 //
 //   ? Then result = color(0.1, 0.1, 0.1)
 //       Undefined. Implement with the following snippet:

@@ -17,7 +17,7 @@ exports.material = class {
     }
 }
 
-exports.lighting = (material, light, point, eyev, normalv) => {
+exports.lighting = (material, light, point, eyev, normalv, in_shadow) => {
 //  # combine the surface color with the light's color/intensity
   let effective_color = mul(material.color, light.intensity)
 //
@@ -26,6 +26,7 @@ exports.lighting = (material, light, point, eyev, normalv) => {
 //
 //  # compute the ambient contribution
   let ambient = mul(effective_color, material.ambient)
+  if (in_shadow) return ambient
 //
 //  # light_dot_normal represents the cosine of the angle between the
 //  # light vector and the normal vector. A negative number means the
