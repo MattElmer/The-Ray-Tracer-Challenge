@@ -2,62 +2,64 @@ var a, p, v, c1, c2, r, s, xs, m, shape, comps, from, to, up, w
 
 if (!process.argv[2]) process.exit() // don't run if nothing passed in
 
-const { point, color, normalize, sub, neg } = require('./tuple')
-const { sphere, intersect, normal_at } = require('./sphere')
+const { point, vector, color } = require('./tuple')
+const { sphere } = require('./sphere')
 const { canvas } = require('./canvas')
-const { ray, direction } = require('./ray')
-const { hit } = require('./intersection')
-const _ = require('lodash')
-const { point_light, material, lighting } = require('./lighting')
+const { camera } = require('./camera')
+const { world } = require('./world')
+const { point_light, material } = require('./lighting')
+const { translation, scaling, rotation_x, rotation_y, rotation_z, view_transformation } = require('./transformation')
 const fs = require('fs')
 
-//# start the ray at z = -5
-let ray_origin = point(0, 0, -5)
-//
-//# put the wall at z = 10
-let wall_z = 10
-//
-let wall_size = 7.0
-//
-let canvas_pixels = 100
-//
-let pixel_size = wall_size / canvas_pixels
-//
-let half = wall_size / 2
-//
-let file = new canvas(canvas_pixels, canvas_pixels)
-//let red  = color(1, 0, 0) //# red
-shape = new sphere()
-shape.material.color = color(1, 0.2, 1)
-let light = new point_light(point(-10, 10, -10), color(1, 1, 1))
-//
-//# for each row of pixels in the canvas
-_.range(canvas_pixels).forEach(y => {
-//
-//  # compute the world y coordinate (top = +half, bottom = -half)
-  let world_y = half - pixel_size * y
-//
-//  # for each pixel in the row
-  _.range(canvas_pixels).forEach(x => {
-//
-//    # compute the world x coordinate (left = -half, right = half)
-    let world_x = -half + pixel_size * x
-//
-//    # describe the point on the wall that the ray will target
-    let position = point(world_x, world_y, wall_z)
-//
-    let r = ray(ray_origin, normalize(sub(position, ray_origin)))
-    let h = hit(intersect(shape, r))
-//
-    if (!!h) //is defined
-      { file.write_pixel(x, y, lighting(h.object.material,
-                                        light,
-                                        r(h.t),
-                                        neg(direction(r)),
-                                        normal_at(h.object, r(h.t)))) }
-//    end if
-  })
-//  end for
-})
-//end for
-fs.writeFile(process.argv[2], file.canvas_to_ppm(), () => {})
+let floor = new sphere
+floor.transform = scaling(10, 0.01, 10)
+floor.material = new material
+floor.material.color = color(1, 0.9, 0.9)
+floor.material.specular = 0
+
+let left_wall = new sphere
+left_wall.transform = translation(0, 0, 5).mul(
+                       rotation_y(-Math.PI/4).mul(rotation_x(Math.PI/2).mul(
+                       scaling(10, 0.01, 10))))
+left_wall.material = floor.material
+
+let right_wall = new sphere
+right_wall.transform = translation(0, 0, 5).mul(
+                        rotation_y(Math.PI/4).mul(rotation_x(Math.PI/2).mul(
+                        scaling(10, 0.01, 10))))
+right_wall.material = floor.material
+
+let middle = new sphere
+middle.transform = translation(-0.5, 1, 0.5)
+middle.material = new material
+middle.material.color = color(0.1, 1, 0.5)
+middle.material.diffuse = 0.7
+middle.material.specular = 0.3
+
+let right = new sphere
+right.transform = translation(1.5, 0.5, -0.5).mul(scaling(0.5, 0.5, 0.5))
+right.material = new material
+right.material.color = color(0.5, 1, 0.1)
+right.material.diffuse = 0.7
+right.material.specular = 0.3
+
+let left = new sphere
+left.transform = translation(-1.5, 0.33, -0.75).mul(scaling(0.33, 0.33, 0.33))
+left.material = new material
+left.material.color = color(1, 0.8, 0.1)
+left.material.diffuse = 0.7
+left.material.specular = 0.3
+
+let scene = new world
+scene.objects = [floor, left_wall, right_wall, middle, left, right]
+scene.light = new point_light(point(-10, 10, -10), color(1, 1, 1))
+
+let eye = new camera(200, 100, Math.PI/3)
+eye.transform = view_transformation(point(0, 1.5, -5),
+                                   point(0, 1, 0),
+                                   vector(0, 1, 0))
+
+//# render the result to a canvas.
+let image = eye.render(scene)
+
+fs.writeFile(process.argv[2], image.canvas_to_ppm(), () => {})

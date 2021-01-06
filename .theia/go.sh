@@ -1,1 +1,1 @@
-node --inspect ../node_modules/.bin/cucumber-js ../features/world.feature | head -n 35
+node --inspect ../node_modules/.bin/cucumber-js ../features/camera.feature | head -n 35
