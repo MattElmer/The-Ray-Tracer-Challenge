@@ -1,4 +1,4 @@
-const { identity_matrix, mul, inverse } = require('./matrix')
+const { identity_matrix, mul, inverse, transpose } = require('./matrix')
 const { normalize, cross, sub } = require('./tuple')
 const S = Math.sin
 const C = Math.cos
@@ -54,6 +54,7 @@ exports.transformation = class {
                           .mul(this.translation(-from.x, -from.y, -from.z))
     }
     inverse = () => new exports.transformation(inverse(this.M))
+    transpose = () => new  exports.transformation(transpose(this.M))
 }
 exports.identity = () => new exports.transformation
 

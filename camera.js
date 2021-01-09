@@ -17,9 +17,9 @@ exports.camera = class {
         this.pixel_size = this.half_width * 2 / this.hsize
     }
     ray_for_pixel = (...crds) =>
-        ray(          this.transform.inverse().mul(point(0,0,0)),
-            normalize(this.transform.inverse().mul(vector(...
-                _.zipWith(crds, [this.half_width, this.half_height], (crd, hlf) =>
+        ray(          this.transform.inverse().mul( point(0, 0, 0)),
+            normalize(this.transform.inverse().mul(vector(..._.zipWith(
+                crds, [this.half_width, this.half_height], (crd, hlf) =>
                     hlf - (crd + 0.5) * this.pixel_size), -1))))
 
     render = w => {
