@@ -8,12 +8,12 @@ exports.sphere = class extends shape {
         super()
     }
     local_intersect(r) {
-        sphere_to_ray = sub(origin(r), point(0, 0, 0))
-        a = dot(direction(r), direction(r))
-        b = 2 * dot(direction(r), sphere_to_ray)
-        c = dot(sphere_to_ray, sphere_to_ray) - 1
-        d = b ** 2 - 4 * a * c
-        return d < 0 ? [] : [-1, 1].map(sgn => intersection((-b + sgn * Math.sqrt(d)) / (2 * a), s))
+        let sphere_to_ray = sub(origin(r), point(0, 0, 0))
+        let a = dot(direction(r), direction(r))
+        let b = 2 * dot(direction(r), sphere_to_ray)
+        let c = dot(sphere_to_ray, sphere_to_ray) - 1
+        let d = b ** 2 - 4 * a * c
+        return d < 0 ? [] : [-1, 1].map(sgn => intersection((-b + sgn * Math.sqrt(d)) / (2 * a), this))
     }
     local_normal_at = p => sub(p, point(0, 0, 0))
 }
