@@ -1,7 +1,7 @@
 const { Before, Given, When, Then } = require('@cucumber/cucumber')
 const assert = require('assert')
 const { equal } = require('../../utility')
-
+const { stripe_pattern } = require('../../pattern')
 const { material, lighting, point_light } = require('../../lighting')
 const { color, vector, point } = require('../../tuple')
 //1) Scenario: The default material # ../features/materials.feature:7
@@ -1032,29 +1032,29 @@ let in_shadow
 //          // Given('m.pattern ← stripe_pattern\(color\({float}, {float}, {float}), color\({float}, {int}, {int}))', function (float, float2, float3, float4, int, int2) {
 //          // Given('m.pattern ← stripe_pattern\(color\({float}, {float}, {float}), color\({float}, {int}, {float}))', function (float, float2, float3, float4, int, float5) {
 //          // Given('m.pattern ← stripe_pattern\(color\({float}, {float}, {float}), color\({float}, {float}, {int}))', function (float, float2, float3, float4, float5, int) {
-//          // Given('m.pattern ← stripe_pattern\(color\({float}, {float}, {float}), color\({float}, {float}, {float}))', function (float, float2, float3, float4, float5, float6) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
-//
+          Given('m.pattern ← stripe_pattern\\(color {float}, {float}, {float},color {float}, {float}, {float})', function (float, float2, float3, float4, float5, float6) {
+            // Write code here that turns the phrase above into concrete actions
+            m.pattern = new stripe_pattern(color(float, float2, float3), color(float4, float5, float6))
+          });
+
 //    - And m.ambient ← 1 # ../features/step_definitions/spheres_steps.js:972
 //    ? And m.diffuse ← 0
 //        Undefined. Implement with the following snippet:
 //
 //          Given('m.diffuse ← {int}', function (int) {
-//          // Given('m.diffuse ← {float}', function (float) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('m.diffuse ← {float}', function (float) {
+            // Write code here that turns the phrase above into concrete actions
+            m.diffuse = float
+          });
 //
 //    ? And m.specular ← 0
 //        Undefined. Implement with the following snippet:
 //
 //          Given('m.specular ← {int}', function (int) {
-//          // Given('m.specular ← {float}', function (float) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('m.specular ← {float}', function (float) {
+            // Write code here that turns the phrase above into concrete actions
+            m.specular = float
+          });
 //
 //    ? And eyev ← vector(0, 0, -1)
 //        Undefined. Implement with the following snippet:
@@ -1163,10 +1163,10 @@ let in_shadow
 //          When('c1 ← lighting\(m, light, point\({float}, {int}, {int}), eyev, normalv, false)', function (float, int, int2) {
 //          // When('c1 ← lighting\(m, light, point\({float}, {int}, {float}), eyev, normalv, false)', function (float, int, float2) {
 //          // When('c1 ← lighting\(m, light, point\({float}, {float}, {int}), eyev, normalv, false)', function (float, float2, int) {
-//          // When('c1 ← lighting\(m, light, point\({float}, {float}, {float}), eyev, normalv, false)', function (float, float2, float3) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          When('c1 ← lighting\\(m, light, point {float}, {float}, {float},eyev, normalv, false)', function (float, float2, float3) {
+            // Write code here that turns the phrase above into concrete actions
+            c1 = lighting(m, light, point(float, float2, float3), eyev, normalv)
+          });
 //
 //    ? And c2 ← lighting(m, light, point(1.1, 0, 0), eyev, normalv, false)
 //        Undefined. Implement with the following snippet:
@@ -1174,10 +1174,10 @@ let in_shadow
 //          When('c2 ← lighting\(m, light, point\({float}, {int}, {int}), eyev, normalv, false)', function (float, int, int2) {
 //          // When('c2 ← lighting\(m, light, point\({float}, {int}, {float}), eyev, normalv, false)', function (float, int, float2) {
 //          // When('c2 ← lighting\(m, light, point\({float}, {float}, {int}), eyev, normalv, false)', function (float, float2, int) {
-//          // When('c2 ← lighting\(m, light, point\({float}, {float}, {float}), eyev, normalv, false)', function (float, float2, float3) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          When('c2 ← lighting\\(m, light, point {float}, {float}, {float},eyev, normalv, false)', function (float, float2, float3) {
+            // Write code here that turns the phrase above into concrete actions
+            c2 = lighting(m, light, point(float, float2, float3), eyev, normalv)
+          });
 //
 //    ? Then c1 = color(1, 1, 1)
 //        Undefined. Implement with the following snippet:
@@ -1189,10 +1189,10 @@ let in_shadow
 //          // Then('c1 = color\({float}, {int}, {int})', function (float, int, int2) {
 //          // Then('c1 = color\({float}, {int}, {float})', function (float, int, float2) {
 //          // Then('c1 = color\({float}, {float}, {int})', function (float, float2, int) {
-//          // Then('c1 = color\({float}, {float}, {float})', function (float, float2, float3) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Then('c1 = color\\({float}, {float}, {float})', function (float, float2, float3) {
+            // Write code here that turns the phrase above into concrete actions
+            assert(equal(c1, color(float, float2, float3)))
+          });
 //
 //    ? And c2 = color(0, 0, 0)
 //        Undefined. Implement with the following snippet:
@@ -1204,7 +1204,7 @@ let in_shadow
 //          // Then('c2 = color\({float}, {int}, {int})', function (float, int, int2) {
 //          // Then('c2 = color\({float}, {int}, {float})', function (float, int, float2) {
 //          // Then('c2 = color\({float}, {float}, {int})', function (float, float2, int) {
-//          // Then('c2 = color\({float}, {float}, {float})', function (float, float2, float3) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Then('c2 = color\\({float}, {float}, {float})', function (float, float2, float3) {
+            // Write code here that turns the phrase above into concrete actions
+            assert(equal(c2, color(float, float2, float3)))
+          });

@@ -17,9 +17,10 @@ exports.material = class {
     }
 }
 
-exports.lighting = (material, light, point, eyev, normalv, in_shadow) => {
+exports.lighting = (material, light, point, eyev, normalv, in_shadow = false) => {
 //  # combine the surface color with the light's color/intensity
-  let effective_color = mul(material.color, light.intensity)
+  let effective_color = mul(material.pattern? material.pattern.stripe_at(point) : material.color, light.intensity)
+//let effective_color = mul(material.pattern?.stripe_at(point) ?? material.color, light.intensity)
 //
 //  # find the direction to the light source
   let lightv = normalize(sub(light.position, point))

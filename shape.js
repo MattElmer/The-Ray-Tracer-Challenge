@@ -8,6 +8,7 @@ exports.shape = class {
         this.transform = identity()
         this.material = new material
     }
+    set_transform = t => this.transform = t
     intersect = r => this.local_intersect(transform(r, this.transform.inverse()))
     normal_at = p => normalize(vector(...this.transform.inverse().transpose().mul(this.local_normal_at(this.transform.inverse().mul(p))).arr))
     local_intersect(r) { throw new TypeError('abstract method') }
@@ -21,4 +22,4 @@ exports.test_shape = class extends exports.shape {
     local_normal_at = p => vector(...p.arr)
 }
 
-exports.set_transform = (s, t) => s.transform = t
+exports.set_transform = (s, t) => s.set_transform(t)

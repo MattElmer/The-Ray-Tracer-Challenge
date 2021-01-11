@@ -16,8 +16,8 @@ exports.prepare_computations = (i, r) => {
            comps.point      = r(comps.t)
            comps.eyev       = neg(direction(r))
            comps.normalv    = sphere.normal_at(comps.object, comps.point)
-       if (comps.inside     = dot(comps.normalv, comps.eyev) < 0) {
-           comps.normalv    = neg(comps.normalv) }
+       if (comps.inside     = dot(comps.normalv, comps.eyev) < 0)
+         { comps.normalv    = neg(comps.normalv) }
            comps.over_point = add(comps.point, mul(comps.normalv, EPSILON))
     return comps
 }
