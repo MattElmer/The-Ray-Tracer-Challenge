@@ -4,7 +4,7 @@ const { equal } = require('../../utility')
 const { color, point } = require('../../tuple')
 const { stripe_pattern } = require('../../pattern')
 const { sphere } = require('../../sphere')
-const { scaling } = require('../../transformation')
+const { scaling, translation } = require('../../transformation')
 //
 //1) Scenario: Creating a stripe pattern # ../features/patterns.feature:7
 //   ? Given black ← color(0, 0, 0)
@@ -425,10 +425,10 @@ let object
 //   ? Then c = white
 //       Undefined. Implement with the following snippet:
 //
-//         Then('c = white', function () {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Then('c = white', function () {
+           // Write code here that turns the phrase above into concrete actions
+           assert(equal(c, white))
+         });
 //
 //
 //6) Scenario: Stripes with a pattern transformation # ../features/patterns.feature:40
@@ -488,10 +488,10 @@ let object
 //         // Given('set_pattern_transform\\(pattern, scaling {float}, {int}, {int})', function (float, int, int2) {
 //         // Given('set_pattern_transform\\(pattern, scaling {float}, {int}, {float})', function (float, int, float2) {
 //         // Given('set_pattern_transform\\(pattern, scaling {float}, {float}, {int})', function (float, float2, int) {
-//         // Given('set_pattern_transform\\(pattern, scaling {float}, {float}, {float})', function (float, float2, float3) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Given('set_pattern_transform\\(pattern, scaling {float}, {float}, {float})', function (float, float2, float3) {
+           // Write code here that turns the phrase above into concrete actions
+           pattern.set_transform(scaling(float, float2, float3))
+         });
 //
 //   ? When c ← stripe_at_object(pattern, object, point 1.5, 0, 0)
 //       Undefined. Implement with the following snippet:
@@ -581,10 +581,10 @@ let object
 //         Given('set_pattern_transform\\(pattern, translation {float}, {int}, {int})', function (float, int, int2) {
 //         // Given('set_pattern_transform\\(pattern, translation {float}, {int}, {float})', function (float, int, float2) {
 //         // Given('set_pattern_transform\\(pattern, translation {float}, {float}, {int})', function (float, float2, int) {
-//         // Given('set_pattern_transform\\(pattern, translation {float}, {float}, {float})', function (float, float2, float3) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Given('set_pattern_transform\\(pattern, translation {float}, {float}, {float})', function (float, float2, float3) {
+           // Write code here that turns the phrase above into concrete actions
+           pattern.set_transform(translation(float, float2, float3))
+         });
 //
 //   ? When c ← stripe_at_object(pattern, object, point 2.5, 0, 0)
 //       Undefined. Implement with the following snippet:

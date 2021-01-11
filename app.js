@@ -14,7 +14,7 @@ const { point_light, material } = require('./lighting')
 const { translation, scaling, rotation_x, rotation_y, rotation_z, view_transformation } = require('./transformation')
 
 let floor = new plane //sphere
-floor.transform = scaling(10, 0.01, 10)
+//floor.transform = scaling(10, 0.01, 10)
 floor.material = new material
 floor.material.color = color(1, 0.9, 0.9)
 floor.material.specular = 0
