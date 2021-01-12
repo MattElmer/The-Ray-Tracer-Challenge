@@ -2,9 +2,10 @@ const { Before, Given, When, Then } = require('@cucumber/cucumber')
 const assert = require('assert')
 const { equal } = require('../../utility')
 const { color, point } = require('../../tuple')
-const { stripe_pattern } = require('../../pattern')
+const { test_pattern, stripe_pattern } = require('../../pattern')
 const { sphere } = require('../../sphere')
 const { scaling, translation } = require('../../transformation')
+const { identity_matrix } = require('../../matrix')
 //
 //1) Scenario: Creating a stripe pattern # ../features/patterns.feature:7
 //   ? Given black ← color(0, 0, 0)
@@ -640,18 +641,18 @@ let object
 //   ? Given pattern ← new test_pattern
 //       Undefined. Implement with the following snippet:
 //
-//         Given('pattern ← new test_pattern', function () {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Given('pattern ← new test_pattern', function () {
+           // Write code here that turns the phrase above into concrete actions
+           pattern = new test_pattern
+         });
 //
 //   ? Then pattern.transform = identity_matrix
 //       Undefined. Implement with the following snippet:
 //
-//         Then('pattern.transform = identity_matrix', function () {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Then('pattern.transform = identity_matrix', function () {
+           // Write code here that turns the phrase above into concrete actions
+           assert(equal(pattern.transform, identity_matrix))
+         });
 //
 //
 //9) Scenario: Assigning a transformation # ../features/patterns.feature:59
@@ -718,10 +719,10 @@ let object
 //         // Then('pattern.transform = translation\\({float}, {int}, {int})', function (float, int, int2) {
 //         // Then('pattern.transform = translation\\({float}, {int}, {float})', function (float, int, float2) {
 //         // Then('pattern.transform = translation\\({float}, {float}, {int})', function (float, float2, int) {
-//         // Then('pattern.transform = translation\\({float}, {float}, {float})', function (float, float2, float3) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Then('pattern.transform = translation\\({float}, {float}, {float})', function (float, float2, float3) {
+           // Write code here that turns the phrase above into concrete actions
+           assert(equal(pattern.transform, translation(float, float2, float3)))
+         });
 //
 //
 //10) Scenario: A pattern with an object transformation # ../features/patterns.feature:64
@@ -766,10 +767,10 @@ let object
 //          // Given('set_transform\\(shape, scaling {float}, {int}, {int})', function (float, int, int2) {
 //          // Given('set_transform\\(shape, scaling {float}, {int}, {float})', function (float, int, float2) {
 //          // Given('set_transform\\(shape, scaling {float}, {float}, {int})', function (float, float2, int) {
-//          // Given('set_transform\\(shape, scaling {float}, {float}, {float})', function (float, float2, float3) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('set_transform\\(shape, scaling {float}, {float}, {float})', function (float, float2, float3) {
+            // Write code here that turns the phrase above into concrete actions
+            shape.set_transform(scaling(float, float2, float3))
+          });
 //
 //    ? And pattern ← new test_pattern
 //        Undefined. Implement with the following snippet:
@@ -789,10 +790,10 @@ let object
 //          // When('c ← pattern_at_shape\\(pattern, shape, point {float}, {int}, {int})', function (float, int, int2) {
 //          // When('c ← pattern_at_shape\\(pattern, shape, point {float}, {int}, {float})', function (float, int, float2) {
 //          // When('c ← pattern_at_shape\\(pattern, shape, point {float}, {float}, {int})', function (float, float2, int) {
-//          // When('c ← pattern_at_shape\\(pattern, shape, point {float}, {float}, {float})', function (float, float2, float3) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          When('c ← pattern_at_shape\\(pattern, shape, point {float}, {float}, {float})', function (float, float2, float3) {
+            // Write code here that turns the phrase above into concrete actions
+            c = pattern.pattern_at_shape(shape, point(float, float2, float3))
+          });
 //
 //    - Then c = color(1, 1.5, 2) # ../features/step_definitions/world_steps.js:379
 //

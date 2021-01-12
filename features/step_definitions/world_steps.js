@@ -367,7 +367,7 @@ Given('shape ← the first object in w', function () {
 //
 //   ? And c ← shade_hit(w, comps)
 //       Undefined. Implement with the following snippet:
-let c
+//let c
 When('c ← shade_hit\\(w, comps)', function () {
     //           // Write code here that turns the phrase above into concrete actions
     c = shade_hit(w, comps)
