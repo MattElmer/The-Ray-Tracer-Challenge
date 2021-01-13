@@ -1,7 +1,6 @@
 const { identity } = require('./transformation')
 const { color, add, mul, sub } = require('./tuple')
 const { abstract } = require('./utility')
-const { rotation_y, rotation_z } = require('./transformation')
 
 exports.pattern = class extends abstract {
     constructor() { super(exports.pattern); this.transform = identity() }

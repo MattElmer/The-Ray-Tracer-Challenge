@@ -9,10 +9,10 @@ const { canvas } = require('./canvas')
 const { camera } = require('./camera')
 const { sphere } = require('./sphere')
 const { EPSILON } = require('./utility')
-const { stripe_pattern, checkers_pattern } = require('./pattern')
+const { gradient_pattern, checkers_pattern } = require('./pattern')
 const { point, vector, color } = require('./tuple')
 const { point_light, material } = require('./lighting')
-const { translation, scaling, rotation_x, rotation_y, rotation_z, view_transformation } = require('./transformation')
+const { translation, scaling, rotation_x, rotation_y, view_transformation } = require('./transformation')
 
 let floor = new plane //sphere
 //floor.transform = scaling(10, 0.01, 10)
@@ -36,6 +36,8 @@ middle.material = new material
 middle.material.color = color(0.1, 1, 0.5)
 middle.material.diffuse = 0.7
 middle.material.specular = 0.3
+middle.material.pattern = new gradient_pattern(color(0.1, 1, 0.5), color(0.0, 1, 1))
+middle.material.pattern.transform = translation(1.5, 0, 0).scaling(2, 2, 2)
 
 let right = new sphere
 right.transform = translation(1.5, 0.5, -0.5).mul(scaling(0.5, 0.5, 0.5))
