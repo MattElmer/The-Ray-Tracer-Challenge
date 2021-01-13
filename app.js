@@ -8,6 +8,7 @@ const { plane } = require('./plane')
 const { canvas } = require('./canvas')
 const { camera } = require('./camera')
 const { sphere } = require('./sphere')
+const { EPSILON } = require('./utility')
 const { stripe_pattern, checkers_pattern } = require('./pattern')
 const { point, vector, color } = require('./tuple')
 const { point_light, material } = require('./lighting')
@@ -18,7 +19,8 @@ let floor = new plane //sphere
 floor.material = new material
 floor.material.color = color(1, 0.9, 0.9)
 floor.material.specular = 0
-floor.material.pattern = new stripe_pattern(color(1, 0, 0), color(1, 1, 1))
+floor.material.pattern = new checkers_pattern(color(1, 1, 1), color(0, 0, 0))
+floor.material.pattern.transform = translation(0, EPSILON, 0)
 
 // let left_wall = new plane //sphere
 // left_wall.transform = translation(0, 0, 5).mul(rotation_y(-Math.PI/4).mul(rotation_x(Math.PI/2).mul(scaling(10, 0.01, 10))))
@@ -34,8 +36,6 @@ middle.material = new material
 middle.material.color = color(0.1, 1, 0.5)
 middle.material.diffuse = 0.7
 middle.material.specular = 0.3
-middle.material.pattern = new checkers_pattern(color(1, 1, 1), color(0, 0, 0))
-middle.material.pattern.transform = scaling(0.1, 0.1, 0.1)
 
 let right = new sphere
 right.transform = translation(1.5, 0.5, -0.5).mul(scaling(0.5, 0.5, 0.5))
@@ -55,7 +55,7 @@ let scene = new world
 scene.objects = [floor, middle, left, right]
 scene.light = new point_light(point(-10, 10, -10), color(1, 1, 1))
 
-let eye = new camera(200, 75, Math.PI/3)
+let eye = new camera(320, 120, Math.PI/3)
 eye.transform = view_transformation(point(0, 1.5, -5), point(0, 1, 0), vector(0, 1, 0))
 
 //# render the result to a canvas.
