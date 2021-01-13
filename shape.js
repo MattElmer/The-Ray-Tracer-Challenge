@@ -6,7 +6,7 @@ const { abstract } = require('./utility')
 
 exports.shape = class extends abstract {
     constructor() { 
-        super('shape')
+        super(exports.shape)
         this.transform = identity()
         this.material = new material
     }

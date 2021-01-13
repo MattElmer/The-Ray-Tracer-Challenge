@@ -4,7 +4,7 @@ const { abstract } = require('./utility')
 const { rotation_y, rotation_z } = require('./transformation')
 
 exports.pattern = class extends abstract {
-    constructor() { super('pattern'); this.transform = identity() }
+    constructor() { super(exports.pattern); this.transform = identity() }
     pattern_at_shape = (s, p) => this.pattern_at(this.transform.inverse().mul(s.transform.inverse().mul(p)))
     pattern_at(p) { super.unimplemented() }
     set_transform(t) { this.transform = t }

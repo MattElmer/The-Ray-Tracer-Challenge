@@ -8,6 +8,6 @@ exports.equal = (a, b) =>
         Math.abs(c1 - c2) < EPSILON : undefined)
 
 exports.abstract = class {
-    constructor(derived) { if(['abstract', derived].includes(new.target)) throw new TypeError('abstract class') }
+    constructor(derived) { if([exports.abstract, derived].includes(this.constructor)) throw new TypeError('abstract class') }
     unimplemented() { throw new TypeError('abstract method') }
 }
