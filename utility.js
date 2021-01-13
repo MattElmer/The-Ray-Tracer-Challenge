@@ -6,3 +6,8 @@ exports.equal = (a, b) =>
     _.isEqualWith(a.valueOf(), b.valueOf(), (c1, c2) =>
         isFinite(c1) && isFinite(c2) ?
         Math.abs(c1 - c2) < EPSILON : undefined)
+
+exports.abstract = class {
+    constructor(derived) { if(['abstract', derived].includes(new.target)) throw new TypeError('abstract class') }
+    unimplemented() { throw new TypeError('abstract method') }
+}

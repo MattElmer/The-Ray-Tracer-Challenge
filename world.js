@@ -2,7 +2,7 @@ const { equal } = require('./utility')
 const { scaling } = require('./transformation')
 const { material, point_light, lighting } = require('./lighting')
 const { color, point, magnitude, normalize, sub } = require('./tuple')
-const { sphere, intersect } = require('./sphere')
+const { sphere } = require('./sphere')
 const { intersections, prepare_computations, hit } = require('./intersection')
 const { ray } = require('./ray')
 
@@ -24,7 +24,7 @@ exports.default_world = class extends exports.world {
     }
 }
 
-exports.intersect_world = (w, r) => intersections(...w.objects.flatMap(o => intersect(o, r)))
+exports.intersect_world = (w, r) => intersections(...w.objects.flatMap(o => o.intersect(r)))
 
 exports.shade_hit = (w, comps) => lighting(comps.object.material, comps.object, w.light, comps.point, comps.eyev, comps.normalv, exports.is_shadowed(w, comps.over_point))
 
