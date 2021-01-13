@@ -8,7 +8,7 @@ const { plane } = require('./plane')
 const { canvas } = require('./canvas')
 const { camera } = require('./camera')
 const { sphere } = require('./sphere')
-const { stripe_pattern } = require('./pattern')
+const { stripe_pattern, checkers_pattern } = require('./pattern')
 const { point, vector, color } = require('./tuple')
 const { point_light, material } = require('./lighting')
 const { translation, scaling, rotation_x, rotation_y, rotation_z, view_transformation } = require('./transformation')
@@ -34,6 +34,8 @@ middle.material = new material
 middle.material.color = color(0.1, 1, 0.5)
 middle.material.diffuse = 0.7
 middle.material.specular = 0.3
+middle.material.pattern = new checkers_pattern(color(1, 1, 1), color(0, 0, 0))
+middle.material.pattern.transform = scaling(0.1, 0.1, 0.1)
 
 let right = new sphere
 right.transform = translation(1.5, 0.5, -0.5).mul(scaling(0.5, 0.5, 0.5))

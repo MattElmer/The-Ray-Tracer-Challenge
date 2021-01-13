@@ -20,7 +20,7 @@ exports.material = class {
 exports.lighting = (material, object, light, point, eyev, normalv, in_shadow) => {
   if ((typeof object).endsWith('light')) return exports.lighting(material, new sphere, object, light, point, eyev, normalv)
 //  # combine the surface color with the light's color/intensity
-  let effective_color = mul(material.pattern ? material.pattern.stripe_at_object(object, point) : material.color, light.intensity)
+  let effective_color = mul(material.pattern ? material.pattern.pattern_at_shape(object, point) : material.color, light.intensity)
 //let effective_color = mul(material.pattern?.stripe_at(point) ?? material.color, light.intensity)
 //
 //  # find the direction to the light source

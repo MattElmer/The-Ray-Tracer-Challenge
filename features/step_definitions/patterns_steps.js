@@ -2,7 +2,7 @@ const { Before, Given, When, Then } = require('@cucumber/cucumber')
 const assert = require('assert')
 const { equal } = require('../../utility')
 const { color, point } = require('../../tuple')
-const { test_pattern, stripe_pattern } = require('../../pattern')
+const { test_pattern, stripe_pattern, gradient_pattern, ring_pattern, checkers_pattern } = require('../../pattern')
 const { sphere } = require('../../sphere')
 const { scaling, translation } = require('../../transformation')
 const { identity_matrix } = require('../../matrix')
@@ -978,10 +978,10 @@ let object
 //    ? Given pattern ← gradient_pattern(white, black)
 //        Undefined. Implement with the following snippet:
 //
-//          Given('pattern ← gradient_pattern\\(white, black)', function () {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('pattern ← new gradient_pattern\\(white, black)', function () {
+            // Write code here that turns the phrase above into concrete actions
+            pattern = new gradient_pattern(white, black)
+          });
 //
 //    ? Then pattern_at(pattern, point 0, 0, 0) = white
 //        Undefined. Implement with the following snippet:
@@ -993,10 +993,10 @@ let object
 //          // Then('pattern_at\\(pattern, point {float}, {int}, {int}) = white', function (float, int, int2) {
 //          // Then('pattern_at\\(pattern, point {float}, {int}, {float}) = white', function (float, int, float2) {
 //          // Then('pattern_at\\(pattern, point {float}, {float}, {int}) = white', function (float, float2, int) {
-//          // Then('pattern_at\\(pattern, point {float}, {float}, {float}) = white', function (float, float2, float3) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Then('pattern_at\\(pattern, point {float}, {float}, {float}) = white', function (float, float2, float3) {
+            // Write code here that turns the phrase above into concrete actions
+            assert(equal(pattern.pattern_at(point(float, float2, float3)), white))
+          });
 //
 //    ? And pattern_at(pattern, point 0.25, 0, 0) = color(0.75, 0.75, 0.75)
 //        Undefined. Implement with the following snippet:
@@ -1004,10 +1004,10 @@ let object
 //          Then('pattern_at\\(pattern, point {float}, {int}, {int}) = color\\({float}, {float}, {float})', function (float, int, int2, float2, float3, float4) {
 //          // Then('pattern_at\\(pattern, point {float}, {int}, {float}) = color\\({float}, {float}, {float})', function (float, int, float2, float3, float4, float5) {
 //          // Then('pattern_at\\(pattern, point {float}, {float}, {int}) = color\\({float}, {float}, {float})', function (float, float2, int, float3, float4, float5) {
-//          // Then('pattern_at\\(pattern, point {float}, {float}, {float}) = color\\({float}, {float}, {float})', function (float, float2, float3, float4, float5, float6) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Then('pattern_at\\(pattern, point {float}, {float}, {float}) = color\\({float}, {float}, {float})', function (float, float2, float3, float4, float5, float6) {
+            // Write code here that turns the phrase above into concrete actions
+            assert(equal(pattern.pattern_at(point(float, float2, float3)), color(float4, float5, float6)))
+          });
 //
 //    ? And pattern_at(pattern, point 0.5, 0, 0) = color(0.5, 0.5, 0.5)
 //        Undefined. Implement with the following snippet:
@@ -1066,10 +1066,10 @@ let object
 //    ? Given pattern ← ring_pattern(white, black)
 //        Undefined. Implement with the following snippet:
 //
-//          Given('pattern ← ring_pattern\\(white, black)', function () {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('pattern ← new ring_pattern\\(white, black)', function () {
+            // Write code here that turns the phrase above into concrete actions
+            pattern = new ring_pattern(white, black)
+          });
 //
 //    ? Then pattern_at(pattern, point 0, 0, 0) = white
 //        Undefined. Implement with the following snippet:
@@ -1096,10 +1096,10 @@ let object
 //          // Then('pattern_at\\(pattern, point {float}, {int}, {int}) = black', function (float, int, int2) {
 //          // Then('pattern_at\\(pattern, point {float}, {int}, {float}) = black', function (float, int, float2) {
 //          // Then('pattern_at\\(pattern, point {float}, {float}, {int}) = black', function (float, float2, int) {
-//          // Then('pattern_at\\(pattern, point {float}, {float}, {float}) = black', function (float, float2, float3) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Then('pattern_at\\(pattern, point {float}, {float}, {float}) = black', function (float, float2, float3) {
+            // Write code here that turns the phrase above into concrete actions
+            assert(equal(pattern.pattern_at(point(float, float2, float3)), black))
+          });
 //
 //    ? And pattern_at(pattern, point 0, 0, 1) = black
 //        Undefined. Implement with the following snippet:
@@ -1160,10 +1160,10 @@ let object
 //    ? Given pattern ← checkers_pattern(white, black)
 //        Undefined. Implement with the following snippet:
 //
-//          Given('pattern ← checkers_pattern\\(white, black)', function () {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('pattern ← new checkers_pattern\\(white, black)', function () {
+            // Write code here that turns the phrase above into concrete actions
+            pattern = new checkers_pattern(white, black)
+          });
 //
 //    ? Then pattern_at(pattern, point 0, 0, 0) = white
 //        Undefined. Implement with the following snippet:
