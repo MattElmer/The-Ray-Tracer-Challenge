@@ -1,4 +1,3 @@
-const { using } = require('./utility')
 const { scaling } = require('./transformation')
 const { material, point_light, lighting } = require('./lighting')
 const { color, point, magnitude, normalize, sub, mul, add, BLACK, WHITE } = require('./tuple')
@@ -26,17 +25,27 @@ exports.default_world = class extends exports.world {
 
 exports.intersect_world = (w, r) => intersections(...w.objects.flatMap(o => o.intersect(r)))
 
-exports.shade_hit = (w, comps) => add(lighting(comps.object.material, comps.object, w.light, comps.point, comps.eyev, comps.normalv, exports.is_shadowed(w, comps.over_point)),
-                                      exports.reflected_color(w, comps))
+const MAX_RECURSION = 5
 
-exports.color_at = (w, r) =>
-    using (hit(exports.intersect_world(w, r))).as (h =>
-        h ? exports.shade_hit(w, prepare_computations(h, r)) : BLACK)
+exports.shade_hit = (w, comps, n = MAX_RECURSION) => add(lighting(comps.object.material,
+                                                                  comps.object, w.light,
+                                                                  comps.point,
+                                                                  comps.eyev,
+                                                                  comps.normalv,
+                                                                  exports.is_shadowed(w, comps.over_point)),
+                                                         exports.reflected_color(w, comps, n))
 
-exports.is_shadowed = (w, p) =>
-    using (hit(exports.intersect_world(w, ray(p, normalize(sub(w.light.position, p)))))).as (h =>
-        h && h.t < magnitude(sub(w.light.position, p)))
-
-exports.reflected_color = (w, comps) =>
-    using (comps.object.material.reflective).as (a =>
-        a ? mul(exports.color_at(w, ray(comps.over_point, comps.reflectv)), a) : BLACK)
+exports.color_at = (w, r, n = MAX_RECURSION) => {
+    let    h = hit(exports.intersect_world(w, r))
+    return h ? exports.shade_hit(w, prepare_computations(h, r), n)
+             : BLACK
+}
+exports.is_shadowed = (w, p) => {
+    let    h = hit(exports.intersect_world(w, ray(p, normalize(sub(w.light.position, p)))))
+    return h && h.t < magnitude(sub(w.light.position, p))
+}
+exports.reflected_color = (w, comps, n = MAX_RECURSION) => {
+    let    r = comps.object.material.reflective
+    return r && n ? mul(exports.color_at(w, ray(comps.over_point, comps.reflectv), n - 1), r)
+                  : BLACK
+}

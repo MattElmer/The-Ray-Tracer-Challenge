@@ -12,5 +12,3 @@ exports.abstract = class {
     constructor(derived) { if([exports.abstract, derived].includes(this.constructor)) throw new TypeError('abstract class') }
     unimplemented() { throw new TypeError('abstract method') }
 }
-
-exports.using = x => { return { as:function(f) { return f(x) } } }

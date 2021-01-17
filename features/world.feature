@@ -151,18 +151,18 @@ Scenario: color_at() with mutually reflective surfaces
     And r ← ray(point 0, 0, 0,vector 0, 1, 0)
   Then color_at(w, r) should terminate successfully
 
-#Scenario: The reflected color at the maximum recursive depth
-#  Given w ← new default_world
-#    And shape ← new plane with:
-#      | material.reflective | 0.5                   |
-#      | transform           | translation(0, -1, 0) |
-#    And shape is added to w
-#    And r ← ray(point 0, 0, -3,vector 0, -√2/2, √2/2)
-#    And i ← intersection(√2, shape)
-#  When comps ← prepare_computations(i, r)
-#    And col ← reflected_color(w, comps, 0)    
-#  Then col = color(0, 0, 0)
-#
+Scenario: The reflected color at the maximum recursive depth
+  Given w ← new default_world
+    And shape ← new plane with:
+      | material.reflective | 0.5                   |
+      | transform           | translation(0, -1, 0) |
+    And shape is added to w
+    And r ← ray(point 0, 0, -3,vector 0, -√2/2, √2/2)
+    And i ← intersection(√2, shape)
+  When comps ← prepare_computations(i, r)
+    And col ← reflected_color(w, comps, 0)    
+  Then col = color(0, 0, 0)
+
 #Scenario: The refracted color with an opaque surface
 #  Given w ← new default_world
 #    And shape ← the first object in w

@@ -2122,10 +2122,10 @@ let col
 //    ? Then color_at(w, r) should terminate successfully
 //        Undefined. Implement with the following snippet:
 //
-//          Then('color_at\(w, r) should terminate successfully', function () {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Then('color_at\\(w, r) should terminate successfully', function () {
+            // Write code here that turns the phrase above into concrete actions
+            color_at(w, r)
+          });
 //
 //
 //18) Scenario: The reflected color at the maximum recursive depth # ../features/world.feature:154
@@ -2439,10 +2439,10 @@ let col
 //        Undefined. Implement with the following snippet:
 //
 //          When('color ← reflected_color\(w, comps, {int})', function (int) {
-//          // When('color ← reflected_color\(w, comps, {float})', function (float) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          When('col ← reflected_color\\(w, comps, {float})', function (float) {
+            // Write code here that turns the phrase above into concrete actions
+            col = reflected_color(w, comps, float)
+          });
 //
 //    ? Then color = color(0, 0, 0)
 //        Undefined. Implement with the following snippet:
