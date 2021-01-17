@@ -1,9 +1,9 @@
-const { color } = require('./tuple')
+const { color, BLACK } = require('./tuple')
 const MAX_RGB = 255
 const MAX_LEN = 70
 exports.canvas = class {
     constructor(w, h) {
-        this.arr = Array.from({length:h}, () => Array.from({length:w}, () => color()))
+        this.arr = Array.from({length:h}, () => Array.from({length:w}, () => BLACK))
     }
     write_pixel   = (x, y, c) => this.arr[y][x] = c
     pixel_at      = (x, y)    => this.arr[y][x]

@@ -1,6 +1,8 @@
 const { Before, Given, When, Then } = require('@cucumber/cucumber')
 const assert = require('assert')
+const { ray } = require('../../ray')
 const { equal } = require('../../utility')
+const { plane } = require('../../plane')
 const { sphere } = require('../../sphere')
 const { point, vector } = require('../../tuple')
 const { intersection, intersections, hit, prepare_computations } = require('../../intersection')
@@ -202,10 +204,10 @@ let i
 //   ? Given shape ← plane()
 //       Undefined. Implement with the following snippet:
 //
-//         Given('shape ← plane\()', function () {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Given('shape ← new plane', function () {
+           // Write code here that turns the phrase above into concrete actions
+           shape = new plane
+         });
 //
 //   ? And r ← ray(point(0, 1, -1), vector(0, -√2/2, √2/2))
 //       Undefined. Implement with the following snippet:
@@ -465,19 +467,19 @@ let i
 //         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}√{float}\/{float}, √{int}\/{int}))', function (float, float2, float3, float4, float5, float6, float7, int, int2) {
 //         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}√{float}\/{float}, √{int}\/{float}))', function (float, float2, float3, float4, float5, float6, float7, int, float8) {
 //         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}√{float}\/{float}, √{float}\/{int}))', function (float, float2, float3, float4, float5, float6, float7, float8, int) {
-//         // Given('r ← ray\(point\({float}, {float}, {float}), vector\({float}, {float}√{float}\/{float}, √{float}\/{float}))', function (float, float2, float3, float4, float5, float6, float7, float8, float9) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Given('r ← ray\\(point {float}, {float}, {float},vector {float}, {float}√{float}\\/{float}, √{float}\\/{float})', function (float, float2, float3, float4, float5, float6, float7, float8, float9) {
+           // Write code here that turns the phrase above into concrete actions
+           r = ray(point(float, float2, float3), vector(float4, -Math.sqrt(float6) / float7, Math.sqrt(float8) / float9))
+         });
 //
 //   ? And i ← intersection(√2, shape)
 //       Undefined. Implement with the following snippet:
 //
 //         Given('i ← intersection\(√{int}, shape)', function (int) {
-//         // Given('i ← intersection\(√{float}, shape)', function (float) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Given('i ← intersection\\(√{float}, shape)', function (float) {
+           // Write code here that turns the phrase above into concrete actions
+           i = intersection(Math.sqrt(float), shape)
+         });
 //
 //   ? When comps ← prepare_computations(i, r)
 //       Undefined. Implement with the following snippet:
@@ -521,10 +523,10 @@ let i
 //         // Then('comps.reflectv = vector\({float}, √{float}\/{float}, √{int}\/{int})', function (float, float2, float3, int, int2) {
 //         // Then('comps.reflectv = vector\({float}, √{float}\/{float}, √{int}\/{float})', function (float, float2, float3, int, float4) {
 //         // Then('comps.reflectv = vector\({float}, √{float}\/{float}, √{float}\/{int})', function (float, float2, float3, float4, int) {
-//         // Then('comps.reflectv = vector\({float}, √{float}\/{float}, √{float}\/{float})', function (float, float2, float3, float4, float5) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Then('comps.reflectv = vector\\({float}, √{float}\\/{float}, √{float}\\/{float})', function (float, float2, float3, float4, float5) {
+           // Write code here that turns the phrase above into concrete actions
+           comps.reflectv = vector(float, Math.sqrt(float2) / float3, Math.sqrt(float4) / float5)
+         });
 //
 //
 //4) Scenario: The hit, when an intersection occurs on the outside # ../features/intersections.feature:27

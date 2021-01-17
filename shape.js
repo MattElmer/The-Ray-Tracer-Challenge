@@ -1,14 +1,14 @@
 const { identity } = require('./transformation')
-const { material } = require('./lighting')
+const lighting = require('./lighting')
 const { transform } = require('./ray')
 const { vector, normalize } = require('./tuple')
 const { abstract } = require('./utility')
 
 exports.shape = class extends abstract {
-    constructor() { 
+    constructor() {
         super(exports.shape)
         this.transform = identity()
-        this.material = new material
+        this.material = new lighting.material
     }
     local_intersect() { super.unimplemented() }
     local_normal_at() { super.unimplemented() }

@@ -45,3 +45,7 @@ exports.cross = (a, b) => exports.vector(a.y * b.z - a.z * b.y, a.z * b.x - a.x 
 exports.color = (r=0, g=0, b=0) => new exports.tuple(r, g, b)
 
 exports.reflect = (v, n) => exports.sub(v, exports.mul(n, 2 * exports.dot(v, n)))
+
+const BLACK  = Object.freeze(exports.color(0, 0, 0)); exports.BLACK = BLACK
+const WHITE  = Object.freeze(exports.color(1, 1, 1)); exports.WHITE = WHITE
+const ORIGIN = Object.freeze(exports.point(0, 0, 0)); exports.ORIGIN = ORIGIN

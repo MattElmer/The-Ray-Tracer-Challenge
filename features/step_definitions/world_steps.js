@@ -1,8 +1,9 @@
 const { Before, Given, When, Then } = require('@cucumber/cucumber')
 const assert = require('assert')
 const { equal } = require('../../utility')
-const { world, default_world, intersect_world, shade_hit, color_at, is_shadowed } = require('../../world')
+const { world, default_world, intersect_world, shade_hit, color_at, is_shadowed, reflected_color } = require('../../world')
 const { sphere } = require('../../sphere')
+const { plane } = require('../../plane')
 const _ = require('lodash')
 const { color, point } = require('../../tuple')
 const { translation, scaling } = require('../../transformation')
@@ -1228,10 +1229,10 @@ let i
 //        Undefined. Implement with the following snippet:
 //
 //          Given('shape.material.ambient ← {int}', function (int) {
-//          // Given('shape.material.ambient ← {float}', function (float) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('shape.material.ambient ← {float}', function (float) {
+            // Write code here that turns the phrase above into concrete actions
+            shape.material.ambient = float
+          });
 //
 //    ? And i ← intersection(1, shape)
 //        Undefined. Implement with the following snippet:
@@ -1252,11 +1253,11 @@ let i
 //
 //    ? And color ← reflected_color(w, comps)
 //        Undefined. Implement with the following snippet:
-//
-//          When('color ← reflected_color\(w, comps)', function () {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+let col
+          When('col ← reflected_color\\(w, comps)', function () {
+            // Write code here that turns the phrase above into concrete actions
+            col = reflected_color(w, comps)
+          });
 //
 //    ? Then color = color(0, 0, 0)
 //        Undefined. Implement with the following snippet:
@@ -1268,10 +1269,10 @@ let i
 //          // Then('color = color\({float}, {int}, {int})', function (float, int, int2) {
 //          // Then('color = color\({float}, {int}, {float})', function (float, int, float2) {
 //          // Then('color = color\({float}, {float}, {int})', function (float, float2, int) {
-//          // Then('color = color\({float}, {float}, {float})', function (float, float2, float3) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+           Then('col = color\\({float}, {float}, {float})', function (float, float2, float3) {
+            // Write code here that turns the phrase above into concrete actions
+            assert(equal(col, color(float, float2, float3)))
+          });
 //
 //
 //15) Scenario: The reflected color for a reflective material # ../features/world.feature:116
@@ -1288,18 +1289,21 @@ let i
 //        | transform           | translation(0, -1, 0) |
 //        Undefined. Implement with the following snippet:
 //
-//          Given('shape ← plane\() with:', function (dataTable) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('shape ← new plane with:', function (dataTable) {
+            // Write code here that turns the phrase above into concrete actions
+            shape = new plane
+            dataTable.raw().forEach(([path, expr]) =>
+              _.update(shape, path, obj =>
+                 obj = eval(expr)))
+          });
 //
 //    ? And shape is added to w
 //        Undefined. Implement with the following snippet:
 //
-//          Given('shape is added to w', function () {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('shape is added to w', function () {
+            // Write code here that turns the phrase above into concrete actions
+            w.objects.push(shape)
+          });
 //
 //    ? And r ← ray(point(0, 0, -3), vector(0, -√2/2, √2/2))
 //        Undefined. Implement with the following snippet:
@@ -1908,10 +1912,10 @@ let i
 //    ? And color ← shade_hit(w, comps)
 //        Undefined. Implement with the following snippet:
 //
-//          When('color ← shade_hit\(w, comps)', function () {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          When('col ← shade_hit\\(w, comps)', function () {
+            // Write code here that turns the phrase above into concrete actions
+            col = shade_hit(w, comps)
+          });
 //
 //    ? Then color = color(0.87677, 0.92436, 0.82918)
 //        Undefined. Implement with the following snippet:
@@ -2007,36 +2011,42 @@ let i
 //        | transform           | translation(0, -1, 0) |
 //        Undefined. Implement with the following snippet:
 //
-//          Given('lower ← plane\() with:', function (dataTable) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('lower ← new plane with:', function (dataTable) {
+            // Write code here that turns the phrase above into concrete actions
+            lower = new plane
+              dataTable.raw().forEach(([path, expr]) =>
+                _.update(plane, path, obj =>
+                  obj = eval(expr)))
+          });
 //
 //    ? And lower is added to w
 //        Undefined. Implement with the following snippet:
 //
-//          Given('lower is added to w', function () {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('lower is added to w', function () {
+            // Write code here that turns the phrase above into concrete actions
+            w.objects = [lower]
+          });
 //
 //    ? And upper ← plane() with:
 //        | material.reflective | 1                    |
 //        | transform           | translation(0, 1, 0) |
 //        Undefined. Implement with the following snippet:
 //
-//          Given('upper ← plane\() with:', function (dataTable) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('upper ← new plane with:', function (dataTable) {
+            // Write code here that turns the phrase above into concrete actions
+            upper = new plane 
+            dataTable.raw().forEach(([path, expr]) =>
+              _.update(upper, path, obj =>
+                obj = eval(expr)))
+          });
 //
 //    ? And upper is added to w
 //        Undefined. Implement with the following snippet:
 //
-//          Given('upper is added to w', function () {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('upper is added to w', function () {
+            // Write code here that turns the phrase above into concrete actions
+            w.objects.push(upper)
+          });
 //
 //    ? And r ← ray(point(0, 0, 0), vector(0, 1, 0))
 //        Undefined. Implement with the following snippet:
@@ -3756,9 +3766,3 @@ let i
 //            // Write code here that turns the phrase above into concrete actions
 //            return 'pending';
 //          });
-//
-//
-//24 scenarios (24 undefined)
-//165 steps (156 undefined, 9 skipped)
-//0m00.065s (executing steps: 0m00.000s)
-//

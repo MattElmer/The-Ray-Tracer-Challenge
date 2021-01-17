@@ -1,6 +1,5 @@
-const { neg, dot, add, mul } = require('./tuple')
+const { neg, dot, add, mul, reflect } = require('./tuple')
 const { direction } = require('./ray')
-const sphere = require('./sphere')
 const { EPSILON } = require('./utility')
 
 exports.intersection = (t, s) => {
@@ -19,5 +18,6 @@ exports.prepare_computations = (i, r) => {
        if (comps.inside     = dot(comps.normalv, comps.eyev) < 0)
          { comps.normalv    = neg(comps.normalv) }
            comps.over_point = add(comps.point, mul(comps.normalv, EPSILON))
+           comps.reflectv   = reflect(direction(r), comps.normalv)
     return comps
 }

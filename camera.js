@@ -1,6 +1,6 @@
 const { identity } = require('./transformation')
 const { ray } = require('./ray')
-const { point, vector, normalize } = require('./tuple')
+const { point, vector, normalize, ORIGIN } = require('./tuple')
 const _ = require('lodash')
 const { canvas } = require('./canvas')
 const { color_at } = require('./world')
@@ -17,7 +17,7 @@ exports.camera = class {
         this.pixel_size = this.half_width * 2 / this.hsize
     }
     ray_for_pixel = (...crds) =>
-        ray(          this.transform.inverse().mul( point(0, 0, 0)),
+        ray(          this.transform.inverse().mul(ORIGIN),
             normalize(this.transform.inverse().mul(vector(..._.zipWith(
                 crds, [this.half_width, this.half_height], (crd, hlf) =>
                     hlf - (crd + 0.5) * this.pixel_size), -1))))
