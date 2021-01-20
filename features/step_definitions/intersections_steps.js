@@ -1,11 +1,13 @@
 const { Before, Given, When, Then } = require('@cucumber/cucumber')
 const assert = require('assert')
+const _ = require('lodash')
 const { ray } = require('../../ray')
-const { equal } = require('../../utility')
+const { equal, EPSILON } = require('../../utility')
 const { plane } = require('../../plane')
-const { sphere } = require('../../sphere')
-const { point, vector } = require('../../tuple')
-const { intersection, intersections, hit, prepare_computations } = require('../../intersection')
+const { sphere, glass_sphere } = require('../../sphere')
+const { point, vector, color } = require('../../tuple')
+const { scaling, translation } = require('../../transformation')
+const { intersection, intersections, hit, prepare_computations, schlick } = require('../../intersection')
 //
 //1) Scenario: An intersection encapsulates t and object # ../features/intersections.feature:3
 //   ? Given s ← sphere()
@@ -862,10 +864,13 @@ let i
 //       | transform | translation(0, 0, 1) |
 //       Undefined. Implement with the following snippet:
 //
-//         Given('shape ← sphere\() with:', function (dataTable) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Given('{word} ← new {word} with:', function (name, type, dataTable) {
+           // Write code here that turns the phrase above into concrete actions
+           global[name] = new (require(`../../${type}`).default)
+             dataTable.raw().forEach(([path, expr]) =>
+               _.update(global[name], path, obj =>
+                 obj = eval(expr)))
+         });
 //
 //   ? And i ← intersection(5, shape)
 //       Undefined. Implement with the following snippet:
@@ -888,18 +893,18 @@ let i
 //       Undefined. Implement with the following snippet:
 //
 //         Then('comps.over_point.z < -EPSILON\/{int}', function (int) {
-//         // Then('comps.over_point.z < -EPSILON\/{float}', function (float) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Then('comps.over_point.z < -EPSILON\\/{float}', function (float) {
+           // Write code here that turns the phrase above into concrete actions
+           assert(comps.over_point.z < -EPSILON / float)
+         });
 //
 //   ? And comps.point.z > comps.over_point.z
 //       Undefined. Implement with the following snippet:
 //
-//         Then('comps.point.z > comps.over_point.z', function () {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Then('comps.point.z > comps.over_point.z', function () {
+           // Write code here that turns the phrase above into concrete actions
+           assert(comps.point.z > comps.over_point.z)
+         });
 //
 //
 //7) Scenario: The under point is offset below the surface # ../features/intersections.feature:54
@@ -995,35 +1000,35 @@ let i
 //   ? And xs ← intersections(i)
 //       Undefined. Implement with the following snippet:
 //
-//         Given('xs ← intersections\(i)', function () {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Given('xs ← intersections\\(i)', function () {
+           // Write code here that turns the phrase above into concrete actions
+           xs = intersections(i)
+         });
 //
 //   ? When comps ← prepare_computations(i, r, xs)
 //       Undefined. Implement with the following snippet:
 //
-//         When('comps ← prepare_computations\(i, r, xs)', function () {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         When('comps ← prepare_computations\\(i, r, xs)', function () {
+           // Write code here that turns the phrase above into concrete actions
+           comps = prepare_computations(i, r, xs)
+         });
 //
 //   ? Then comps.under_point.z > EPSILON/2
 //       Undefined. Implement with the following snippet:
 //
 //         Then('comps.under_point.z > EPSILON\/{int}', function (int) {
-//         // Then('comps.under_point.z > EPSILON\/{float}', function (float) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Then('comps.under_point.z > EPSILON\\/{float}', function (float) {
+           // Write code here that turns the phrase above into concrete actions
+           assert(comps.under_point.z > EPSILON / float)
+         });
 //
 //   ? And comps.point.z < comps.under_point.z
 //       Undefined. Implement with the following snippet:
 //
-//         Then('comps.point.z < comps.under_point.z', function () {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Then('comps.point.z < comps.under_point.z', function () {
+           // Write code here that turns the phrase above into concrete actions
+           assert(comps.point.z < comps.under_point.z)
+         });
 //
 //
 //8) Scenario: Aggregating intersections # ../features/intersections.feature:64
@@ -1317,9 +1322,12 @@ let i4
 //        | material.refractive_index | 1.5              |
 //        Undefined. Implement with the following snippet:
 //
-//          Given('A ← glass_sphere\() with:', function (dataTable) {
+//          Given('{word} ← new glass_sphere with:', function (word, dataTable) {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
+//            global[word] = new glass_sphere
+//            dataTable.raw().forEach(([path, expr]) =>
+//              _.update(global[word], path, obj =>
+//                obj = eval(expr)))
 //          });
 //
 //    ? And B ← glass_sphere() with:
@@ -1419,35 +1427,35 @@ let i4
 //          Given('xs ← intersections\({int}:A, {float}:B, {float}:C, {float}:B, {float}:C, {int}:A)', function (int, float, float2, float3, float4, int2) {
 //          // Given('xs ← intersections\({int}:A, {float}:B, {float}:C, {float}:B, {float}:C, {float}:A)', function (int, float, float2, float3, float4, float5) {
 //          // Given('xs ← intersections\({float}:A, {float}:B, {float}:C, {float}:B, {float}:C, {int}:A)', function (float, float2, float3, float4, float5, int) {
-//          // Given('xs ← intersections\({float}:A, {float}:B, {float}:C, {float}:B, {float}:C, {float}:A)', function (float, float2, float3, float4, float5, float6) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('xs ← intersections\\({float}:A, {float}:B, {float}:C, {float}:B, {float}:C, {float}:A)', function (float, float2, float3, float4, float5, float6) {
+            // Write code here that turns the phrase above into concrete actions
+            xs = intersections(intersection(float, A), intersection(float2, B), intersection(float3, C), intersection(float4, B), intersection(float5, C), intersection(float6, A))
+          });
 //
 //    ? When comps ← prepare_computations(xs[0], r, xs)
 //        Undefined. Implement with the following snippet:
 //
-//          When('comps ← prepare_computations\(xs[{int}], r, xs)', function (int) {
+          When('comps ← prepare_computations\\(xs[{int}], r, xs)', function (int) {
 //          // When('comps ← prepare_computations\(xs[{float}], r, xs)', function (float) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            // Write code here that turns the phrase above into concrete actions
+            comps = prepare_computations(xs[int], r, xs)
+          });
 //
 //    ? Then comps.n1 = 1.0
 //        Undefined. Implement with the following snippet:
 //
-//          Then('comps.n1 = {float}', function (float) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Then('comps.n1 = {float}', function (float) {
+            // Write code here that turns the phrase above into concrete actions
+            assert(equal(comps.n1, float))
+          });
 //
 //    ? And comps.n2 = 1.5
 //        Undefined. Implement with the following snippet:
 //
-//          Then('comps.n2 = {float}', function (float) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Then('comps.n2 = {float}', function (float) {
+            // Write code here that turns the phrase above into concrete actions
+            assert(equal(comps.n2, float))
+          });
 //
 //
 //14) Scenario: Finding n1 and n2 at various intersections # ../features/intersections.feature:126
@@ -2149,10 +2157,10 @@ let i4
 //    ? Given shape ← glass_sphere()
 //        Undefined. Implement with the following snippet:
 //
-//          Given('shape ← glass_sphere\()', function () {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('shape ← new glass_sphere', function () {
+            // Write code here that turns the phrase above into concrete actions
+            shape = new glass_sphere
+          });
 //
 //    ? And r ← ray(point(0, 0, √2/2), vector(0, 1, 0))
 //        Undefined. Implement with the following snippet:
@@ -2284,10 +2292,10 @@ let i4
 //          // Given('r ← ray\(point\({float}, {float}, √{float}\/{float}), vector\({float}, {int}, {int}))', function (float, float2, float3, float4, float5, int, int2) {
 //          // Given('r ← ray\(point\({float}, {float}, √{float}\/{float}), vector\({float}, {int}, {float}))', function (float, float2, float3, float4, float5, int, float6) {
 //          // Given('r ← ray\(point\({float}, {float}, √{float}\/{float}), vector\({float}, {float}, {int}))', function (float, float2, float3, float4, float5, float6, int) {
-//          // Given('r ← ray\(point\({float}, {float}, √{float}\/{float}), vector\({float}, {float}, {float}))', function (float, float2, float3, float4, float5, float6, float7) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('r ← ray\\(point {float}, {float}, √{float}\\/{float},vector {float}, {float}, {float})', function (float, float2, float3, float4, float5, float6, float7) {
+            // Write code here that turns the phrase above into concrete actions
+            r = ray(point(float, float2, Math.sqrt(float3) / float4), vector(float5, float6, float7))
+          });
 //
 //    ? And xs ← intersections(-√2/2:shape, √2/2:shape)
 //        Undefined. Implement with the following snippet:
@@ -2307,35 +2315,35 @@ let i4
 //          // Given('xs ← intersections\({float}√{float}\/{float}:shape, √{int}\/{int}:shape)', function (float, float2, float3, int, int2) {
 //          // Given('xs ← intersections\({float}√{float}\/{float}:shape, √{int}\/{float}:shape)', function (float, float2, float3, int, float4) {
 //          // Given('xs ← intersections\({float}√{float}\/{float}:shape, √{float}\/{int}:shape)', function (float, float2, float3, float4, int) {
-//          // Given('xs ← intersections\({float}√{float}\/{float}:shape, √{float}\/{float}:shape)', function (float, float2, float3, float4, float5) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('xs ← intersections\\({float}√{float}\\/{float}:shape, √{float}\\/{float}:shape)', function (float, float2, float3, float4, float5) {
+            // Write code here that turns the phrase above into concrete actions
+            xs = intersections(intersection(-Math.sqrt(float2) / float3, shape), intersection(Math.sqrt(float4) / float5, shape))
+          });
 //
 //    ? When comps ← prepare_computations(xs[1], r, xs)
 //        Undefined. Implement with the following snippet:
 //
-//          When('comps ← prepare_computations\(xs[{int}], r, xs)', function (int) {
+//        When('comps ← prepare_computations\\(xs[{int}], r, xs)', function (int) {
 //          // When('comps ← prepare_computations\(xs[{float}], r, xs)', function (float) {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
+//            comps = prepare_computations(xs[int], r, xs)
 //          });
 //
 //    ? And reflectance ← schlick(comps)
 //        Undefined. Implement with the following snippet:
 //
-//          When('reflectance ← schlick\(comps)', function () {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          When('reflectance ← schlick\\(comps)', function () {
+            // Write code here that turns the phrase above into concrete actions
+            reflectance = schlick(comps)
+          });
 //
 //    ? Then reflectance = 1.0
 //        Undefined. Implement with the following snippet:
 //
-//          Then('reflectance = {float}', function (float) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Then('reflectance = {float}', function (float) {
+            // Write code here that turns the phrase above into concrete actions
+            assert(equal(reflectance, float))
+          });
 //
 //
 //20) Scenario: The Schlick approximation with a perpendicular viewing angle # ../features/intersections.feature:140
@@ -2424,10 +2432,10 @@ let i4
 //          Given('xs ← intersections\({int}:shape, {int}:shape)', function (int, int2) {
 //          // Given('xs ← intersections\({int}:shape, {float}:shape)', function (int, float) {
 //          // Given('xs ← intersections\({float}:shape, {int}:shape)', function (float, int) {
-//          // Given('xs ← intersections\({float}:shape, {float}:shape)', function (float, float2) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('xs ← intersections\\({float}:shape, {float}:shape)', function (float, float2) {
+            // Write code here that turns the phrase above into concrete actions
+            xs = intersections(intersection(float, shape), intersection(float2, shape))
+          });
 //
 //    ? When comps ← prepare_computations(xs[1], r, xs)
 //        Undefined. Implement with the following snippet:
@@ -2506,10 +2514,10 @@ let i4
 //    ? And xs ← intersections(1.8589:shape)
 //        Undefined. Implement with the following snippet:
 //
-//          Given('xs ← intersections\({float}:shape)', function (float) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('xs ← intersections\\({float}:shape)', function (float) {
+            // Write code here that turns the phrase above into concrete actions
+            xs = intersections(intersection(float, shape))
+          });
 //
 //    ? When comps ← prepare_computations(xs[0], r, xs)
 //        Undefined. Implement with the following snippet:

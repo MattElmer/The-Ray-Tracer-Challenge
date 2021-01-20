@@ -10,7 +10,7 @@ const { camera } = require('./camera')
 const { sphere } = require('./sphere')
 const { EPSILON } = require('./utility')
 const { gradient_pattern, checkers_pattern } = require('./pattern')
-const { point, vector, color, BLACK, WHITE } = require('./tuple')
+const { point, vector, color, mul, BLACK, WHITE } = require('./tuple')
 const { point_light, material } = require('./lighting')
 const { translation, scaling, rotation_x, rotation_y, view_transformation } = require('./transformation')
 
@@ -39,19 +39,22 @@ middle.material.specular = 0.3
 middle.material.pattern = new gradient_pattern(color(0.1, 1, 0.5), color(0.0, 1, 1))
 middle.material.pattern.transform = translation(1.5, 0, 0).scaling(2, 2, 2)
 
+const ATTENUATION = 0.1
 let right = new sphere
 right.transform = translation(1.5, 0.5, -0.5).mul(scaling(0.5, 0.5, 0.5))
 right.material = new material
-right.material.color = color(0.5, 1, 0.1)
-right.material.diffuse = 0.7
-right.material.specular = 0.3
+right.material.color = mul(color(0.5, 1, 0.1), ATTENUATION)
+right.material.diffuse = 0.7 * ATTENUATION
+//right.material.specular = 0.3
 
 let left = new sphere
 left.transform = translation(-1.5, 0.33, -0.75).mul(scaling(0.33, 0.33, 0.33))
 left.material = new material
-left.material.color = color(1, 0.8, 0.1)
-left.material.diffuse = 0.7
-left.material.specular = 0.3
+left.material.color = mul(color(1, 0.8, 0.1), ATTENUATION)
+left.material.diffuse = 0.7 * ATTENUATION
+//left.material.specular = 0.3
+left.material.specular = right.material.specular = 1; left.material.shininess = right.material.shininess = 300
+left.material.reflective = right.material.reflective = left.material.transparency = right.material.transparency = 0.9
 
 let scene = new world
 scene.objects = [floor, middle, left, right]

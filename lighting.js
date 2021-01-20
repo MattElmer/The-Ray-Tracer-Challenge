@@ -9,13 +9,15 @@ exports.point_light = class {
 }
 
 exports.material = class {
-    constructor(col=WHITE, amb=0.1, dif=0.9, spe=0.9, shi=200, ref=0) {
+    constructor(col=WHITE, amb=0.1, dif=0.9, spe=0.9, shi=200, ref=0, tra=0, ind=1) {
         this.color = col
         this.ambient = amb
         this.diffuse = dif
         this.specular = spe
         this.shininess = shi
         this.reflective = ref
+        this.transparency = tra
+        this.refractive_index = ind
     }
 }
 

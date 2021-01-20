@@ -118,18 +118,18 @@ const { color, vector, point } = require('../../tuple')
 //   ? Then m.transparency = 0.0
 //       Undefined. Implement with the following snippet:
 //
-//         Then('m.transparency = {float}', function (float) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Then('m.transparency = {float}', function (float) {
+           // Write code here that turns the phrase above into concrete actions
+           assert(equal(m.transparency, float))
+         });
 //
 //   ? And m.refractive_index = 1.0
 //       Undefined. Implement with the following snippet:
 //
-//         Then('m.refractive_index = {float}', function (float) {
-//           // Write code here that turns the phrase above into concrete actions
-//           return 'pending';
-//         });
+         Then('m.refractive_index = {float}', function (float) {
+           // Write code here that turns the phrase above into concrete actions
+           assert(equal(m.refractive_index, float))
+         });
 //
 //
 //4) Scenario: Lighting with the eye between the light and the surface # ../features/materials.feature:24

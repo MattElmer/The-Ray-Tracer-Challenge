@@ -8,7 +8,8 @@ const _ = require('lodash')
 const { color, point } = require('../../tuple')
 const { translation, scaling } = require('../../transformation')
 const { point_light } = require('../../lighting')
-const { intersection } = require('../../intersection')
+const { intersection, intersections } = require('../../intersection')
+const { test_pattern } = require('../../pattern')
 //
 //1) Scenario: Creating a world # ../features/world.feature:3
 //   ? Given w ← world()
@@ -113,26 +114,26 @@ Then('w has no light source', function () {
 //       | material.diffuse  | 0.7             |
 //       | material.specular | 0.2             |
 //       Undefined. Implement with the following snippet:
-let s1
-Given('s1 ← new sphere with:', function (dataTable) {
-    //           // Write code here that turns the phrase above into concrete actions
-    s1 = new sphere
-    dataTable.raw().forEach(([path, expr]) =>
-        _.update(s1, path, obj =>
-            obj = eval(expr)))
-});
+//let s1
+//Given('s1 ← new sphere with:', function (dataTable) {
+//    //           // Write code here that turns the phrase above into concrete actions
+//    s1 = new sphere
+//    dataTable.raw().forEach(([path, expr]) =>
+//        _.update(s1, path, obj =>
+//            obj = eval(expr)))
+//});
 //
 //   ? And s2 ← sphere() with:
 //       | transform | scaling(0.5, 0.5, 0.5) |
 //       Undefined. Implement with the following snippet:
-let s2
-Given('s2 ← new sphere with:', function (dataTable) {
-    //           // Write code here that turns the phrase above into concrete actions
-    s2 = new sphere
-    dataTable.raw().forEach(([path, expr]) =>
-        _.update(s2, path, obj =>
-            obj = eval(expr)))
-});
+//let s2
+//Given('s2 ← new sphere with:', function (dataTable) {
+//    //           // Write code here that turns the phrase above into concrete actions
+//    s2 = new sphere
+//    dataTable.raw().forEach(([path, expr]) =>
+//        _.update(s2, path, obj =>
+//            obj = eval(expr)))
+//});
 //
 //   ? When w ← default_world()
 //       Undefined. Implement with the following snippet:
@@ -344,9 +345,9 @@ When('xs ← intersect_world\\(w, r)', function () {
 //   ? And shape ← the first object in w
 //       Undefined. Implement with the following snippet:
 //let shape
-Given('shape ← the first object in w', function () {
+Given('{} ← the {word} object in {word}', function (alias, nth, scene) {
     //           // Write code here that turns the phrase above into concrete actions
-    shape = w.objects[0]
+    global[alias] = global[scene].objects[['first', 'second', 'third'].indexOf(nth)]
 });
 //
 //   ? And i ← intersection(4, shape)
@@ -505,10 +506,10 @@ Given('w.light ← point_light\\(point {float}, {float}, {float},color {float}, 
 //   ? And shape ← the second object in w
 //       Undefined. Implement with the following snippet:
 //
-Given('shape ← the second object in w', function () {
-    //           // Write code here that turns the phrase above into concrete actions
-    shape = w.objects[1]
-});
+//Given('shape ← the second object in w', function () {
+//           // Write code here that turns the phrase above into concrete actions
+//shape = w.objects[1]
+//});
 //
 //   ? And i ← intersection(0.5, shape)
 //       Undefined. Implement with the following snippet:
@@ -755,11 +756,11 @@ When('c ← color_at\\(w, r)', function () {
 //
 //   ? And outer ← the first object in w
 //       Undefined. Implement with the following snippet:
-let outer
-Given('outer ← the first object in w', function () {
-    //           // Write code here that turns the phrase above into concrete actions
-    outer = w.objects[0]
-});
+//let outer
+//Given('outer ← the first object in w', function () {
+//           // Write code here that turns the phrase above into concrete actions
+//    outer = w.objects[0]
+//});
 //
 //   ? And outer.material.ambient ← 1
 //       Undefined. Implement with the following snippet:
@@ -772,11 +773,11 @@ Given('outer.material.ambient ← {float}', function (float) {
 //
 //   ? And inner ← the second object in w
 //       Undefined. Implement with the following snippet:
-let inner
-Given('inner ← the second object in w', function () {
-    //           // Write code here that turns the phrase above into concrete actions
-    inner = w.objects[1]
-});
+//let inner
+//Given('inner ← the second object in w', function () {
+//           // Write code here that turns the phrase above into concrete actions
+//   inner = w.objects[1]
+//});
 //
 //   ? And inner.material.ambient ← 1
 //       Undefined. Implement with the following snippet:
@@ -1010,10 +1011,10 @@ Given('s1 ← new sphere', function () {
 //    ? And s1 is added to w
 //        Undefined. Implement with the following snippet:
 //
-Given('s1 is added to w', function () {
-    //            // Write code here that turns the phrase above into concrete actions
-    w.objects = [s1]
-});
+//Given('s1 is added to w', function () {
+//    //            // Write code here that turns the phrase above into concrete actions
+//    w.objects = [s1]
+//});
 //
 //    ? And s2 ← sphere() with:
 //        | transform | translation(0, 0, 10) |
@@ -1027,10 +1028,10 @@ Given('s1 is added to w', function () {
 //    ? And s2 is added to w
 //        Undefined. Implement with the following snippet:
 //
-Given('s2 is added to w', function () {
-    //            // Write code here that turns the phrase above into concrete actions
-    w.objects.push[s2]
-});
+//Given('s2 is added to w', function () {
+//    //            // Write code here that turns the phrase above into concrete actions
+//    w.objects.push[s2]
+//});
 //
 //    ? And r ← ray(point(0, 0, 5), vector(0, 0, 1))
 //        Undefined. Implement with the following snippet:
@@ -1109,7 +1110,7 @@ let i
 //          Given('i ← intersection\({int}, s2)', function (int) {
           Given('i ← intersection\\({float}, s2)', function (float) {
 //            // Write code here that turns the phrase above into concrete actions
-            i =intersection(float, s2)
+            i = intersection(float, s2)
           });
 //
 //    ? When comps ← prepare_computations(i, r)
@@ -1289,21 +1290,21 @@ let col
 //        | transform           | translation(0, -1, 0) |
 //        Undefined. Implement with the following snippet:
 //
-          Given('shape ← new plane with:', function (dataTable) {
-            // Write code here that turns the phrase above into concrete actions
-            shape = new plane
-            dataTable.raw().forEach(([path, expr]) =>
-              _.update(shape, path, obj =>
-                 obj = eval(expr)))
-          });
+//         Given('shape ← new plane with:', function (dataTable) {
+//           // Write code here that turns the phrase above into concrete actions
+//           shape = new plane
+//           dataTable.raw().forEach(([path, expr]) =>
+//             _.update(shape, path, obj =>
+//                obj = eval(expr)))
+//         });
 //
 //    ? And shape is added to w
 //        Undefined. Implement with the following snippet:
 //
-          Given('shape is added to w', function () {
-            // Write code here that turns the phrase above into concrete actions
-            w.objects.push(shape)
-          });
+//          Given('shape is added to w', function () {
+//            // Write code here that turns the phrase above into concrete actions
+//            w.objects.push(shape)
+//          });
 //
 //    ? And r ← ray(point(0, 0, -3), vector(0, -√2/2, √2/2))
 //        Undefined. Implement with the following snippet:
@@ -2011,42 +2012,42 @@ let col
 //        | transform           | translation(0, -1, 0) |
 //        Undefined. Implement with the following snippet:
 //
-          Given('lower ← new plane with:', function (dataTable) {
-            // Write code here that turns the phrase above into concrete actions
-            lower = new plane
-              dataTable.raw().forEach(([path, expr]) =>
-                _.update(plane, path, obj =>
-                  obj = eval(expr)))
-          });
+//         Given('lower ← new plane with:', function (dataTable) {
+//           // Write code here that turns the phrase above into concrete actions
+//           lower = new plane
+//             dataTable.raw().forEach(([path, expr]) =>
+//               _.update(plane, path, obj =>
+//                 obj = eval(expr)))
+//         });
 //
 //    ? And lower is added to w
 //        Undefined. Implement with the following snippet:
 //
-          Given('lower is added to w', function () {
-            // Write code here that turns the phrase above into concrete actions
-            w.objects = [lower]
-          });
+//          Given('lower is added to w', function () {
+//            // Write code here that turns the phrase above into concrete actions
+//            w.objects = [lower]
+//          });
 //
 //    ? And upper ← plane() with:
 //        | material.reflective | 1                    |
 //        | transform           | translation(0, 1, 0) |
 //        Undefined. Implement with the following snippet:
 //
-          Given('upper ← new plane with:', function (dataTable) {
-            // Write code here that turns the phrase above into concrete actions
-            upper = new plane 
-            dataTable.raw().forEach(([path, expr]) =>
-              _.update(upper, path, obj =>
-                obj = eval(expr)))
-          });
+//          Given('upper ← new plane with:', function (dataTable) {
+//            // Write code here that turns the phrase above into concrete actions
+//            upper = new plane 
+//            dataTable.raw().forEach(([path, expr]) =>
+//              _.update(upper, path, obj =>
+//                obj = eval(expr)))
+//          });
 //
 //    ? And upper is added to w
 //        Undefined. Implement with the following snippet:
 //
-          Given('upper is added to w', function () {
-            // Write code here that turns the phrase above into concrete actions
-            w.objects.push(upper)
-          });
+//          Given('upper is added to w', function () {
+//            // Write code here that turns the phrase above into concrete actions
+//            w.objects.push(upper)
+//          });
 //
 //    ? And r ← ray(point(0, 0, 0), vector(0, 1, 0))
 //        Undefined. Implement with the following snippet:
@@ -2554,9 +2555,9 @@ let col
 //          Given('xs ← intersections\({int}:shape, {int}:shape)', function (int, int2) {
 //          // Given('xs ← intersections\({int}:shape, {float}:shape)', function (int, float) {
 //          // Given('xs ← intersections\({float}:shape, {int}:shape)', function (float, int) {
-//          // Given('xs ← intersections\({float}:shape, {float}:shape)', function (float, float2) {
+//          Given('xs ← intersections\\({float}:shape, {float}:shape)', function (float, float2) {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
+//            xs = intersections(intersection(4, shape), intersection(6, shape))
 //          });
 //
 //    ? When comps ← prepare_computations(xs[0], r, xs)
@@ -2615,10 +2616,12 @@ let col
 //        | material.refractive_index | 1.5 |
 //        Undefined. Implement with the following snippet:
 //
-//          Given('shape has:', function (dataTable) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('{word} has:', function (word, dataTable) {
+            // Write code here that turns the phrase above into concrete actions
+            dataTable.raw().forEach(([path, expr]) =>
+              _.update(global[word], path, obj =>
+                obj = eval(expr)))
+          });
 //
 //    ? And r ← ray(point(0, 0, -5), vector(0, 0, 1))
 //        Undefined. Implement with the following snippet:
@@ -2714,11 +2717,11 @@ let col
 //    ? And c ← refracted_color(w, comps, 0)
 //        Undefined. Implement with the following snippet:
 //
-//          When('c ← refracted_color\(w, comps, {int})', function (int) {
+          When('c ← refracted_color\\(w, comps, {int})', function (int) {
 //          // When('c ← refracted_color\(w, comps, {float})', function (float) {
 //            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+            c = w.refracted_color(comps, int)
+          });
 //
 //    ? Then c = color(0, 0, 0)
 //        Undefined. Implement with the following snippet:
@@ -3042,10 +3045,10 @@ let col
 //    ? And xs ← intersections(-0.9899:A, -0.4899:B, 0.4899:B, 0.9899:A)
 //        Undefined. Implement with the following snippet:
 //
-//          Given('xs ← intersections\({float}:A, {float}:B, {float}:B, {float}:A)', function (float, float2, float3, float4) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('xs ← intersections\\({float}:A, {float}:B, {float}:B, {float}:A)', function (float, float2, float3, float4) {
+            // Write code here that turns the phrase above into concrete actions
+            xs = intersections(intersection(float, A), intersection(float2, B), intersection(float3, B), intersection(float4, A))
+          });
 //
 //    ? When comps ← prepare_computations(xs[2], r, xs)
 //        Undefined. Implement with the following snippet:
@@ -3098,10 +3101,11 @@ let col
 //    ? And floor is added to w
 //        Undefined. Implement with the following snippet:
 //
-//          Given('floor is added to w', function () {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('{word} is added to {word}', function (shape, world) {
+            // Write code here that turns the phrase above into concrete actions
+            let [w, s] = [global[world], global[shape]]
+            if (w.objects) w.objects.push(s); else w.objects = [s]
+          });
 //
 //    ? And ball ← sphere() with:
 //        | material.color   | (1, 0, 0)                  |
@@ -3389,10 +3393,10 @@ let col
 //        Undefined. Implement with the following snippet:
 //
 //          Given('xs ← intersections\(√{int}:floor)', function (int) {
-//          // Given('xs ← intersections\(√{float}:floor)', function (float) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          Given('xs ← intersections\\(√{float}:floor)', function (float) {
+            // Write code here that turns the phrase above into concrete actions
+            xs = intersections(intersection(Math.sqrt(float), floor))
+          });
 //
 //    ? When comps ← prepare_computations(xs[0], r, xs)
 //        Undefined. Implement with the following snippet:
@@ -3406,11 +3410,11 @@ let col
 //    ? And color ← shade_hit(w, comps, 5)
 //        Undefined. Implement with the following snippet:
 //
-//          When('color ← shade_hit\(w, comps, {int})', function (int) {
-//          // When('color ← shade_hit\(w, comps, {float})', function (float) {
-//            // Write code here that turns the phrase above into concrete actions
-//            return 'pending';
-//          });
+          When('col ← shade_hit\\(w, comps, {int})', function (int) {
+          //When('col ← shade_hit\\(w, comps, {float})', function (float) {
+            // Write code here that turns the phrase above into concrete actions
+            col = w.shade_hit(comps, int)
+          });
 //
 //    ? Then color = color(0.93642, 0.68642, 0.68642)
 //        Undefined. Implement with the following snippet:

@@ -22,3 +22,12 @@ exports.intersect = (s, r) => s.intersect(r)
 exports.set_transform = (s, t) => s.transform = t
 
 exports.normal_at = (s, p) => s.normal_at(p)
+
+exports.glass_sphere = class extends exports.sphere {
+    constructor() {
+        super()
+        this.material.transparency = 1
+        this.material.refractive_index = 1.5
+    }
+}
+exports.default = exports.sphere

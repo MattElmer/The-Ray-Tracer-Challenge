@@ -11,3 +11,4 @@ exports.plane = class extends shape {
     local_intersect = r => Math.abs(direction(r).y) < EPSILON ? [] : [ intersection(-origin(r).y / direction(r).y, this) ]
     local_normal_at = p => vector(0, 1, 0)
 }
+exports.default = exports.plane
