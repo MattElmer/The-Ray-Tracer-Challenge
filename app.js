@@ -1,4 +1,4 @@
-var a, p, v, c1, c2, r, s, xs, m, shape, comps, from, to, up, w, c // global test var dumping ground
+var a, p, v, c1, c2, r, s, xs, m, shape, comps, from, to, up, w, c, i, i1, i2, i3, i4 // global test var dumping ground
 
 if (!process.argv[2]) process.exit() // don't run if nothing passed in
 
@@ -39,7 +39,7 @@ middle.material.specular = 0.3
 middle.material.pattern = new gradient_pattern(color(0.1, 1, 0.5), color(0.0, 1, 1))
 middle.material.pattern.transform = translation(1.5, 0, 0).scaling(2, 2, 2)
 
-const ATTENUATION = 0.1
+const ATTENUATION = 0.5
 let right = new glass_sphere
 right.transform = translation(1.5, 0.5, -0.5).mul(scaling(0.5, 0.5, 0.5))
 //right.material = new material
@@ -54,7 +54,7 @@ left.material.color = mul(color(1, 0.8, 0.1), ATTENUATION)
 left.material.diffuse = 0.7 * ATTENUATION
 //left.material.specular = 0.3
 left.material.specular = right.material.specular = 1; left.material.shininess = right.material.shininess = 300
-//left.material.reflective = right.material.reflective = left.material.transparency = right.material.transparency = 0.9
+left.material.reflective = left.material.transparency; right.material.reflective = right.material.transparency
 
 let scene = new world
 scene.objects = [floor, middle, left, right]

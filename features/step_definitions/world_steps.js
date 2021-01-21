@@ -3045,10 +3045,10 @@ let col
 //    ? And xs ← intersections(-0.9899:A, -0.4899:B, 0.4899:B, 0.9899:A)
 //        Undefined. Implement with the following snippet:
 //
-          Given('xs ← intersections\\({float}:A, {float}:B, {float}:B, {float}:A)', function (float, float2, float3, float4) {
-            // Write code here that turns the phrase above into concrete actions
-            xs = intersections(intersection(float, A), intersection(float2, B), intersection(float3, B), intersection(float4, A))
-          });
+//          Given('xs ← intersections\\({float}:A, {float}:B, {float}:B, {float}:A)', function (float, float2, float3, float4) {
+//            // Write code here that turns the phrase above into concrete actions
+//            xs = intersections(intersection(float, A), intersection(float2, B), intersection(float3, B), intersection(float4, A))
+//          });
 //
 //    ? When comps ← prepare_computations(xs[2], r, xs)
 //        Undefined. Implement with the following snippet:
@@ -3393,10 +3393,10 @@ let col
 //        Undefined. Implement with the following snippet:
 //
 //          Given('xs ← intersections\(√{int}:floor)', function (int) {
-          Given('xs ← intersections\\(√{float}:floor)', function (float) {
-            // Write code here that turns the phrase above into concrete actions
-            xs = intersections(intersection(Math.sqrt(float), floor))
-          });
+//          Given('xs ← intersections\\(√{float}:floor)', function (float) {
+//            // Write code here that turns the phrase above into concrete actions
+//            xs = intersections(intersection(Math.sqrt(float), floor))
+//          });
 //
 //    ? When comps ← prepare_computations(xs[0], r, xs)
 //        Undefined. Implement with the following snippet:
