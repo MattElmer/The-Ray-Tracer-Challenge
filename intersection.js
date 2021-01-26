@@ -9,24 +9,24 @@ exports.intersections = (...xs) => xs.sort((a, b) => a - b)
 exports.hit = xs => xs[xs.findIndex(x => x > 0)]
 
 exports.prepare_computations = (h, r, xs = [h]) => {
-                   let comps             = { t:h.t, object:h.object }
+    let                comps             = { t:h.t, object:h.object }
                        comps.point       = r(comps.t)
                        comps.eyev        = neg(direction(r))
                        comps.normalv     = comps.object.normal_at(comps.point)
-                   if (comps.inside      = dot(comps.normalv, comps.eyev) < 0)
+    if                (comps.inside      = dot(comps.normalv, comps.eyev) < 0)
                      { comps.normalv     = neg(comps.normalv) }
                        comps.over_point  = add(comps.point, mul(comps.normalv, EPSILON))
-                       comps.under_point = sub(comps.point, mul(comps.normalv, EPSILON))            
+                       comps.under_point = sub(comps.point, mul(comps.normalv, EPSILON))
                        comps.reflectv    = reflect(direction(r), comps.normalv)
-    let cont = []
+    let                                          conts = []
     for (x of xs) {
-        if (x === h) { comps.n1 = cont.length ? cont.slice(-1)[0].material.refractive_index : 1 }
+        if (x === h) { comps.n1 = conts.length ? conts.slice(-1)[0].material.refractive_index : 1 }
         let i
-        if ((i = cont.indexOf(x.object)) != -1) cont.splice(i, 1)
-        else                                    cont.push(x.object)
-        if (x === h) { comps.n2 = cont.length ? cont.slice(-1)[0].material.refractive_index : 1; break }
+        if ((i = conts.indexOf(x.object)) != -1) conts.splice(i, 1)
+        else                                     conts.push(x.object)
+        if (x === h) { comps.n2 = conts.length ? conts.slice(-1)[0].material.refractive_index : 1; break }
     }
-                return comps
+    return             comps
 }
 
 exports.schlick = comps => {

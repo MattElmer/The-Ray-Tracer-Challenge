@@ -7,6 +7,7 @@ const { world } = require('./world')
 const { plane } = require('./plane')
 const { canvas } = require('./canvas')
 const { camera } = require('./camera')
+const { cube } = require('./cube')
 const { sphere, glass_sphere } = require('./sphere')
 const { EPSILON } = require('./utility')
 const { gradient_pattern, checkers_pattern } = require('./pattern')
@@ -30,7 +31,7 @@ floor.material.reflective = 0.5
 // right_wall.transform = translation(0, 0, 5).mul(rotation_y(Math.PI/4).mul(rotation_x(Math.PI/2).mul(scaling(10, 0.01, 10))))
 // right_wall.material = floor.material
 
-let middle = new sphere
+let middle = new cube
 middle.transform = translation(-0.5, 1, 0.5)
 middle.material = new material
 middle.material.color = color(0.1, 1, 0.5)

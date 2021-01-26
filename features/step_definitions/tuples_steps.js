@@ -124,10 +124,10 @@ const { equal } = require('../../utility')
    // Given p ← point(4, -4, 3)
        // Implement with the following snippet:
 
-         Given('p ← point\\({float}, {float}, {float})', function (x, y, z) {
-           // Write code here that turns the phrase above into concrete actions
-           p = point(x, y, z)
-         });
+//         Given('p ← point\\({float}, {float}, {float})', function (x, y, z) {
+//           // Write code here that turns the phrase above into concrete actions
+//           p = point(x, y, z)
+//         });
 
    // Then p = tuple(4, -4, 3, 1)
        // Implement with the following snippet:

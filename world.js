@@ -20,33 +20,34 @@ exports.world = class {
                  : BLACK
     }
     reflected_color = (comps, rem = MAX_RECURSION) => {
-        let a = comps.object.material.reflective
-        return a && rem ? mul(this.color_at(ray(comps.over_point, comps.reflectv), rem - 1), a)
-                        : BLACK
+        let refl = comps.object.material.reflective
+        return refl && rem ? mul(this.color_at(ray(comps.over_point, comps.reflectv), rem - 1), refl)
+                           : BLACK
     }
     refracted_color = (comps, rem = MAX_RECURSION) => {
         let n_ratio = comps.n1 / comps.n2
         let cos_i   = dot(comps.eyev, comps.normalv)
         let sin2_t  = n_ratio ** 2 * (1 - cos_i ** 2)
         let cos_t   = Math.sqrt(1 - sin2_t)
-        let a       = comps.object.material.transparency
-        return a && rem && sin2_t <= 1 ? mul(this.color_at(ray(comps.under_point, sub(mul(comps.normalv, n_ratio * cos_i - cos_t), mul(comps.eyev, n_ratio))), rem - 1), a)
-                                       : BLACK
+        let trans   = comps.object.material.transparency
+        return trans && rem && sin2_t <= 1 ? mul(this.color_at(ray(comps.under_point, sub(mul(comps.normalv, n_ratio * cos_i - cos_t), mul(comps.eyev, n_ratio))), rem - 1), trans)
+                                           : BLACK
     }
     is_shadowed = p => {
         let lv = sub(this.light.position, p)
         let h  = hit(this.intersect_world(ray(p, normalize(lv))))
         return h && h.t < magnitude(lv)
     }
-    shade_hit = (comps, rem = MAX_RECURSION) => (r =>
-        [lighting(comps.object.material,
-                  comps.object, this.light,
-                  comps.point,
-                  comps.eyev,
-                  comps.normalv,
-                  this.is_shadowed(comps.over_point)),
-         mul(this.reflected_color(comps, rem), comps.object.material.transparency ?     r : 1),
-         mul(this.refracted_color(comps, rem), comps.object.material.reflective   ? 1 - r : 1)])(schlick(comps)).reduce(add)
+    shade_hit = (comps, rem = MAX_RECURSION) => {
+        let r = schlick(comps)
+        return [lighting(comps.object.material,
+                         comps.object,  this.light,
+                         comps.point,
+                         comps.eyev,
+                         comps.normalv, this.is_shadowed(comps.over_point)),
+                mul(this.reflected_color(comps, rem), comps.object.material.transparency ?     r : 1),
+                mul(this.refracted_color(comps, rem), comps.object.material.reflective   ? 1 - r : 1)].reduce(add)
+    }
 }
 exports.default_world = class extends exports.world {
     constructor() {
