@@ -13,40 +13,40 @@ exports.world = class {
 
     //MAX_RECURSION = 5
 
-    color_at = (r, rem = MAX_RECURSION) => {
+    color_at = (r, remaining = MAX_RECURSION) => {
         let xs = this.intersect_world(r)
         let h  = hit(xs)
-        return h ? this.shade_hit(prepare_computations(h, r, xs), rem)
+        return h ? this.shade_hit(prepare_computations(h, r, xs), remaining)
                  : BLACK
     }
-    reflected_color = (comps, rem = MAX_RECURSION) => {
-        let refl = comps.object.material.reflective
-        return refl && rem ? mul(this.color_at(ray(comps.over_point, comps.reflectv), rem - 1), refl)
-                           : BLACK
+    reflected_color = (comps, remaining = MAX_RECURSION) => {
+        let reflects = comps.object.material.reflective
+        return reflects && remaining ? mul(this.color_at(ray(comps.over_point, comps.reflectv), remaining - 1), reflects)
+                                     : BLACK
     }
-    refracted_color = (comps, rem = MAX_RECURSION) => {
-        let n_ratio = comps.n1 / comps.n2
-        let cos_i   = dot(comps.eyev, comps.normalv)
-        let sin2_t  = n_ratio ** 2 * (1 - cos_i ** 2)
-        let cos_t   = Math.sqrt(1 - sin2_t)
-        let trans   = comps.object.material.transparency
-        return trans && rem && sin2_t <= 1 ? mul(this.color_at(ray(comps.under_point, sub(mul(comps.normalv, n_ratio * cos_i - cos_t), mul(comps.eyev, n_ratio))), rem - 1), trans)
-                                           : BLACK
+    refracted_color = (comps, remaining = MAX_RECURSION) => {
+        let n_ratio  = comps.n1 / comps.n2
+        let cos_i    = dot(comps.eyev, comps.normalv)
+        let sin2_t   = n_ratio ** 2 * (1 - cos_i ** 2)
+        let cos_t    = Math.sqrt(1 - sin2_t)
+        let refracts = comps.object.material.transparency
+        return refracts && remaining && sin2_t <= 1 ? mul(this.color_at(ray(comps.under_point, sub(mul(comps.normalv, n_ratio * cos_i - cos_t), mul(comps.eyev, n_ratio))), remaining - 1), refracts)
+                                                    : BLACK
     }
     is_shadowed = p => {
         let lv = sub(this.light.position, p)
-        let h  = hit(this.intersect_world(ray(p, normalize(lv))))
+        let h  = hit(this.intersect_world(ray(p, normalize(lv))), true)
         return h && h.t < magnitude(lv)
     }
-    shade_hit = (comps, rem = MAX_RECURSION) => {
+    shade_hit = (comps, remaining = MAX_RECURSION) => {
         let r = schlick(comps)
         return [lighting(comps.object.material,
                          comps.object,  this.light,
                          comps.point,
                          comps.eyev,
                          comps.normalv, this.is_shadowed(comps.over_point)),
-                mul(this.reflected_color(comps, rem), comps.object.material.transparency ?     r : 1),
-                mul(this.refracted_color(comps, rem), comps.object.material.reflective   ? 1 - r : 1)].reduce(add)
+                mul(this.reflected_color(comps, remaining), comps.object.material.transparency ?     r : 1),
+                mul(this.refracted_color(comps, remaining), comps.object.material.reflective   ? 1 - r : 1)].reduce(add)
     }
 }
 exports.default_world = class extends exports.world {
