@@ -11,7 +11,7 @@ exports.matrix = M => M.map(row => row.map(Number))
 exports.transpose = M => _.zip(...M)
 
 exports.mul = (A, B) => {
-    let notTuple = _.isArray(B)
+    let notTuple = _.isArray(B[0])
     B = notTuple ? exports.transpose(B) : [B.arr]
     let C = A.map(row =>
                 B.map(col =>
